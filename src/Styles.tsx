@@ -27,4 +27,8 @@ export = {
     flexDirection: 'row',
     flex: 1
   }),
+  okButton: RX.Styles.createButtonStyle({
+    backgroundColor: 'lime',
+    justifyContent: 'center'
+  })
 };
