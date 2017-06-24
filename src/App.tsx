@@ -1,52 +1,43 @@
 import RX = require('reactxp');
-import { VirtualListView, VirtualListViewItemInfo } from 'reactxp-virtuallistview';
+import Styles = require('./Styles');
+import Tabs = require('./Tabs');
+import Tab from './Tab';
 
-const styles = {
-  flex: RX.Styles.createViewStyle({
-    flex: 1
-  }),
-  box: RX.Styles.createViewStyle({
-    margin: 8,
-    padding: 8,
-    borderRadius: 4
-  }),
-  greyBorder: RX.Styles.createViewStyle({
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: '#808080'
-  }),
-  headerView: RX.Styles.createViewStyle({
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: '#259c9c',
-  }),
-  headerText: RX.Styles.createTextStyle({
-    fontSize: 20,
-    color: 'white'
-  }),
-  contentView: RX.Styles.createViewStyle({
-    flexDirection: 'row',
-    flex: 1
-  }),
-};
 
-class App extends RX.Component<{}, null> {
+interface AppState {
+  activeTab: number;
+}
+
+class App extends RX.Component<{}, AppState> {
+
+  private tabs: Tab<Object>[] = Tabs;
+
+  constructor(props: {}) {
+    super(props);
+    this.state = {activeTab: 0};
+  }
 
   render() {
-    return <RX.View style={styles.flex}>
-      <RX.View style={[styles.box, styles.headerView]}>
-        <RX.Text style={styles.headerText}>Terasology Server web interface</RX.Text>
+    return <RX.View style={Styles.flex}>
+      <RX.View style={[Styles.box, Styles.headerView]}>
+        <RX.Text style={Styles.headerText}>Terasology Server web interface</RX.Text>
         <RX.Text>Unauthenticated mode - click to login</RX.Text>
       </RX.View>
-      <RX.View style={styles.contentView}>
-        <RX.View style={[styles.box, styles.greyBorder]}>
-          <RX.Text>Menu</RX.Text>
+      <RX.View style={Styles.contentView}>
+        <RX.View style={[Styles.box, Styles.greyBorder]}>
+          {this.tabs.map((item, index) =>
+            <RX.Button style={[Styles.greyBorder, Styles.box]} onPress={() => {this.changeTab(index)}}>{item.getName()}</RX.Button>
+          )}
         </RX.View>
-        <RX.View style={[styles.box, styles.greyBorder, styles.flex]}>
-          <RX.Text>Main panel</RX.Text>
+        <RX.View style={[Styles.box, Styles.greyBorder, Styles.flex]}>
+          {this.tabs[this.state.activeTab].render()}
         </RX.View>
       </RX.View>
     </RX.View>;
+  }
+
+  private changeTab(index: number) {
+    this.setState({activeTab: index});
   }
 }
 
