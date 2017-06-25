@@ -2,7 +2,8 @@ import RX = require('reactxp');
 import Styles = require('./Styles');
 import Tabs = require('./Tabs');
 import Tab from './Tab';
-import ServerAddressInput = require('./ServerAddressInput');
+import ServerAddressInput from './ServerAddressInput';
+import IncomingMessage from './io/IncomingMessage';
 
 interface AppState {
   activeTab?: number;
@@ -11,7 +12,7 @@ interface AppState {
 
 class App extends RX.Component<{}, AppState> {
 
-  private tabs: Tab<Object>[] = Tabs;
+  private tabs: Tab<any>[] = Tabs;
 
   constructor(props: {}) {
     super(props);
@@ -25,8 +26,13 @@ class App extends RX.Component<{}, AppState> {
     wsConn.onmessage = this.onMessage;
   }
 
-  private onMessage = (event: MessageEvent): any => {
-    console.log(event.data);
+  private onMessage = (event: MessageEvent) => {
+    const message: IncomingMessage = JSON.parse(event.data) as IncomingMessage;
+    this.tabs.forEach((tab: Tab<any>) => {
+      if (tab.getObservedResources().indexOf(message.resourceName) > -1) {
+        tab.onMessage(message);
+      }
+    });
   }
 
   componentDidMount() {

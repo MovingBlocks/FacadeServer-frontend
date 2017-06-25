@@ -9,7 +9,7 @@ class ServerAddressInput extends RX.Component<ServerAddressInputProps, {value: s
 
   constructor(props: ServerAddressInputProps) {
     super(props);
-    this.state = {value: "ws://localhost:8000/ws"};
+    this.state = {value: "ws://localhost:8080/ws"};
   }
 
   render() {
@@ -29,4 +29,4 @@ class ServerAddressInput extends RX.Component<ServerAddressInputProps, {value: s
   }
 }
 
-export = ServerAddressInput;
+export default ServerAddressInput;
