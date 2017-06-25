@@ -1,9 +1,12 @@
 import RX = require('reactxp');
 import Styles = require('./Styles');
-import Tabs = require('./Tabs');
-import Tab from './Tab';
+
 import ServerAddressInput from './ServerAddressInput';
 import IncomingMessage from './io/IncomingMessage';
+
+import TabModel from './Tab';
+import {HomeTabModel, HomeTabView} from './tabs/Hometab';
+import {ConsoleTabModel, ConsoleTabView} from './tabs/ConsoleTab';
 
 interface AppState {
   activeTab?: number;
@@ -12,7 +15,11 @@ interface AppState {
 
 class App extends RX.Component<{}, AppState> {
 
-  private tabs: Tab<any>[] = Tabs;
+  private tabs: TabModel[] = [new HomeTabModel(), new ConsoleTabModel()];
+  private tabViews = [
+    <HomeTabView model={this.tabs[0]} />,
+    <ConsoleTabView model={this.tabs[1]} />
+  ];
 
   constructor(props: {}) {
     super(props);
@@ -28,7 +35,7 @@ class App extends RX.Component<{}, AppState> {
 
   private onMessage = (event: MessageEvent) => {
     const message: IncomingMessage = JSON.parse(event.data) as IncomingMessage;
-    this.tabs.forEach((tab: Tab<any>) => {
+    this.tabs.forEach((tab: TabModel) => {
       if (tab.getObservedResources().indexOf(message.resourceName) > -1) {
         tab.onMessage(message);
       }
@@ -52,7 +59,7 @@ class App extends RX.Component<{}, AppState> {
           )}
         </RX.View>
         <RX.View style={[Styles.box, Styles.greyBorder, Styles.flex]}>
-          {this.tabs[this.state.activeTab].render()}
+          {this.tabViews[this.state.activeTab]}
         </RX.View>
       </RX.View>
     </RX.View>;

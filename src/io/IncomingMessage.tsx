@@ -1,11 +1,7 @@
-enum MessageType {
-  ACTION_RESULT,
-  RESOURCE_CHANGED,
-  RESOURCE_EVENT
-}
+import IncomingMessageType from './IncomingMessageType';
 
 interface IncomingMessage {
-  messageType: MessageType;
+  messageType: IncomingMessageType;
   resourceName: string;
   data: any;
 }

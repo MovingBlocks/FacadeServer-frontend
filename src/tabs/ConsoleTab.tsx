@@ -1,8 +1,23 @@
 import RX = require('reactxp');
-import Tab from '../Tab';
-import IncomingMessage from '../io/IncomingMessage'
+import TabModel from '../Tab';
+import IncomingMessage from '../io/IncomingMessage';
 
-class ConsoleTab extends Tab<{}> {
+export class ConsoleTabView extends RX.Component<{model: TabModel}, null> {
+
+  constructor(props: {model: TabModel}) {
+      super(props);
+      props.model.setUpdateViewCallback(() => this.setState);
+  }
+
+  render() {
+    return <RX.Text>Test - this is the console tab</RX.Text>
+  }
+
+}
+
+export class ConsoleTabModel extends TabModel {
+
+  private updateView: (viewState: any) => void;
 
   getName(): string {
     return 'Console';
@@ -16,9 +31,7 @@ class ConsoleTab extends Tab<{}> {
     console.log('New message to CONSOLE tab:' + JSON.stringify(message));
   }
 
-  render() {
-    return <RX.Text>Test - this is the console tab</RX.Text>
+  setUpdateViewCallback(callback: (viewState: any) => void) {
+    this.updateView = callback;
   }
 }
-
-export = new ConsoleTab();
