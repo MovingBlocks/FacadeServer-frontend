@@ -1,5 +1,5 @@
 # FacadeServer-frontend
-This repository contains a web and mobile front-end to Terasology's FacadeServer (https://github.com/MovingBlocks/FacadeServer), based on the [ReactXP](https://github.com/Microsoft/reactxp) framework. The initial code structure was imported from the [ReactXP hello-worrld example](https://github.com/Microsoft/reactxp/tree/master/samples/hello-world).
+This repository contains a web and mobile front-end to [Terasology's FacadeServer](https://github.com/MovingBlocks/FacadeServer), based on the [ReactXP](https://github.com/Microsoft/reactxp) framework. The initial code structure was imported from the [ReactXP hello-world example](https://github.com/Microsoft/reactxp/tree/master/samples/hello-world).
 
 ## How to build
 At the moment, the Web (browser-based) environment is the main target, but the ReactXP framework has been chosen to allow to make both web and mobile (Android/iOS) builds from the same codebase.
