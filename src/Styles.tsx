@@ -1,8 +1,13 @@
 import RX = require('reactxp');
 
 export = {
-  flex: RX.Styles.createViewStyle({
-    flex: 1
+  flexColumn: RX.Styles.createViewStyle({
+    flex: 1,
+    flexDirection: 'column'
+  }),
+  flexRow: RX.Styles.createViewStyle({
+    flex: 1,
+    flexDirection: 'row'
   }),
   box: RX.Styles.createViewStyle({
     margin: 8,
@@ -30,5 +35,14 @@ export = {
   okButton: RX.Styles.createButtonStyle({
     backgroundColor: 'lime',
     justifyContent: 'center'
-  })
+  }),
+  consoleRoot: RX.Styles.createViewStyle({
+    justifyContent: 'flex-end'
+  }),
+  consoleInputView: RX.Styles.createViewStyle({
+    flexDirection: 'row'
+  }),
+  commandTextInput: RX.Styles.createTextInputStyle({
+    flex: 5
+  }),
 };
