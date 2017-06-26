@@ -5,7 +5,7 @@ import ServerAddressInput from './ServerAddressInput';
 import IncomingMessage from './io/IncomingMessage';
 
 import {TabModel} from './Tab';
-import {HomeTabModel, HomeTabView} from './tabs/Hometab';
+import {HomeTabModel, HomeTabView} from './tabs/HomeTab';
 import {ConsoleTabModel, ConsoleTabView} from './tabs/ConsoleTab';
 
 interface AppState {
