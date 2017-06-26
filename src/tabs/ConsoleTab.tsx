@@ -49,7 +49,6 @@ export class ConsoleTabModel extends TabModel<ConsoleTabState> {
   }
 
   onMessage(message: IncomingMessage): void {
-    console.log('New message to CONSOLE tab:' + JSON.stringify(message));
     if (message.messageType == 'RESOURCE_EVENT' && message.resourceName == 'console') {
       const oldState: ConsoleTabState = this.getState();
       this.update({messages: oldState.messages.concat((message.data) as Message)});
