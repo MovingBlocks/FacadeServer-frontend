@@ -31,17 +31,18 @@ class App extends RX.Component<{}, AppState> {
     this.setState({serverAddr: address});
     const wsConn: WebSocket = new WebSocket(address);
     wsConn.onmessage = this.onMessage;
-    this.tabs.forEach((tab: TabModel<any>) =>
-      tab.setSendDataCallback((data: any) => wsConn.send(JSON.stringify(data)))
-    );
+    wsConn.onopen = () => {
+      this.tabs.forEach((tab: TabModel<any>) => {
+        tab.setSendDataCallback((data: any) => wsConn.send(JSON.stringify(data)));
+        tab.initialize();
+      });
+    }
   }
 
   private onMessage = (event: MessageEvent) => {
     const message: IncomingMessage = JSON.parse(event.data) as IncomingMessage;
     this.tabs.forEach((tab: TabModel<any>) => {
-      if (tab.getObservedResources().indexOf(message.resourceName) > -1) {
         tab.onMessage(message);
-      }
     });
   }
 

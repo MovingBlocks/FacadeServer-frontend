@@ -1,5 +1,6 @@
 import RX = require('reactxp');
-import {TabModel, TabView} from '../Tab';
+import {TabView} from '../Tab';
+import {ResourceSubscriberTabModel} from '../ResourceSubscriberTab';
 import IncomingMessage from '../io/IncomingMessage';
 import IncomingMessageType from '../io/IncomingMessageType';
 
@@ -17,13 +18,13 @@ export class HomeTabView extends TabView<HomeTabState> {
   }
 }
 
-export class HomeTabModel extends TabModel<HomeTabState> {
+export class HomeTabModel extends ResourceSubscriberTabModel<HomeTabState> {
 
   getName(): string {
     return 'Home';
   }
 
-  getObservedResources(): string[] {
+  getSubscribedResourceNames(): string[] {
     return ['onlinePlayers'];
   }
 
@@ -31,9 +32,9 @@ export class HomeTabModel extends TabModel<HomeTabState> {
     return {onlinePlayers: []};
   }
 
-  onMessage(message: IncomingMessage): void {
-    if (message.messageType == 'RESOURCE_CHANGED' && message.resourceName == 'onlinePlayers') {
-      this.update({onlinePlayers: message.data as string[]});
+  onResourceUpdated(resourceName: string, data: any): void {
+    if (resourceName == 'onlinePlayers') {
+      this.update({onlinePlayers: data as string[]});
     }
   }
 
