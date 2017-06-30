@@ -1,9 +1,10 @@
-import IncomingMessageType from './IncomingMessageType';
+export type IncomingMessageType =
+  'ACTION_RESULT'
+  | 'RESOURCE_CHANGED'
+  | 'RESOURCE_EVENT'
 
-interface IncomingMessage {
+export interface IncomingMessage {
   messageType: IncomingMessageType;
   resourceName: string;
   data: any;
 }
-
-export default IncomingMessage;

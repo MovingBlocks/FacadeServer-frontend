@@ -1,5 +1,5 @@
 import {TabModel} from './Tab';
-import IncomingMessage from './io/IncomingMessage';
+import {IncomingMessage} from './io/IncomingMessage';
 import {OutgoingMessage} from './io/OutgoingMessage';
 import {ActionResult} from './io/ActionResult';
 

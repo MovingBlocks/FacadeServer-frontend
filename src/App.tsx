@@ -2,7 +2,7 @@ import RX = require('reactxp');
 import Styles = require('./Styles');
 
 import ServerAddressInput from './ServerAddressInput';
-import IncomingMessage from './io/IncomingMessage';
+import {IncomingMessage} from './io/IncomingMessage';
 
 import {TabModel} from './Tab';
 import {HomeTabModel, HomeTabView} from './tabs/HomeTab';
@@ -42,7 +42,7 @@ class App extends RX.Component<{}, AppState> {
   private onMessage = (event: MessageEvent) => {
     const message: IncomingMessage = JSON.parse(event.data) as IncomingMessage;
     this.tabs.forEach((tab: TabModel<any>) => {
-        tab.onMessage(message);
+      tab.onMessage(message);
     });
   }
 

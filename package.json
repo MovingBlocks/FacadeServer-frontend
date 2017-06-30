@@ -4,6 +4,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
+    "tslint": "tslint -p .",
     "web-watch": "webpack --progress --colors --watch",
     "rn-watch": "tsc --watch",
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -16,6 +17,8 @@
     "awesome-typescript-loader": "3.1.2",
     "source-map-loader": "^0.1.6",
     "ts-node": "^3.0.2",
+    "tslint": "^5.4.3",
+    "tslint-react": "^3.0.0",
     "typescript": "2.1.6",
     "webpack": "2.2.1"
   },

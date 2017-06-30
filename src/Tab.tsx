@@ -1,5 +1,5 @@
 import RX = require('reactxp');
-import IncomingMessage from './io/IncomingMessage'
+import {IncomingMessage} from './io/IncomingMessage'
 
 export abstract class TabView<StateType> extends RX.Component<{model: TabModel<StateType>}, StateType> {
 

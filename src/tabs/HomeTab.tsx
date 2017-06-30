@@ -1,8 +1,7 @@
 import RX = require('reactxp');
 import {TabView} from '../Tab';
 import {ResourceSubscriberTabModel} from '../ResourceSubscriberTab';
-import IncomingMessage from '../io/IncomingMessage';
-import IncomingMessageType from '../io/IncomingMessageType';
+import {IncomingMessage} from '../io/IncomingMessage';
 
 interface HomeTabState {
   onlinePlayers?: string[]

@@ -2,7 +2,7 @@ import RX = require('reactxp');
 import Styles = require('../Styles');
 
 import {TabModel, TabView} from '../Tab';
-import IncomingMessage from '../io/IncomingMessage';
+import {IncomingMessage} from '../io/IncomingMessage';
 
 interface Message {
   type: 'CONSOLE' | 'CHAT' | 'ERROR' | 'NOTIFICATION';

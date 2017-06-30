@@ -1,0 +1,6 @@
+language: node_js
+node_js:
+  - "7" #latest
+  - "6" #LTS
+script:
+  - npm run tslint
