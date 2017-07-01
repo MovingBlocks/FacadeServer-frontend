@@ -1,48 +1,48 @@
-import RX = require('reactxp');
+import RX = require("reactxp");
 
 export = {
+  box: RX.Styles.createViewStyle({
+    borderRadius: 4,
+    margin: 8,
+    padding: 8,
+  }),
+  commandTextInput: RX.Styles.createTextInputStyle({
+    flex: 5,
+  }),
+  consoleInputView: RX.Styles.createViewStyle({
+    flexDirection: "row",
+  }),
+  consoleRoot: RX.Styles.createViewStyle({
+    justifyContent: "flex-end",
+  }),
+  contentView: RX.Styles.createViewStyle({
+    flex: 1,
+    flexDirection: "row",
+  }),
   flexColumn: RX.Styles.createViewStyle({
     flex: 1,
-    flexDirection: 'column'
+    flexDirection: "column",
   }),
   flexRow: RX.Styles.createViewStyle({
     flex: 1,
-    flexDirection: 'row'
-  }),
-  box: RX.Styles.createViewStyle({
-    margin: 8,
-    padding: 8,
-    borderRadius: 4
+    flexDirection: "row",
   }),
   greyBorder: RX.Styles.createViewStyle({
-    borderStyle: 'solid',
+    borderColor: "#808080",
+    borderStyle: "solid",
     borderWidth: 1,
-    borderColor: '#808080'
-  }),
-  headerView: RX.Styles.createViewStyle({
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: '#259c9c',
   }),
   headerText: RX.Styles.createTextStyle({
+    color: "white",
     fontSize: 20,
-    color: 'white'
   }),
-  contentView: RX.Styles.createViewStyle({
-    flexDirection: 'row',
-    flex: 1
+  headerView: RX.Styles.createViewStyle({
+    backgroundColor: "#259c9c",
+    flexDirection: "row",
+    justifyContent: "space-between",
   }),
   okButton: RX.Styles.createButtonStyle({
-    backgroundColor: 'lime',
-    justifyContent: 'center'
-  }),
-  consoleRoot: RX.Styles.createViewStyle({
-    justifyContent: 'flex-end'
-  }),
-  consoleInputView: RX.Styles.createViewStyle({
-    flexDirection: 'row'
-  }),
-  commandTextInput: RX.Styles.createTextInputStyle({
-    flex: 5
+    backgroundColor: "lime",
+    justifyContent: "center",
   }),
 };

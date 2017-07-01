@@ -3,4 +3,5 @@ node_js:
   - "7" #latest
   - "6" #LTS
 script:
+  - npm run web
   - npm run tslint

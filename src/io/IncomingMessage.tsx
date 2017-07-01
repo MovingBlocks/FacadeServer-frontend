@@ -1,7 +1,7 @@
 export type IncomingMessageType =
-  'ACTION_RESULT'
-  | 'RESOURCE_CHANGED'
-  | 'RESOURCE_EVENT'
+  "ACTION_RESULT"
+  | "RESOURCE_CHANGED"
+  | "RESOURCE_EVENT";
 
 export interface IncomingMessage {
   messageType: IncomingMessageType;

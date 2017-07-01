@@ -6,6 +6,7 @@
   "scripts": {
     "tslint": "tslint -p .",
     "web-watch": "webpack --progress --colors --watch",
+    "web": "webpack --progress --colors",
     "rn-watch": "tsc --watch",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "android": "node node_modules/react-native/local-cli/cli.js run-android",
