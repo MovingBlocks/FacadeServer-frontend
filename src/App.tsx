@@ -7,7 +7,7 @@ import ServerAddressInput from "./ServerAddressInput";
 import {TabModel} from "./tabs/TabModel";
 
 import {ConsoleTabModel} from "./tabs/console/ConsoleTabModel";
-import {ConsoleTabView} from "./tabs/console/ConsoleTabview";
+import {ConsoleTabView} from "./tabs/console/ConsoleTabView";
 import {HomeTabModel} from "./tabs/home/HomeTabModel";
 import {HomeTabView} from "./tabs/home/HomeTabView";
 
