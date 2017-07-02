@@ -2,8 +2,10 @@
 
 import RX = require("reactxp");
 import Styles = require("./Styles");
+import {AuthenticationDialog} from "./authentication/AuthenticationDialog";
+import {AuthenticationManager} from "./authentication/AuthenticationManager";
 import {IncomingMessage} from "./io/IncomingMessage";
-import ServerAddressInput from "./ServerAddressInput";
+import {ServerAddressInput} from "./ServerAddressInput";
 import {TabModel} from "./tabs/TabModel";
 
 import {ConsoleTabModel} from "./tabs/console/ConsoleTabModel";
@@ -18,6 +20,8 @@ interface AppState {
 
 class App extends RX.Component<{}, AppState> {
 
+  private wsConn: WebSocket;
+  private authenticationManager: AuthenticationManager;
   private tabs: Array<TabModel<any>> = [new HomeTabModel(), new ConsoleTabModel()];
   private tabViews = [
     <HomeTabView model={this.tabs[0]} />,
@@ -43,7 +47,10 @@ class App extends RX.Component<{}, AppState> {
       <RX.View style={Styles.flexColumn}>
         <RX.View style={[Styles.box, Styles.headerView]}>
           <RX.Text style={Styles.headerText}>Terasology Server web interface</RX.Text>
-          <RX.Text>Server:{this.state.serverAddr} - Unauthenticated mode - click to login</RX.Text>
+          <RX.View>
+            <RX.Text>Server: {this.state.serverAddr}</RX.Text>
+            <RX.Button style={Styles.okButton} onPress={this.showLoginDialog}>Login</RX.Button>
+          </RX.View>
         </RX.View>
         <RX.View style={Styles.contentView}>
           <RX.View style={[Styles.box, Styles.greyBorder]}>
@@ -57,21 +64,32 @@ class App extends RX.Component<{}, AppState> {
     );
   }
 
+  private sendJsonData = (data: any) => { // TODO: replace any with OutgoingMessage
+    this.wsConn.send(JSON.stringify(data));
+  }
+
   private connect = (address: string) => {
     RX.Modal.dismiss("ServerAddressInput");
     this.setState({serverAddr: address});
-    const wsConn: WebSocket = new WebSocket(address);
-    wsConn.onmessage = this.onMessage;
-    wsConn.onopen = () => {
+    this.wsConn = new WebSocket(address);
+    this.wsConn.onmessage = this.onMessage;
+    this.wsConn.onopen = () => {
+      this.authenticationManager = new AuthenticationManager(this.sendJsonData);
       this.tabs.forEach((tab: TabModel<any>) => {
-        tab.setSendDataCallback((data: any) => wsConn.send(JSON.stringify(data)));
+        tab.setSendDataCallback(this.sendJsonData);
         tab.initialize();
       });
     };
   }
 
+  private showLoginDialog = () => {
+    const onClose = () => RX.Modal.dismiss("AuthenticationDialog");
+    RX.Modal.show(<AuthenticationDialog manager={this.authenticationManager} closeCallback={onClose} />, "AuthenticationDialog");
+  }
+
   private onMessage = (event: MessageEvent) => {
     const message: IncomingMessage = JSON.parse(event.data) as IncomingMessage;
+    this.authenticationManager.onMessage(message);
     this.tabs.forEach((tab: TabModel<any>) => {
       tab.onMessage(message);
     });

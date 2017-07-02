@@ -5,5 +5,5 @@ export type OutgoingMessageType =
 
 export interface OutgoingMessage {
   messageType: OutgoingMessageType;
-  data: any;
+  data?: any;
 }

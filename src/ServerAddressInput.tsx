@@ -5,7 +5,7 @@ interface ServerAddressInputProps {
   callback: (value: string) => void;
 }
 
-class ServerAddressInput extends RX.Component<ServerAddressInputProps, {value: string}> {
+export class ServerAddressInput extends RX.Component<ServerAddressInputProps, {value: string}> {
 
   constructor(props: ServerAddressInputProps) {
     super(props);
@@ -30,5 +30,3 @@ class ServerAddressInput extends RX.Component<ServerAddressInputProps, {value: s
     this.props.callback(this.state.value);
   }
 }
-
-export default ServerAddressInput;

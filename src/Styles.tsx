@@ -6,6 +6,10 @@ export = {
     margin: 8,
     padding: 8,
   }),
+  cancelButton: RX.Styles.createButtonStyle({
+    backgroundColor: "red",
+    justifyContent: "center",
+  }),
   commandTextInput: RX.Styles.createTextInputStyle({
     flex: 5,
   }),
