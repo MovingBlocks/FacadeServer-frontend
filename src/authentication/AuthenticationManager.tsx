@@ -2,14 +2,7 @@ import JSONparse = require("../io/json/json_parse");
 import {ActionResult} from "../io/ActionResult";
 import {IncomingMessage} from "../io/IncomingMessage";
 import {OutgoingMessage} from "../io/OutgoingMessage";
-import {PrivateIdentityCertificate} from "./PrivateIdentityCertificate";
-import {PublicIdentityCertificate} from "./PublicIdentityCertificate";
-
-interface ClientIdentity {
-  server: PublicIdentityCertificate;
-  clientPublic: PublicIdentityCertificate;
-  clientPrivate: PrivateIdentityCertificate;
-}
+import {ClientIdentity, PublicIdentityCertificate} from "./ClientIdentity";
 
 interface HandshakeHello {
   random: string;
@@ -34,7 +27,13 @@ export class AuthenticationManager {
   }
 
   public authenticateFromConfig(configString: string): void {
-    const config: any = JSONparse(configString, null);
+    const config: any = JSONparse(configString, (key: string, value: any) => {
+      // cast to ClientIdentity class to allow usage of its methods
+      if (value.hasOwnProperty("server") && value.hasOwnProperty("clientPublic") && value.hasOwnProperty("clientPrivate")) {
+        return new ClientIdentity(value.server, value.clientPublic, value.clientPrivate);
+      }
+      return value;
+    });
     if (typeof config.security === "object" && config.security.clientIdentities.constructor === Array) {
       this.authenticateFromIdentityArray(config.security.clientIdentities as ClientIdentity[]);
     } else {
@@ -52,8 +51,20 @@ export class AuthenticationManager {
   }
 
   private authenticateFromIdentityArray(identities: ClientIdentity[]): void {
-    console.log(identities); // TODO remove
-    this.requestServerHello(() => {return; });
+    this.requestServerHello((serverHello: HandshakeHello) => {
+      identities.forEach((identity: ClientIdentity) => {
+        if (identity.getServerId() === serverHello.certificate.id) {
+          this.authenticate(serverHello, identity);
+          return;
+        }
+      });
+      // TODO not found, report error
+    });
+  }
+
+  private authenticate(serverHello: HandshakeHello, clientIdentity: ClientIdentity): void {
+    const clientHello: HandshakeHello = {random: "", certificate: clientIdentity.getClientPublicBase64(), timestamp: ""};
+    // TODO: concatenate hellos, sign and reply to handshake
   }
 
 }

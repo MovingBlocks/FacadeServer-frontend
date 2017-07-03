@@ -1,3 +1,4 @@
+/* tslint:disable */
 /*
     Adapted from JSON-js by Douglas Crockford (https://github.com/douglascrockford/JSON-js).
     The original library is distributed under public domain as specified below.
@@ -56,7 +57,7 @@
     prototype, push, r, t, text
 */
 
-const bigInt = require('big-integer');
+const BigInteger = require('jsbn').BigInteger;
 
 module.exports = (function () {
     "use strict";
@@ -144,7 +145,7 @@ module.exports = (function () {
             }
         }
         if(/^\d+$/.test(string)) {
-          return bigInt(string);
+          return new BigInteger(string);
         } else {
           return +string;
         }

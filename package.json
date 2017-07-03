@@ -24,7 +24,7 @@
     "webpack": "2.2.1"
   },
   "dependencies": {
-    "big-integer": "^1.6.23",
+    "jsbn": "^1.1.0",
     "node-rsa": "^0.4.2",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
