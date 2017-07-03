@@ -3,6 +3,7 @@
     "node_modules"
   ],
   "compilerOptions": {
+    "allowJs": true,
     "declaration": false,
     "noResolve": false,
     "jsx": "react",

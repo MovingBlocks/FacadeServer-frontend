@@ -1,3 +1,4 @@
+import JSONparse = require("../io/json/json_parse");
 import {ActionResult} from "../io/ActionResult";
 import {IncomingMessage} from "../io/IncomingMessage";
 import {OutgoingMessage} from "../io/OutgoingMessage";
@@ -33,7 +34,7 @@ export class AuthenticationManager {
   }
 
   public authenticateFromConfig(configString: string): void {
-    const config: any = JSON.parse(configString); // TODO: use parser with support for bigints
+    const config: any = JSONparse(configString, null);
     if (typeof config.security === "object" && config.security.clientIdentities.constructor === Array) {
       this.authenticateFromIdentityArray(config.security.clientIdentities as ClientIdentity[]);
     } else {
@@ -51,7 +52,7 @@ export class AuthenticationManager {
   }
 
   private authenticateFromIdentityArray(identities: ClientIdentity[]): void {
-    // console.log(identities); // TODO remove
+    console.log(identities); // TODO remove
     this.requestServerHello(() => {return; });
   }
 

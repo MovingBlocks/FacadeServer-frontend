@@ -1,7 +1,7 @@
 export class PublicIdentityCertificate {
 
-  private id: string;
-  private modulus: string;
-  private exponent: string;
-  private signature: string;
+  private id: any;
+  private modulus: any;
+  private exponent: any;
+  private signature: any;
 }
