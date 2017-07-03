@@ -26,6 +26,10 @@ export class ClientIdentity {
     return this.server.id;
   }
 
+  public getClientPublic(): PublicIdentityCertificate {
+    return this.clientPublic;
+  }
+
   public getClientPublicBase64(): PublicIdentityCertificate {
     return {
       exponent: this.bigIntToBase64(this.clientPublic.exponent),
