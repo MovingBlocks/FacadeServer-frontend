@@ -26,6 +26,10 @@ export class ClientIdentity {
     return this.server.id;
   }
 
+  public getClientPrivate(): PrivateIdentityCertificate {
+    return this.clientPrivate;
+  }
+
   public getClientPublic(): PublicIdentityCertificate {
     return this.clientPublic;
   }

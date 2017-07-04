@@ -1,6 +1,7 @@
 /* tslint:disable:no-var-requires */
 
 const BigInteger = require("jsbn").BigInteger;
+const rs = require("jsrsasign");
 import JSONparse = require("../io/utils/json_parse");
 import {ActionResult} from "../io/ActionResult";
 import {IncomingMessage} from "../io/IncomingMessage";
@@ -47,10 +48,11 @@ export class AuthenticationManager {
   private requestServerHello(then: (serverHello: HandshakeHello) => void): void {
     this.processMessage = (message: ActionResult) => {
       if (message.status === "OK") { // TODO: also check that message data can be casted to HandshakeHello
+        this.processMessage = null;
         const serverHello = message.data as HandshakeHello;
-        serverHello.certificate.exponent = new BigInteger(this.b64toHex(serverHello.certificate.exponent), 16);
+        /*serverHello.certificate.exponent = new BigInteger(this.b64toHex(serverHello.certificate.exponent), 16);
         serverHello.certificate.modulus = new BigInteger(this.b64toHex(serverHello.certificate.modulus), 16);
-        serverHello.certificate.signature = new BigInteger(this.b64toHex(serverHello.certificate.signature), 16);
+        serverHello.certificate.signature = new BigInteger(this.b64toHex(serverHello.certificate.signature), 16);*/
         then(serverHello);
       }
     };
@@ -74,36 +76,42 @@ export class AuthenticationManager {
   }
 
   private authenticate(serverHelloMessage: HandshakeHello, clientIdentity: ClientIdentity): void {
-    const clientHelloMessage: HandshakeHello = {random: "", certificate: clientIdentity.getClientPublic(), timestamp: ""};
-    const dataToSign = this.concatArrayBuffers([
-      this.handshakeHelloToArrayBuffer(serverHelloMessage),
-      this.handshakeHelloToArrayBuffer(clientHelloMessage),
+    const publicCert = clientIdentity.getClientPublic();
+    const privateCert = clientIdentity.getClientPrivate();
+    const clientHelloMessage: HandshakeHello = {random: "", certificate: publicCert, timestamp: ""};
+    const dataToSign: Uint8Array = this.concatArrayBuffers([
+      this.handshakeHelloToArrayBuffer(serverHelloMessage, (n) => this.b64ToArrayBuffer(n)),
+      this.handshakeHelloToArrayBuffer(clientHelloMessage, (n) => n.toByteArray()),
     ]);
     // TODO remove console.log(dataToSign);
+    const sig = new rs.Signature({alg: "SHA1withRSA"});
+    const rsa = new rs.RSAKey();
+    rsa.setPrivate(privateCert.modulus.toString(16), publicCert.exponent.toString(16), privateCert.exponent.toString(16));
+    sig.setAlgAndProvider("SHA1withRSA", "cryptojs/jsrsa");
+    sig.init(rsa);
+    sig.updateHex(Buffer.from(dataToSign).toString("hex"));
+    const signedHex = sig.sign();
+    const signedB64 = new Buffer(signedHex, "hex").toString("base64");
     clientHelloMessage.certificate = clientIdentity.getClientPublicBase64();
-    this.sendMessage({messageType: "AUTHENTICATION_DATA", data: {clientHello: clientHelloMessage, signature: ""}});
+    // TODO remove console.log(signedB64);
+    // TODO change this.processMessage = (messageData: ActionResult) => console.log(messageData);
+    this.sendMessage({messageType: "AUTHENTICATION_DATA", data: {clientHello: clientHelloMessage, signature: signedB64}});
   }
 
-  private handshakeHelloToArrayBuffer(input: HandshakeHello): ArrayBuffer {
+  private handshakeHelloToArrayBuffer(input: HandshakeHello, numberConvert: (n: any) => any): ArrayBuffer {
     return this.concatArrayBuffers([
       this.b64ToArrayBuffer(input.random),
-      this.publicCertToArrayBuffer(input.certificate),
+      this.str2ab(input.certificate.id),
+      numberConvert(input.certificate.modulus),
+      numberConvert(input.certificate.exponent),
+      numberConvert(input.certificate.signature),
       this.b64ToArrayBuffer(input.timestamp),
     ]);
   }
 
-  private publicCertToArrayBuffer(input: PublicIdentityCertificate): ArrayBuffer {
-    return this.concatArrayBuffers([
-      this.str2ab(input.id),
-      input.modulus.toByteArray(),
-      input.exponent.toByteArray(),
-      input.signature.toByteArray(),
-    ]);
-  }
-
   private str2ab(str: string): ArrayBuffer {
-    const buf = new ArrayBuffer(str.length * 2); // 2 bytes for each char
-    const bufView = new Uint16Array(buf);
+    const buf = new ArrayBuffer(str.length); // 1 byte for each char
+    const bufView = new Uint8Array(buf);
     for (let i = 0, strLen = str.length; i < strLen; i++) {
       bufView[i] = str.charCodeAt(i);
     }
@@ -118,7 +126,7 @@ export class AuthenticationManager {
         bytes[i] = binaryString.charCodeAt(i);
     }
     return bytes.buffer;
-}
+  }
 
   private concatArrayBuffers(parts: any): Uint8Array {
     let len = 0;
