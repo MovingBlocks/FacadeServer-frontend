@@ -16,6 +16,7 @@ import {HomeTabView} from "./tabs/home/HomeTabView";
 interface AppState {
   activeTab?: number;
   serverAddr?: string;
+  authenticated?: boolean;
 }
 
 class App extends RX.Component<{}, AppState> {
@@ -38,6 +39,9 @@ class App extends RX.Component<{}, AppState> {
   }
 
   public render() {
+    const authUI = this.state.authenticated ?
+      <RX.Text>Authenticated</RX.Text> :
+      <RX.Button style={Styles.okButton} onPress={this.showLoginDialog}>Login</RX.Button>;
     const tabSwitchButtons = this.tabs.map((item, index) => (
       <RX.Button key={index} style={[Styles.greyBorder, Styles.box]} onPress={() => this.changeTab(index)}>
         {item.getName()}
@@ -49,7 +53,7 @@ class App extends RX.Component<{}, AppState> {
           <RX.Text style={Styles.headerText}>Terasology Server web interface</RX.Text>
           <RX.View>
             <RX.Text>Server: {this.state.serverAddr}</RX.Text>
-            <RX.Button style={Styles.okButton} onPress={this.showLoginDialog}>Login</RX.Button>
+            {authUI}
           </RX.View>
         </RX.View>
         <RX.View style={Styles.contentView}>
@@ -83,7 +87,10 @@ class App extends RX.Component<{}, AppState> {
   }
 
   private showLoginDialog = () => {
-    const onClose = () => RX.Modal.dismiss("AuthenticationDialog");
+    const onClose = () => {
+      this.setState({authenticated: this.authenticationManager.isAuthenticated()});
+      RX.Modal.dismiss("AuthenticationDialog");
+    };
     RX.Modal.show(<AuthenticationDialog manager={this.authenticationManager} closeCallback={onClose} />, "AuthenticationDialog");
   }
 

@@ -1,5 +1,6 @@
 import RX = require("reactxp");
 import Styles = require("../Styles");
+import {AlertDialog} from "../AlertDialog";
 import {AuthenticationManager} from "./AuthenticationManager";
 
 interface AuthenticationDialogProps {
@@ -39,6 +40,12 @@ export class AuthenticationDialog extends RX.Component<AuthenticationDialogProps
 
   private loginClicked = () => {
     this.setState({isWorking: true});
+    this.props.manager.setCallback((error: string) => {
+      if (error !== null) {
+        AlertDialog.show("Authentication failed: " + error);
+      }
+      this.props.closeCallback();
+    });
     this.props.manager.authenticateFromConfig(this.state.config);
   }
 
