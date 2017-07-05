@@ -5,3 +5,15 @@ node_js:
 script:
   - npm run web
   - npm run tslint
+before_deploy:
+  - mkdir filesToDeploy
+  - mkdir filesToDeploy/dist
+  - cp index.html filesToDeploy/index.html
+  - cp dist/bundle.js filesToDeploy/dist/bundle.js
+deploy:
+  provider: pages
+  skip_cleanup: true
+  local_dir: filesToDeploy
+  github_token: $DEPLOY_TOKEN
+  on:
+    branch: master
