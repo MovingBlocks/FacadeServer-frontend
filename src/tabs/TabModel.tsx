@@ -1,17 +1,30 @@
 import {IncomingMessage} from "../io/IncomingMessage";
+import {OutgoingMessage} from "../io/OutgoingMessage";
+import {TabController} from "./TabController";
 
 export abstract class TabModel<StateType> {
 
   // TODO: data must not be any but OutgoingMessage
-  private updateView: (viewState: StateType) => void;
+  public  sendData: (data: OutgoingMessage) => void;
   private state: StateType = this.getDefaultState();
+  private updateView: (viewState: StateType) => void;
+  private controller: TabController<StateType>;
 
   public abstract getName(): string;
   public abstract getDefaultState(): StateType;
+  public abstract initController(): TabController<StateType>;
   public abstract onMessage(message: IncomingMessage): void;
 
   public initialize(): void {
-    // does nothing by default, but can be overridden in subclasses
+    // TODO: set sendData to function notifying connection isn't ready
+    this.controller = this.initController();
+    if (this.controller !== null) {
+      this.controller.setModel(this);
+    }
+  }
+
+  public getController(): TabController<StateType> {
+    return this.controller;
   }
 
   public getState(): StateType {
@@ -23,14 +36,18 @@ export abstract class TabModel<StateType> {
     this.updateView(this.state);
   }
 
-  public setSendDataCallback(callback: (data: any) => void) {
+  public setSendDataCallback(callback: (data: OutgoingMessage) => void) {
     this.sendData = callback;
   }
 
-  protected sendData: (data: any) => void = () => {/*TODO: notify that connection isn't ready*/};
-
-  protected update(state: StateType) {
-    this.state = state;
+  public update(state: StateType) {
+    // merge the old state with the new onlinePlayers
+    for (const fieldName in state) {
+      if (state.hasOwnProperty(fieldName)) {
+        this.state[fieldName] = state[fieldName];
+      }
+    }
     this.updateView(state);
   }
+
 }

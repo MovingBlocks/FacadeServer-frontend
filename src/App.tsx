@@ -5,6 +5,7 @@ import Styles = require("./Styles");
 import {AuthenticationDialog} from "./authentication/AuthenticationDialog";
 import {AuthenticationManager} from "./authentication/AuthenticationManager";
 import {IncomingMessage} from "./io/IncomingMessage";
+import {OutgoingMessage} from "./io/OutgoingMessage";
 import {ServerAddressInput} from "./ServerAddressInput";
 import {TabModel} from "./tabs/TabModel";
 
@@ -68,7 +69,7 @@ class App extends RX.Component<{}, AppState> {
     );
   }
 
-  private sendJsonData = (data: any) => { // TODO: replace any with OutgoingMessage
+  private sendJsonData = (data: OutgoingMessage) => { // TODO: replace any with OutgoingMessage
     this.wsConn.send(JSON.stringify(data));
   }
 

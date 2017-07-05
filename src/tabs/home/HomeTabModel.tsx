@@ -1,4 +1,5 @@
 import {ResourceSubscriberTabModel} from "../ResourceSubscriberTabModel";
+import {TabController} from "../TabController";
 import {TabModel} from "../TabModel";
 import {HomeTabState} from "./HomeTabState";
 
@@ -14,6 +15,10 @@ export class HomeTabModel extends ResourceSubscriberTabModel<HomeTabState> {
 
   public getDefaultState(): HomeTabState {
     return {onlinePlayers: []};
+  }
+
+  public initController(): TabController<null> {
+    return null;
   }
 
   public onResourceUpdated(resourceName: string, data: any): void {

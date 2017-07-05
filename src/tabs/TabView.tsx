@@ -1,9 +1,13 @@
 import RX = require("reactxp");
 import {TabModel} from "./TabModel";
 
-export abstract class TabView<StateType> extends RX.Component<{model: TabModel<StateType>}, StateType> {
+interface TabViewProps<StateType> {
+  model: TabModel<StateType>;
+}
 
-  constructor(props: {model: TabModel<StateType>}) {
+export abstract class TabView<StateType> extends RX.Component<TabViewProps<StateType>, StateType> {
+
+  constructor(props: TabViewProps<StateType>) {
       super(props);
       this.state = props.model.getState();
   }
