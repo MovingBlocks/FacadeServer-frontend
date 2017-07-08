@@ -1,7 +1,7 @@
 import {ResourceSubscriberTabModel} from "../ResourceSubscriberTabModel";
 import {TabController} from "../TabController";
 import {TabModel} from "../TabModel";
-import {HomeTabState} from "./HomeTabState";
+import {EngineStateMetadata, HomeTabState} from "./HomeTabState";
 
 export class HomeTabModel extends ResourceSubscriberTabModel<HomeTabState> {
 
@@ -10,11 +10,11 @@ export class HomeTabModel extends ResourceSubscriberTabModel<HomeTabState> {
   }
 
   public getSubscribedResourceNames(): string[] {
-    return ["onlinePlayers"];
+    return ["onlinePlayers", "engineState"];
   }
 
   public getDefaultState(): HomeTabState {
-    return {onlinePlayers: []};
+    return {onlinePlayers: [], engineState: {state: "UNKNOWN"}};
   }
 
   public initController(): TabController<null> {
@@ -24,6 +24,8 @@ export class HomeTabModel extends ResourceSubscriberTabModel<HomeTabState> {
   public onResourceUpdated(resourceName: string, data: any): void {
     if (resourceName === "onlinePlayers") {
       this.update({onlinePlayers: data as string[]});
+    } else if (resourceName === "engineState") {
+      this.update({engineState: data as EngineStateMetadata});
     }
   }
 
