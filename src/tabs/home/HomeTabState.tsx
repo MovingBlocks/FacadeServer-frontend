@@ -1,13 +1,4 @@
-export type EngineStateEnum =
-  "IDLE" |
-  "LOADING" |
-  "RUNNING" |
-  "UNKNOWN";
-
-export interface EngineStateMetadata {
-  state: EngineStateEnum;
-  gameName?: string;
-}
+import {EngineStateMetadata} from "../../io/EngineStateMetadata";
 
 export interface HomeTabState {
   onlinePlayers?: string[];

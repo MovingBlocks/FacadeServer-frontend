@@ -1,16 +1,14 @@
 import RX = require("reactxp");
 import {EngineStateMetadata, EngineStateMetadataRenderer} from "../../io/EngineStateMetadata";
 import {TabView} from "../TabView";
-import {HomeTabState} from "./HomeTabState";
+import {GamesTabState} from "./GamesTabState";
 
-export class HomeTabView extends TabView<HomeTabState> {
+export class GamesTabView extends TabView<GamesTabState> {
 
   public render() {
     return (
       <RX.View>
         <RX.Text>Server status: {EngineStateMetadataRenderer.render(this.state.engineState)}</RX.Text>
-        <RX.Text>There are currently {this.state.onlinePlayers.length} players online on this server:</RX.Text>
-        {this.state.onlinePlayers.map((playerName) => <RX.Text key={playerName}>{playerName}</RX.Text>)}
       </RX.View>
     );
   }

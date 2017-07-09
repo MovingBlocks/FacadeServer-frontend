@@ -11,6 +11,8 @@ import {TabModel} from "./tabs/TabModel";
 
 import {ConsoleTabModel} from "./tabs/console/ConsoleTabModel";
 import {ConsoleTabView} from "./tabs/console/ConsoleTabView";
+import {GamesTabModel} from "./tabs/games/GamesTabModel";
+import {GamesTabView} from "./tabs/games/GamesTabView";
 import {HomeTabModel} from "./tabs/home/HomeTabModel";
 import {HomeTabView} from "./tabs/home/HomeTabView";
 
@@ -24,10 +26,15 @@ class App extends RX.Component<{}, AppState> {
 
   private wsConn: WebSocket;
   private authenticationManager: AuthenticationManager;
-  private tabs: Array<TabModel<any>> = [new HomeTabModel(), new ConsoleTabModel()];
+  private tabs: Array<TabModel<any>> = [
+    new HomeTabModel(),
+    new ConsoleTabModel(),
+    new GamesTabModel(),
+  ];
   private tabViews = [
     <HomeTabView model={this.tabs[0]} />,
     <ConsoleTabView model={this.tabs[1]} />,
+    <GamesTabView model={this.tabs[2]}/>,
   ];
 
   constructor(props: {}) {

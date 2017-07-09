@@ -1,6 +1,8 @@
 # FacadeServer-frontend [![Build Status](https://travis-ci.org/gianluca-nitti/FacadeServer-frontend.svg?branch=master)](https://travis-ci.org/gianluca-nitti/FacadeServer-frontend)
 This repository contains a web and mobile front-end to [Terasology's FacadeServer](https://github.com/MovingBlocks/FacadeServer), based on the [ReactXP](https://github.com/Microsoft/reactxp) framework. The initial code structure was imported from the [ReactXP hello-world example](https://github.com/Microsoft/reactxp/tree/master/samples/hello-world).
 
+The latest successful build is automatically pushed to Github Pages, so that you can try it here: https://gianluca-nitti.github.io/FacadeServer-frontend/
+
 ## How to build
 At the moment, the Web (browser-based) environment is the main target, but the ReactXP framework has been chosen to allow to make both web and mobile (Android/iOS) builds from the same codebase.
 

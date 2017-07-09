@@ -1,7 +1,8 @@
+import {EngineStateMetadata} from "../../io/EngineStateMetadata";
 import {ResourceSubscriberTabModel} from "../ResourceSubscriberTabModel";
 import {TabController} from "../TabController";
 import {TabModel} from "../TabModel";
-import {EngineStateMetadata, HomeTabState} from "./HomeTabState";
+import {HomeTabState} from "./HomeTabState";
 
 export class HomeTabModel extends ResourceSubscriberTabModel<HomeTabState> {
 

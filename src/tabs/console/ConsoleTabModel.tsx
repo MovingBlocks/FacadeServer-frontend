@@ -10,9 +10,9 @@ export class ConsoleTabModel extends TabModel<ConsoleTabState> {
     return "Console";
   }
 
-  public getObservedResources(): string[] {
+  /*public getObservedResources(): string[] { // TODO remove, probably never called
     return ["console"];
-  }
+  }*/
 
   public getDefaultState(): ConsoleTabState {
     return {messages: [], commandToSend: "Type a command here..."};
