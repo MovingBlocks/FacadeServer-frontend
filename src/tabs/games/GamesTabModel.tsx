@@ -2,7 +2,7 @@ import {EngineStateMetadata} from "../../io/EngineStateMetadata";
 import {IncomingMessage} from "../../io/IncomingMessage";
 import {ResourceSubscriberTabModel} from "../ResourceSubscriberTabModel";
 import {TabController} from "../TabController";
-import {GamesTabState} from "./GamesTabState";
+import {GameInfo, GamesTabState} from "./GamesTabState";
 
 export class GamesTabModel extends ResourceSubscriberTabModel<GamesTabState> {
 
@@ -25,6 +25,8 @@ export class GamesTabModel extends ResourceSubscriberTabModel<GamesTabState> {
   public onResourceUpdated(resourceName: string, data: any): void {
     if (resourceName === "engineState") {
       this.update({engineState: data as EngineStateMetadata});
+    } else if (resourceName === "games") {
+      this.update({games: data as GameInfo[]});
     }
   }
 
