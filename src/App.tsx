@@ -2,8 +2,10 @@
 
 import RX = require("reactxp");
 import Styles = require("./Styles");
+import {AlertDialog} from "./AlertDialog";
 import {AuthenticationDialog} from "./authentication/AuthenticationDialog";
 import {AuthenticationManager} from "./authentication/AuthenticationManager";
+import {ActionResult} from "./io/ActionResult";
 import {IncomingMessage} from "./io/IncomingMessage";
 import {OutgoingMessage} from "./io/OutgoingMessage";
 import {ServerAddressInput} from "./ServerAddressInput";
@@ -104,9 +106,18 @@ class App extends RX.Component<{}, AppState> {
 
   private onMessage = (event: MessageEvent) => {
     const message: IncomingMessage = JSON.parse(event.data) as IncomingMessage;
-    this.authenticationManager.onMessage(message);
+    if (!this.authenticationManager.isAuthenticated()) {
+      this.authenticationManager.onMessage(message);
+    }
     this.tabs.forEach((tab: TabModel<any>) => {
       tab.onMessage(message);
+      if (message.messageType === "ACTION_RESULT") {
+        const innerMessage: ActionResult = message.data as ActionResult;
+        if (innerMessage.status !== "OK") {
+          AlertDialog.show("An error occurred. Status: " + innerMessage.status + ", Message: " + innerMessage.message);
+        }
+      }
+      // console.log(JSON.stringify(message)); // for debugging
     });
   }
 

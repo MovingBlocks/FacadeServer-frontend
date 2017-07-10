@@ -6,7 +6,8 @@
     "jsRules": {},
     "rules": {
       "interface-name": [true, "never-prefix"],
-      "max-line-length": [true, 140]
+      "max-line-length": [true, 140],
+      "jsx-no-lambda": false
     },
     "rulesDirectory": []
 }

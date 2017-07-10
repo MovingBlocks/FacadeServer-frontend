@@ -2,6 +2,7 @@ import {EngineStateMetadata} from "../../io/EngineStateMetadata";
 import {IncomingMessage} from "../../io/IncomingMessage";
 import {ResourceSubscriberTabModel} from "../ResourceSubscriberTabModel";
 import {TabController} from "../TabController";
+import {GamesTabController} from "./GamesTabController";
 import {GameInfo, GamesTabState} from "./GamesTabState";
 
 export class GamesTabModel extends ResourceSubscriberTabModel<GamesTabState> {
@@ -19,7 +20,7 @@ export class GamesTabModel extends ResourceSubscriberTabModel<GamesTabState> {
   }
 
   public initController(): TabController<GamesTabState> {
-    return null;
+    return new GamesTabController();
   }
 
   public onResourceUpdated(resourceName: string, data: any): void {

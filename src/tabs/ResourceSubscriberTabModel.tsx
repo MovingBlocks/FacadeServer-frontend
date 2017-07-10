@@ -12,9 +12,9 @@ export abstract class ResourceSubscriberTabModel<StateType> extends TabModel<Sta
     if (this.isSubscribedToResource(message.resourceName)) {
       if (message.messageType === "RESOURCE_CHANGED") {
         this.onResourceUpdated(message.resourceName, message.data);
-      } else if (message.messageType === "ACTION_RESULT") {
+      } else if (message.messageType === "ACTION_RESULT" && message.data) {
         const actionResult: ActionResult = message.data as ActionResult;
-        if (actionResult.status === "OK") {
+        if (actionResult.status === "OK" && actionResult.data) {
           this.onResourceUpdated(message.resourceName, actionResult.data);
         }
       }
