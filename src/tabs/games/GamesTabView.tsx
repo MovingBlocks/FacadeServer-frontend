@@ -32,13 +32,17 @@ export class GamesTabView extends TabView<GamesTabState> {
     };
     const stopButton = <RX.Button style={[Styles.box, Styles.greyBorder, Styles.cancelButton]} onPress={() => controller.stopGame()}>Stop</RX.Button>;
     const startButton = <RX.Button style={[Styles.box, Styles.greyBorder, Styles.okButton]} onPress={() => controller.startGame(game.manifest.title)}>Start</RX.Button>;
-    const button = game.manifest.title === engineState.gameName ? stopButton : startButton;
+    const startStopButton = game.manifest.title === engineState.gameName ? stopButton : startButton;
     return (
       <RX.View key={gameIndex} style={[Styles.box, Styles.greyBorder]}>
         <RX.Text>{game.manifest.title} - {game.timestamp}</RX.Text>
         <RX.Text>Time: {game.manifest.time} - Seed: {game.manifest.seed}</RX.Text>
         <RX.Text>Modules: {game.manifest.modules.map(renderModule)}</RX.Text>
-        {button}
+        <RX.View style={Styles.consoleInputView/*TODO fix styles*/}>
+          {startStopButton}
+          <RX.Button style={[Styles.box, Styles.greyBorder, Styles.okButton]} onPress={() => controller.backupGame(game.manifest.title)}>Backup</RX.Button>
+          <RX.Button style={[Styles.box, Styles.greyBorder, Styles.okButton]} onPress={() => controller.deleteGame(game.manifest.title)}>Delete</RX.Button>
+        </RX.View>
       </RX.View>
     );
   }

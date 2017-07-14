@@ -11,6 +11,15 @@ export class GamesTabController extends TabController<GamesTabState> {
     this.setRunningGame("");
   }
 
+  public backupGame = (gameName: string) => {
+    this.performGameAction(gameName, "Backup");
+  }
+
+  public deleteGame = (gameName: string) => {
+    // TODO ask confirmation (here, in view or in model?)
+    this.performGameAction(gameName, "Delete");
+  }
+
   private setRunningGame(gameName: string) {
     this.model.sendData({
       data: {
@@ -22,4 +31,22 @@ export class GamesTabController extends TabController<GamesTabState> {
       messageType: "RESOURCE_REQUEST",
     });
   }
+
+  private performGameAction(gameName: string, action: string) {
+    this.model.sendData({
+      data: {
+        // TODO: build interface for resource request
+        action: "WRITE",
+        data: {
+          data: {
+            gameName,
+          },
+          type: action,
+        },
+        resourceName: "games",
+      },
+      messageType: "RESOURCE_REQUEST",
+    });
+  }
+
 }
