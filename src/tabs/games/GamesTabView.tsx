@@ -6,14 +6,17 @@ import {EngineStateMetadata, EngineStateMetadataRenderer} from "../../io/EngineS
 import {TabView} from "../TabView";
 import {GamesTabController} from "./GamesTabController";
 import {GameInfo, GamesTabState, NameVersion, Version} from "./GamesTabState";
+import {NewGameDialog} from "./NewGameDialog";
 
 export class GamesTabView extends TabView<GamesTabState> {
 
   public render() {
     const controller: GamesTabController = this.props.model.getController() as GamesTabController;
+    const showNewGameDialog = () => NewGameDialog.show(this.state.availableModules, controller.newGame);
     return (
       <RX.View>
         <RX.Text>Server status: {EngineStateMetadataRenderer.render(this.state.engineState)}</RX.Text>
+        <RX.Button style={[Styles.box, Styles.greyBorder, Styles.okButton]} onPress={showNewGameDialog}>New game</RX.Button>
         <RX.Text>Savegames on this server:</RX.Text>
         {this.state.games.map((game: GameInfo, i: number) => this.renderGameInfo(game, i, controller))}
       </RX.View>
@@ -25,7 +28,7 @@ export class GamesTabView extends TabView<GamesTabState> {
     const metaServerbase = "http://meta.terasology.org/modules/show/";
     const renderVersion = (v: Version) => v.major + "." + v.minor + "." + v.patch + (v.snapshot ? "-SNAPSHOT" : "");
     const renderModule = (module: NameVersion, modIndex: number) => {
-      const modName = module.name.originalName;
+      const modName = module.name;
       const modVer = renderVersion(module.version);
       const link = metaServerbase + modName + "/" + modVer;
       return <RX.Text key={modIndex}>{(modIndex !== 0 ? ", " : "")}<RX.Link url={link}>{modName + " " + modVer}</RX.Link></RX.Text>;

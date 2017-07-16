@@ -49,4 +49,8 @@ export = {
     backgroundColor: "lime",
     justifyContent: "center",
   }),
+  verticalScroll: RX.Styles.createScrollViewStyle({
+    height: 100,
+    width: 300,
+  }),
 };

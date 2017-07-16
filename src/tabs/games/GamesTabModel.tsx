@@ -1,5 +1,6 @@
 import {EngineStateMetadata} from "../../io/EngineStateMetadata";
 import {IncomingMessage} from "../../io/IncomingMessage";
+import {Module} from "../../modules/Module";
 import {ResourceSubscriberTabModel} from "../ResourceSubscriberTabModel";
 import {TabController} from "../TabController";
 import {GamesTabController} from "./GamesTabController";
@@ -12,7 +13,7 @@ export class GamesTabModel extends ResourceSubscriberTabModel<GamesTabState> {
   }
 
   public getSubscribedResourceNames(): string[] {
-    return ["games", "engineState"];
+    return ["games", "engineState", "availableModules"];
   }
 
   public getDefaultState(): GamesTabState {
@@ -28,6 +29,8 @@ export class GamesTabModel extends ResourceSubscriberTabModel<GamesTabState> {
       this.update({engineState: data as EngineStateMetadata});
     } else if (resourceName === "games") {
       this.update({games: data as GameInfo[]});
+    } else if (resourceName === "availableModules") {
+      this.update({availableModules: data as Module[]});
     }
   }
 
