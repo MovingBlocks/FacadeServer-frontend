@@ -31,7 +31,7 @@ export class NewGameDialog extends RX.Component<NewGameDialogProps, NewGameDialo
   public render() {
     const defaultSelection: number[] = this.findModuleIndexes(NewGameDialog.defaultModules);
     return (
-      <RX.View style={[Styles.box, Styles.greyBorder]}>
+      <RX.View style={[Styles.box, Styles.greyBorder, Styles.dialog]}>
         <RX.Text>Title:</RX.Text>
         <RX.TextInput
           style={[Styles.box, Styles.greyBorder]}

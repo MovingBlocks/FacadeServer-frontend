@@ -23,6 +23,9 @@ export = {
     flex: 1,
     flexDirection: "row",
   }),
+  dialog: RX.Styles.createViewStyle({
+    backgroundColor: "#ffffff",
+  }),
   flexColumn: RX.Styles.createViewStyle({
     flex: 1,
     flexDirection: "column",

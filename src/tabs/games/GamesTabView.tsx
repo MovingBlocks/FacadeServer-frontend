@@ -45,6 +45,7 @@ export class GamesTabView extends TabView<GamesTabState> {
           {startStopButton}
           <RX.Button style={[Styles.box, Styles.greyBorder, Styles.okButton]} onPress={() => controller.backupGame(game.manifest.title)}>Backup</RX.Button>
           <RX.Button style={[Styles.box, Styles.greyBorder, Styles.okButton]} onPress={() => controller.deleteGame(game.manifest.title)}>Delete</RX.Button>
+          <RX.Button style={[Styles.box, Styles.greyBorder, Styles.okButton]} onPress={() => controller.renameGame(game.manifest.title)}>Rename</RX.Button>
         </RX.View>
       </RX.View>
     );

@@ -6,7 +6,6 @@ import {AuthenticationManager} from "./AuthenticationManager";
 interface AuthenticationDialogProps {
   closeCallback: () => void;
   manager: AuthenticationManager;
-
 }
 
 interface AuthenticationDialogStatus {
