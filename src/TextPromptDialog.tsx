@@ -22,7 +22,7 @@ export class TextPromptDialog extends RX.Component<TextPromptDialogProps, {value
       <RX.View style={[Styles.box, Styles.greyBorder, Styles.dialog]}>
         <RX.Text>{this.props.promptText}</RX.Text>
         <RX.TextInput style={[Styles.box, Styles.greyBorder]} value={this.state.value} onChangeText={this.onChange} multiline={false} />
-        <RX.View style={Styles.consoleInputView/*TODO fix styles*/}>
+        <RX.View style={Styles.flexRow/**/}>
           <RX.Button onPress={this.okClicked} style={[Styles.box, Styles.greyBorder, Styles.okButton]}>OK</RX.Button>
           <RX.Button onPress={this.cancelClicked} style={[Styles.box, Styles.greyBorder, Styles.cancelButton]}>Cancel</RX.Button>
         </RX.View>

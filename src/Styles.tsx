@@ -13,25 +13,19 @@ export = {
   commandTextInput: RX.Styles.createTextInputStyle({
     flex: 5,
   }),
-  consoleInputView: RX.Styles.createViewStyle({
-    flexDirection: "row",
-  }),
   consoleRoot: RX.Styles.createViewStyle({
     justifyContent: "flex-end",
-  }),
-  contentView: RX.Styles.createViewStyle({
-    flex: 1,
-    flexDirection: "row",
   }),
   dialog: RX.Styles.createViewStyle({
     backgroundColor: "#ffffff",
   }),
   flexColumn: RX.Styles.createViewStyle({
-    flex: 1,
     flexDirection: "column",
   }),
-  flexRow: RX.Styles.createViewStyle({
+  flexFill: RX.Styles.createViewStyle({
     flex: 1,
+  }),
+  flexRow: RX.Styles.createViewStyle({
     flexDirection: "row",
   }),
   greyBorder: RX.Styles.createViewStyle({

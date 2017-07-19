@@ -58,7 +58,7 @@ class App extends RX.Component<{}, AppState> {
       </RX.Button>
     ));
     return (
-      <RX.View style={Styles.flexColumn}>
+      <RX.View style={[Styles.flexColumn, Styles.flexFill]}>
         <RX.View style={[Styles.box, Styles.headerView]}>
           <RX.Text style={Styles.headerText}>Terasology Server web interface</RX.Text>
           <RX.View>
@@ -66,11 +66,11 @@ class App extends RX.Component<{}, AppState> {
             {authUI}
           </RX.View>
         </RX.View>
-        <RX.View style={Styles.contentView}>
+        <RX.View style={[Styles.flexRow, Styles.flexFill]}>
           <RX.View style={[Styles.box, Styles.greyBorder]}>
             {tabSwitchButtons}
           </RX.View>
-          <RX.View style={[Styles.box, Styles.greyBorder, Styles.flexColumn]}>
+          <RX.View style={[Styles.box, Styles.greyBorder, Styles.flexColumn, Styles.flexFill]}>
             {this.tabViews[this.state.activeTab]}
           </RX.View>
         </RX.View>

@@ -52,7 +52,7 @@ export class NewGameDialog extends RX.Component<NewGameDialogProps, NewGameDialo
           style={[Styles.box, Styles.greyBorder]}
           value={this.state.worldGenerator}
           onChangeText={(s) => this.setState({worldGenerator: s})}/>
-        <RX.View style={Styles.consoleInputView/*TODO fix styles*/}>
+        <RX.View style={Styles.flexRow/**/}>
           <RX.Button onPress={() => this.okClicked()} style={[Styles.box, Styles.greyBorder, Styles.okButton]}>OK</RX.Button>
           <RX.Button onPress={() => this.cancelClicked()} style={[Styles.box, Styles.greyBorder, Styles.cancelButton]}>Cancel</RX.Button>
         </RX.View>

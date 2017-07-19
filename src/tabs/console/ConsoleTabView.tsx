@@ -1,4 +1,3 @@
-/* tslint:disable:max-line-length */ // TODO remove when styles are fixed
 /* tslint:disable:prefer-for-of */
 /* tslint:disable:no-bitwise */
 
@@ -23,12 +22,15 @@ export class ConsoleTabView extends TabView<ConsoleTabState> {
   public render() {
     const controller: ConsoleTabController = this.props.model.getController() as ConsoleTabController;
     return (
-      <RX.View style={[Styles.flexColumn, Styles.consoleRoot]}>
+      <RX.View style={[Styles.flexColumn, Styles.flexFill, Styles.consoleRoot]}>
         <RX.View>
           {this.state.messages.map((msg, index) => <RX.Text key={index}>[{msg.type}] {this.renderMessage(msg.message)}</RX.Text>)}
         </RX.View>
-        <RX.View style={Styles.consoleInputView}>
-          <RX.TextInput style={[Styles.box, Styles.greyBorder, Styles.commandTextInput]} value={this.state.commandToSend} onChangeText={this.onChangeValue} />
+        <RX.View style={Styles.flexRow}>
+          <RX.TextInput
+            style={[Styles.box, Styles.greyBorder, Styles.commandTextInput]}
+            value={this.state.commandToSend}
+            onChangeText={this.onChangeValue} />
           <RX.Button style={[Styles.box, Styles.greyBorder]} onPress={controller.execute}>Execute</RX.Button>
         </RX.View>
       </RX.View>

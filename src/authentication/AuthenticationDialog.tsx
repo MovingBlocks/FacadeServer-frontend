@@ -25,7 +25,7 @@ export class AuthenticationDialog extends RX.Component<AuthenticationDialogProps
       <RX.View style={[Styles.box, Styles.greyBorder]}>
         <RX.Text>To authenticate, paste the contents of your game client's configuration file here:</RX.Text>
         <RX.TextInput style={[Styles.box, Styles.greyBorder]} value={this.state.config} onChangeText={this.onChange} multiline={true} />
-        <RX.View style={Styles.consoleInputView/*TODO fix styles*/}>
+        <RX.View style={Styles.flexRow}>
           <RX.Button onPress={this.loginClicked} style={[Styles.box, Styles.greyBorder, Styles.okButton]}>Login</RX.Button>
           <RX.Button onPress={this.cancelClicked} style={[Styles.box, Styles.greyBorder, Styles.cancelButton]}>Cancel</RX.Button>
         </RX.View>
