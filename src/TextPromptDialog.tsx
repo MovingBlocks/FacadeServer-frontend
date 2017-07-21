@@ -1,5 +1,5 @@
 import RX = require("reactxp");
-import Styles = require("./Styles");
+import Styles = require("./styles/main");
 
 interface TextPromptDialogProps {
   promptText: string;
@@ -19,12 +19,12 @@ export class TextPromptDialog extends RX.Component<TextPromptDialogProps, {value
 
   public render() {
     return (
-      <RX.View style={[Styles.box, Styles.greyBorder, Styles.dialog]}>
+      <RX.View style={Styles.whiteBox}>
         <RX.Text>{this.props.promptText}</RX.Text>
-        <RX.TextInput style={[Styles.box, Styles.greyBorder]} value={this.state.value} onChangeText={this.onChange} multiline={false} />
-        <RX.View style={Styles.flexRow/**/}>
-          <RX.Button onPress={this.okClicked} style={[Styles.box, Styles.greyBorder, Styles.okButton]}>OK</RX.Button>
-          <RX.Button onPress={this.cancelClicked} style={[Styles.box, Styles.greyBorder, Styles.cancelButton]}>Cancel</RX.Button>
+        <RX.TextInput style={Styles.whiteBox} value={this.state.value} onChangeText={this.onChange} multiline={false} />
+        <RX.View style={Styles.flex.row}>
+          <RX.Button onPress={this.okClicked} style={Styles.okButton}>OK</RX.Button>
+          <RX.Button onPress={this.cancelClicked} style={Styles.cancelButton}>Cancel</RX.Button>
         </RX.View>
       </RX.View>
     );

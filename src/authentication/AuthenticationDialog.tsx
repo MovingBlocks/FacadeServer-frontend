@@ -1,5 +1,5 @@
 import RX = require("reactxp");
-import Styles = require("../Styles");
+import Styles = require("../styles/main");
 import {AlertDialog} from "../AlertDialog";
 import {AuthenticationManager} from "./AuthenticationManager";
 
@@ -22,12 +22,12 @@ export class AuthenticationDialog extends RX.Component<AuthenticationDialogProps
 
   public render() {
     return (
-      <RX.View style={[Styles.box, Styles.greyBorder]}>
+      <RX.View style={Styles.whiteBox}>
         <RX.Text>To authenticate, paste the contents of your game client's configuration file here:</RX.Text>
-        <RX.TextInput style={[Styles.box, Styles.greyBorder]} value={this.state.config} onChangeText={this.onChange} multiline={true} />
-        <RX.View style={Styles.flexRow}>
-          <RX.Button onPress={this.loginClicked} style={[Styles.box, Styles.greyBorder, Styles.okButton]}>Login</RX.Button>
-          <RX.Button onPress={this.cancelClicked} style={[Styles.box, Styles.greyBorder, Styles.cancelButton]}>Cancel</RX.Button>
+        <RX.TextInput style={Styles.whiteBox} value={this.state.config} onChangeText={this.onChange} multiline={true} />
+        <RX.View style={Styles.flex.row}>
+          <RX.Button onPress={this.loginClicked} style={Styles.okButton}>Login</RX.Button>
+          <RX.Button onPress={this.cancelClicked} style={Styles.cancelButton}>Cancel</RX.Button>
         </RX.View>
       </RX.View>
     );

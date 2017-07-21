@@ -1,5 +1,5 @@
 import RX = require("reactxp");
-import Styles = require("../../Styles");
+import Styles = require("../../styles/main");
 import {Module} from "../../modules/Module";
 import {ModuleSelector} from "../../modules/ModuleSelector";
 
@@ -31,30 +31,21 @@ export class NewGameDialog extends RX.Component<NewGameDialogProps, NewGameDialo
   public render() {
     const defaultSelection: number[] = this.findModuleIndexes(NewGameDialog.defaultModules);
     return (
-      <RX.View style={[Styles.box, Styles.greyBorder, Styles.dialog]}>
+      <RX.View style={Styles.whiteBox}>
         <RX.Text>Title:</RX.Text>
-        <RX.TextInput
-          style={[Styles.box, Styles.greyBorder]}
-          value={this.state.gameName}
-          onChangeText={(s) => this.setState({gameName: s})}/>
+        <RX.TextInput style={Styles.whiteBox} value={this.state.gameName} onChangeText={(s) => this.setState({gameName: s})}/>
         <RX.Text>Seed:</RX.Text>
-        <RX.TextInput
-          style={[Styles.box, Styles.greyBorder]}
-          value={this.state.seed}
-          onChangeText={(s) => this.setState({seed: s})}/>
+        <RX.TextInput style={Styles.whiteBox} value={this.state.seed} onChangeText={(s) => this.setState({seed: s})}/>
         <RX.Text>Modules:</RX.Text>
         <ModuleSelector
           onSelectionChange={this.onModuleSelectionChanged}
           availableModules={this.props.availableModules}
           defaultEnabledModules={defaultSelection} />
         <RX.Text>World generator URI:</RX.Text>
-        <RX.TextInput
-          style={[Styles.box, Styles.greyBorder]}
-          value={this.state.worldGenerator}
-          onChangeText={(s) => this.setState({worldGenerator: s})}/>
-        <RX.View style={Styles.flexRow/**/}>
-          <RX.Button onPress={() => this.okClicked()} style={[Styles.box, Styles.greyBorder, Styles.okButton]}>OK</RX.Button>
-          <RX.Button onPress={() => this.cancelClicked()} style={[Styles.box, Styles.greyBorder, Styles.cancelButton]}>Cancel</RX.Button>
+        <RX.TextInput style={Styles.whiteBox} value={this.state.worldGenerator} onChangeText={(s) => this.setState({worldGenerator: s})}/>
+        <RX.View style={Styles.flex.row}>
+          <RX.Button onPress={() => this.okClicked()} style={Styles.okButton}>OK</RX.Button>
+          <RX.Button onPress={() => this.cancelClicked()} style={Styles.cancelButton}>Cancel</RX.Button>
         </RX.View>
       </RX.View>
     );

@@ -1,5 +1,5 @@
 import RX = require("reactxp");
-import Styles = require("./Styles");
+import Styles = require("./styles/main");
 
 interface ServerAddressInputProps {
   callback: (value: string) => void;
@@ -14,10 +14,10 @@ export class ServerAddressInput extends RX.Component<ServerAddressInputProps, {v
 
   public render() {
     return (
-      <RX.View style={[Styles.box, Styles.greyBorder]}>
+      <RX.View style={Styles.whiteBox}>
         <RX.Text>Server WebSocket address:</RX.Text>
-        <RX.TextInput style={[Styles.box, Styles.greyBorder]} value={this.state.value} onChangeText={this.onChangeValue} />
-        <RX.Button onPress={this.onButtonClick} style={[Styles.box, Styles.greyBorder, Styles.okButton]}>Click to connect</RX.Button>
+        <RX.TextInput style={Styles.whiteBox} value={this.state.value} onChangeText={this.onChangeValue} />
+        <RX.Button onPress={this.onButtonClick} style={Styles.okButton}>Click to connect</RX.Button>
       </RX.View>
     );
   }

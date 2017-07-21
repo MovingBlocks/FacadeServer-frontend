@@ -1,5 +1,5 @@
 import RX = require("reactxp");
-import Styles = require("../Styles");
+import Styles = require("../styles/main");
 import {Module} from "./Module";
 
 interface ModuleSelectorProps {
@@ -25,16 +25,16 @@ export class ModuleSelector extends RX.Component<ModuleSelectorProps, ModuleSele
 
   public render() {
     return (
-      <RX.View style={Styles.flexRow}>
+      <RX.View style={Styles.flex.row}>
         <RX.View>
           <RX.Text>Enabled (click to disable)</RX.Text>
-          <RX.ScrollView style={[Styles.box, Styles.greyBorder, Styles.verticalScroll]}>
+          <RX.ScrollView style={[Styles.whiteBox, Styles.verticalScroll]}>
             {this.state.enabledModules.map((i, localIndex) => this.renderModule(this.props.availableModules[i], this.remove(localIndex)))}
           </RX.ScrollView>
         </RX.View>
         <RX.View>
           <RX.Text>All (click to enable)</RX.Text>
-          <RX.ScrollView style={[Styles.box, Styles.greyBorder, Styles.verticalScroll]}>
+          <RX.ScrollView style={[Styles.whiteBox, Styles.verticalScroll]}>
             {this.props.availableModules.map((module, localIndex) => this.renderModule(module, this.add(localIndex)))}
           </RX.ScrollView>
         </RX.View>

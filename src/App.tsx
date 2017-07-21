@@ -1,7 +1,7 @@
 /* tslint:disable:jsx-no-lambda */
 
 import RX = require("reactxp");
-import Styles = require("./Styles");
+import Styles = require("./styles/main");
 import {AlertDialog} from "./AlertDialog";
 import {AuthenticationDialog} from "./authentication/AuthenticationDialog";
 import {AuthenticationManager} from "./authentication/AuthenticationManager";
@@ -53,24 +53,24 @@ class App extends RX.Component<{}, AppState> {
       <RX.Text>Authenticated</RX.Text> :
       <RX.Button style={Styles.okButton} onPress={this.showLoginDialog}>Login</RX.Button>;
     const tabSwitchButtons = this.tabs.map((item, index) => (
-      <RX.Button key={index} style={[Styles.greyBorder, Styles.box]} onPress={() => this.changeTab(index)}>
+      <RX.Button key={index} style={Styles.whiteBox} onPress={() => this.changeTab(index)}>
         {item.getName()}
       </RX.Button>
     ));
     return (
-      <RX.View style={[Styles.flexColumn, Styles.flexFill]}>
-        <RX.View style={[Styles.box, Styles.headerView]}>
+      <RX.View style={Styles.flex.fill}>
+        <RX.View style={Styles.header}>
           <RX.Text style={Styles.headerText}>Terasology Server web interface</RX.Text>
-          <RX.View>
+          <RX.View style={Styles.flex.row}>
             <RX.Text>Server: {this.state.serverAddr}</RX.Text>
             {authUI}
           </RX.View>
         </RX.View>
-        <RX.View style={[Styles.flexRow, Styles.flexFill]}>
-          <RX.View style={[Styles.box, Styles.greyBorder]}>
+        <RX.View style={[Styles.flex.row, Styles.flex.fill]}>
+          <RX.View style={Styles.whiteBox}>
             {tabSwitchButtons}
           </RX.View>
-          <RX.View style={[Styles.box, Styles.greyBorder, Styles.flexColumn, Styles.flexFill]}>
+          <RX.View style={[Styles.whiteBox, Styles.flex.column, Styles.flex.fill]}>
             {this.tabViews[this.state.activeTab]}
           </RX.View>
         </RX.View>

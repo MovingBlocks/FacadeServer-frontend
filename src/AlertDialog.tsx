@@ -1,5 +1,5 @@
 import RX = require("reactxp");
-import Styles = require("./Styles");
+import Styles = require("./styles/main");
 
 interface AlertDialogProps {
   message: string;
@@ -13,9 +13,9 @@ export class AlertDialog extends RX.Component<AlertDialogProps, null> {
 
   public render() {
     return (
-      <RX.View style={[Styles.box, Styles.greyBorder]}>
+      <RX.View style={Styles.whiteBox}>
         <RX.Text>{this.props.message}</RX.Text>
-        <RX.Button onPress={this.close} style={[Styles.box, Styles.greyBorder, Styles.okButton]}>OK</RX.Button>
+        <RX.Button onPress={this.close} style={Styles.okButton}>OK</RX.Button>
       </RX.View>
     );
   }

@@ -2,7 +2,7 @@
 /* tslint:disable:no-bitwise */
 
 import RX = require("reactxp");
-import Styles = require("../../Styles");
+import Styles = require("../../styles/main");
 import {TabView} from "../TabView";
 import {ConsoleTabController} from "./ConsoleTabController";
 import {ConsoleTabState} from "./ConsoleTabState";
@@ -22,16 +22,16 @@ export class ConsoleTabView extends TabView<ConsoleTabState> {
   public render() {
     const controller: ConsoleTabController = this.props.model.getController() as ConsoleTabController;
     return (
-      <RX.View style={[Styles.flexColumn, Styles.flexFill, Styles.consoleRoot]}>
+      <RX.View style={[Styles.flex.column, Styles.flex.fill, Styles.justifyFlexEnd]}>
         <RX.View>
           {this.state.messages.map((msg, index) => <RX.Text key={index}>[{msg.type}] {this.renderMessage(msg.message)}</RX.Text>)}
         </RX.View>
-        <RX.View style={Styles.flexRow}>
+        <RX.View style={Styles.flex.row}>
           <RX.TextInput
-            style={[Styles.box, Styles.greyBorder, Styles.commandTextInput]}
+            style={[Styles.whiteBox, Styles.commandTextInput]}
             value={this.state.commandToSend}
             onChangeText={this.onChangeValue} />
-          <RX.Button style={[Styles.box, Styles.greyBorder]} onPress={controller.execute}>Execute</RX.Button>
+          <RX.Button style={Styles.okButton} onPress={controller.execute}>Execute</RX.Button>
         </RX.View>
       </RX.View>
     );
