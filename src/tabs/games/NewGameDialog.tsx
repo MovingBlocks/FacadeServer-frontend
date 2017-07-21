@@ -44,8 +44,8 @@ export class NewGameDialog extends RX.Component<NewGameDialogProps, NewGameDialo
         <RX.Text>World generator URI:</RX.Text>
         <RX.TextInput style={Styles.whiteBox} value={this.state.worldGenerator} onChangeText={(s) => this.setState({worldGenerator: s})}/>
         <RX.View style={Styles.flex.row}>
-          <RX.Button onPress={() => this.okClicked()} style={Styles.okButton}>OK</RX.Button>
-          <RX.Button onPress={() => this.cancelClicked()} style={Styles.cancelButton}>Cancel</RX.Button>
+          <RX.Button onPress={() => this.okClicked()} style={Styles.okButton}><RX.Text>OK</RX.Text></RX.Button>
+          <RX.Button onPress={() => this.cancelClicked()} style={Styles.cancelButton}><RX.Text>Cancel</RX.Text></RX.Button>
         </RX.View>
       </RX.View>
     );

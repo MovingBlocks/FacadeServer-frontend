@@ -52,10 +52,10 @@ class App extends RX.Component<{}, AppState> {
   public render() {
     const authUI = this.state.authenticated ?
       <RX.Text>Authenticated</RX.Text> :
-      <RX.Button style={Styles.okButton} onPress={this.showLoginDialog}>Login</RX.Button>;
+      <RX.Button style={Styles.okButton} onPress={this.showLoginDialog}><RX.Text>Login</RX.Text></RX.Button>;
     const tabSwitchButtons = this.tabs.map((item, index) => (
       <RX.Button key={index} style={Styles.whiteBox} onPress={() => this.changeTab(index)}>
-        {item.getName()}
+        <RX.Text>{item.getName()}</RX.Text>
       </RX.Button>
     ));
     return (

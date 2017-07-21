@@ -6,6 +6,8 @@ The latest successful build is automatically pushed to Github Pages, so that you
 ## How to build
 At the moment, the Web (browser-based) environment is the main target, but the ReactXP framework has been chosen to allow to make both web and mobile (Android/iOS) builds from the same codebase.
 
+### Web
 To build for web, simply install the dependencies **including the development ones** with `npm install --dev`, then run `npm run web`; this will compile Typescript to Javascript and bundle the modules in an optimized JS file. When it returns, you can open `index.html` with any browser to run the application.
 
-I also managed to build for Android by following the instructions on the [sample ReactXP project](https://github.com/Microsoft/reactxp/tree/master/samples/hello-world#building-for-react-native); when I'll manage to bring the user interface to an enough mobile-friendly state, I'll provide detailed mobile build instructions here.
+### Android
+To run on an Android emulator or device accessible over ADB, after installing all the required dependencies with `npm install --dev` you need to run `npm run rn-watch`, which compiles Typescript to Javascript and keeps running in background to automatically recompile if the sources change (in fact, this command won't return until you manually terminate it), then from another terminal run `npm run android` (will fail if there is neither a running AVD nor a physical device connected and accessible via ADB).

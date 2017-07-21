@@ -17,7 +17,7 @@ export class ServerAddressInput extends RX.Component<ServerAddressInputProps, {v
       <RX.View style={Styles.whiteBox}>
         <RX.Text>Server WebSocket address:</RX.Text>
         <RX.TextInput style={Styles.whiteBox} value={this.state.value} onChangeText={this.onChangeValue} />
-        <RX.Button onPress={this.onButtonClick} style={Styles.okButton}>Click to connect</RX.Button>
+        <RX.Button onPress={this.onButtonClick} style={Styles.okButton}><RX.Text>Click to connect</RX.Text></RX.Button>
       </RX.View>
     );
   }

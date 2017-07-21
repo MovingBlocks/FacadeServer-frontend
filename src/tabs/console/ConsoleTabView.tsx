@@ -31,7 +31,7 @@ export class ConsoleTabView extends TabView<ConsoleTabState> {
             style={[Styles.whiteBox, Styles.commandTextInput]}
             value={this.state.commandToSend}
             onChangeText={this.onChangeValue} />
-          <RX.Button style={Styles.okButton} onPress={controller.execute}>Execute</RX.Button>
+          <RX.Button style={Styles.okButton} onPress={controller.execute}><RX.Text>Execute</RX.Text></RX.Button>
         </RX.View>
       </RX.View>
     );

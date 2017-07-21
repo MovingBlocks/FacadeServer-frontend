@@ -12,12 +12,12 @@ export class GamesTabView extends TabView<GamesTabState> {
     const controller: GamesTabController = this.props.model.getController() as GamesTabController;
     const showNewGameDialog = () => NewGameDialog.show(this.state.availableModules, controller.newGame);
     return (
-      <RX.View>
+      <RX.ScrollView>
         <RX.Text>Server status: {EngineStateMetadataRenderer.render(this.state.engineState)}</RX.Text>
-        <RX.Button style={Styles.okButton} onPress={showNewGameDialog}>New game</RX.Button>
+        <RX.Button style={Styles.okButton} onPress={showNewGameDialog}><RX.Text>New game</RX.Text></RX.Button>
         <RX.Text>Savegames on this server:</RX.Text>
-        {this.state.games.map((game: GameInfo, i: number) => this.renderGameInfo(game, i, controller))}
-      </RX.View>
+          {this.state.games.map((game: GameInfo, i: number) => this.renderGameInfo(game, i, controller))}
+      </RX.ScrollView>
     );
   }
 
@@ -33,11 +33,11 @@ export class GamesTabView extends TabView<GamesTabState> {
     };
     const stopButton = (
       <RX.Button style={Styles.cancelButton}
-        onPress={() => controller.stopGame()}>Stop</RX.Button>
+        onPress={() => controller.stopGame()}><RX.Text>Stop</RX.Text></RX.Button>
     );
     const startButton = (
       <RX.Button style={Styles.okButton}
-      onPress={() => controller.startGame(game.manifest.title)}>Start</RX.Button>
+      onPress={() => controller.startGame(game.manifest.title)}><RX.Text>Start</RX.Text></RX.Button>
     );
     const startStopButton = game.manifest.title === engineState.gameName ? stopButton : startButton;
     return (
@@ -48,11 +48,11 @@ export class GamesTabView extends TabView<GamesTabState> {
         <RX.View style={Styles.flex.row}>
           {startStopButton}
           <RX.Button style={Styles.okButton}
-            onPress={() => controller.backupGame(game.manifest.title)}>Backup</RX.Button>
+            onPress={() => controller.backupGame(game.manifest.title)}><RX.Text>Backup</RX.Text></RX.Button>
           <RX.Button style={Styles.okButton}
-            onPress={() => controller.deleteGame(game.manifest.title)}>Delete</RX.Button>
+            onPress={() => controller.deleteGame(game.manifest.title)}><RX.Text>Delete</RX.Text></RX.Button>
           <RX.Button style={Styles.okButton}
-            onPress={() => controller.renameGame(game.manifest.title)}>Rename</RX.Button>
+            onPress={() => controller.renameGame(game.manifest.title)}><RX.Text>Rename</RX.Text></RX.Button>
         </RX.View>
       </RX.View>
     );

@@ -16,7 +16,7 @@ export class AlertDialog extends RX.Component<AlertDialogProps, null> {
     return (
       <RX.View style={Styles.whiteBox}>
         <RX.Text>{this.props.message}</RX.Text>
-        <RX.Button onPress={this.close} style={Styles.okButton}>OK</RX.Button>
+        <RX.Button onPress={this.close} style={Styles.okButton}><RX.Text>OK</RX.Text></RX.Button>
       </RX.View>
     );
   }
