@@ -12,12 +12,12 @@ const justifyCenter = RX.Styles.createViewStyle({
   justifyContent: "center",
 });
 
-const commandTextInput = RX.Styles.createTextInputStyle({
-  flex: 5,
-});
-
 const justifyFlexEnd = RX.Styles.createViewStyle({
   justifyContent: "flex-end",
+});
+
+const commandTextInput = RX.Styles.createTextInputStyle({
+  flex: 5,
 });
 
 const greyBorder = RX.Styles.createViewStyle({
@@ -55,5 +55,6 @@ export = {
   justifyFlexEnd,
   okButton: [box, greyBorder, justifyCenter, backgrounds.lime],
   verticalScroll,
+  waitOverlay: [flex.fillAll, backgrounds.lightGrayAlpha, justifyCenter],
   whiteBox: [box, greyBorder, backgrounds.white],
 };

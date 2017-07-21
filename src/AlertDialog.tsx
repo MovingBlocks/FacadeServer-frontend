@@ -2,13 +2,14 @@ import RX = require("reactxp");
 import Styles = require("./styles/main");
 
 interface AlertDialogProps {
+  afterClose: () => void;
   message: string;
 }
 
 export class AlertDialog extends RX.Component<AlertDialogProps, null> {
 
-  public static show(message: string) {
-    RX.Modal.show(<AlertDialog message={message}/>, "alertDialog");
+  public static show(message: string, afterClose?: () => void) {
+    RX.Modal.show(<AlertDialog message={message} afterClose={afterClose}/>, "alertDialog");
   }
 
   public render() {
@@ -20,7 +21,10 @@ export class AlertDialog extends RX.Component<AlertDialogProps, null> {
     );
   }
 
-  private close() {
+  private close = () => {
     RX.Modal.dismiss("alertDialog");
+    if (this.props.afterClose) {
+      this.props.afterClose();
+    }
   }
 }

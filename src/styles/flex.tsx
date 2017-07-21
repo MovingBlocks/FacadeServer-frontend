@@ -7,6 +7,10 @@ export = {
   fill: RX.Styles.createViewStyle({
     flex: 1,
   }),
+  fillAll: RX.Styles.createViewStyle({
+    alignSelf: "stretch",
+    flex: 1,
+  }),
   row: RX.Styles.createViewStyle({
     flexDirection: "row",
   }),

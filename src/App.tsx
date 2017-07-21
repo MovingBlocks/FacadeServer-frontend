@@ -10,6 +10,7 @@ import {IncomingMessage} from "./io/IncomingMessage";
 import {OutgoingMessage} from "./io/OutgoingMessage";
 import {ServerAddressInput} from "./ServerAddressInput";
 import {TabModel} from "./tabs/TabModel";
+import {WaitOverlay} from "./WaitOverlay";
 
 import {ConsoleTabModel} from "./tabs/console/ConsoleTabModel";
 import {ConsoleTabView} from "./tabs/console/ConsoleTabView";
@@ -84,6 +85,7 @@ class App extends RX.Component<{}, AppState> {
 
   private connect = (address: string) => {
     RX.Modal.dismiss("ServerAddressInput");
+    WaitOverlay.open("Connecting...");
     this.setState({serverAddr: address});
     this.wsConn = new WebSocket(address);
     this.wsConn.onmessage = this.onMessage;
@@ -93,6 +95,12 @@ class App extends RX.Component<{}, AppState> {
         tab.setSendDataCallback(this.sendJsonData);
         tab.initialize();
       });
+      WaitOverlay.close();
+    };
+    this.wsConn.onerror = () => {
+      WaitOverlay.close();
+      AlertDialog.show("Failed to connect to the server.", () =>
+        RX.Modal.show(<ServerAddressInput callback={this.connect}/>, "ServerAddressInput"));
     };
   }
 
