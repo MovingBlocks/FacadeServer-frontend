@@ -29,44 +29,32 @@ export class GamesTabController extends TabController<GamesTabState> {
   }
 
   public newGame = (data: NewGameDialogState) => {
-    this.model.sendData({
+    this.model.requestResource({
+      action: "WRITE",
       data: {
-        // TODO: build interface for resource request
-        action: "WRITE",
-        data: {
-          data,
-          type: "New",
-        },
-        resourceName: "games",
+        data,
+        type: "New",
       },
-      messageType: "RESOURCE_REQUEST",
+      resourceName: "games",
     });
   }
 
   private setRunningGame(gameName: string) {
-    this.model.sendData({
-      data: {
-        // TODO: build interface for resource request
-        action: "WRITE",
-        data: gameName,
-        resourceName: "engineState",
-      },
-      messageType: "RESOURCE_REQUEST",
+    this.model.requestResource({
+      action: "WRITE",
+      data: gameName,
+      resourceName: "engineState",
     });
   }
 
   private performGameAction(data: any, action: string) {
-    this.model.sendData({
+    this.model.requestResource({
+      action: "WRITE",
       data: {
-        // TODO: build interface for resource request
-        action: "WRITE",
-        data: {
-          data,
-          type: action,
-        },
-        resourceName: "games",
+        data,
+        type: action,
       },
-      messageType: "RESOURCE_REQUEST",
+      resourceName: "games",
     });
   }
 

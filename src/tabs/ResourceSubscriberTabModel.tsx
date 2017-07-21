@@ -24,11 +24,7 @@ export abstract class ResourceSubscriberTabModel<StateType> extends TabModel<Sta
   public initialize(): void {
     super.initialize();
     this.getSubscribedResourceNames().forEach((resourceToQuery) => {
-      const data: OutgoingMessage = {
-        data: {action: "READ", resourceName: resourceToQuery},
-        messageType: "RESOURCE_REQUEST",
-      };
-      this.sendData(data);
+      this.requestResource({action: "READ", resourceName: resourceToQuery});
     });
   }
 

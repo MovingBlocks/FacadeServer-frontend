@@ -79,7 +79,7 @@ class App extends RX.Component<{}, AppState> {
     );
   }
 
-  private sendJsonData = (data: OutgoingMessage) => { // TODO: replace any with OutgoingMessage
+  private sendJsonData = (data: OutgoingMessage) => {
     this.wsConn.send(JSON.stringify(data));
   }
 

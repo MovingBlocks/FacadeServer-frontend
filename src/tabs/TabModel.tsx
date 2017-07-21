@@ -1,11 +1,11 @@
 import {IncomingMessage} from "../io/IncomingMessage";
 import {OutgoingMessage} from "../io/OutgoingMessage";
+import {ResourceRequest} from "../io/ResourceRequest";
 import {TabController} from "./TabController";
 
 export abstract class TabModel<StateType> {
 
-  // TODO: data must not be any but OutgoingMessage
-  public  sendData: (data: OutgoingMessage) => void;
+  private sendData: (data: OutgoingMessage) => void;
   private state: StateType = this.getDefaultState();
   private controller: TabController<StateType>;
   private updateView: (viewState: StateType) => void;
@@ -48,6 +48,10 @@ export abstract class TabModel<StateType> {
       }
     }
     this.updateView(state);
+  }
+
+  public requestResource = (data: ResourceRequest) =>  {
+    this.sendData({messageType: "RESOURCE_REQUEST", data});
   }
 
 }
