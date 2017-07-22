@@ -42,11 +42,24 @@ const verticalScroll = RX.Styles.createScrollViewStyle({
   width: 300,
 });
 
+const scrollableDialog = RX.Styles.createScrollViewStyle({
+  alignSelf: "center",
+  maxHeight: 200,
+  maxWidth: 400,
+});
+
+const favoriteServerAddress = RX.Styles.createTextStyle({
+  fontSize: 12,
+  maxHeight: 12,
+  maxWidth: 200,
+});
+
 export = {
   backgrounds,
   box,
   cancelButton: [box, greyBorder, justifyCenter, backgrounds.red],
   commandTextInput,
+  favoriteServerAddress,
   flex,
   greyBorder,
   header: [box, header],
@@ -54,6 +67,7 @@ export = {
   justifyCenter,
   justifyFlexEnd,
   okButton: [box, greyBorder, justifyCenter, backgrounds.lime],
+  scrollableDialog,
   verticalScroll,
   waitOverlay: [flex.fillAll, backgrounds.lightGrayAlpha, justifyCenter],
   whiteBox: [box, greyBorder, backgrounds.white],
