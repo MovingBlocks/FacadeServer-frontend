@@ -3,6 +3,7 @@ import Styles = require("../styles/main");
 import {AlertDialog} from "../AlertDialog";
 import {CheckBox} from "../components/CheckBox";
 import {RadioButtonGroup} from "../components/RadioButtonGroup";
+import {TextPromptDialog} from "../TextPromptDialog";
 import {AuthenticationManager} from "./AuthenticationManager";
 
 interface AuthenticationDialogProps {
@@ -10,46 +11,58 @@ interface AuthenticationDialogProps {
   manager: AuthenticationManager;
 }
 
-interface AuthenticationDialogStatus {
-  config?: string;
-  isWorking?: boolean;
+interface AuthenticationDialogState {
+  authenticationMethodIndex?: number;
+  rememberCerts?: boolean;
 }
 
-export class AuthenticationDialog extends RX.Component<AuthenticationDialogProps, AuthenticationDialogStatus> {
+export class AuthenticationDialog extends RX.Component<AuthenticationDialogProps, AuthenticationDialogState> {
 
   constructor(props: AuthenticationDialogProps) {
     super(props);
-    this.state = {config: "", isWorking: false};
+    this.state = {authenticationMethodIndex: 0};
   }
 
   public render() {
+    const options = [
+      "Authenticate with client identity storage service",
+      "Authenticate with configuration file",
+    ];
     return (
-      <RX.View style={Styles.whiteBox}>
-        {/*<CheckBox text="test test test" checkedByDefault={false} onCheckedChange={() => {return; }}/>*/}
-        {/*<RadioButtonGroup items={["test1", "test2", "test3"]} onSelectionChange={() => {return; }}/>*/}
-        <RX.Text>To authenticate, paste the contents of your game client's configuration file here:</RX.Text>
-        <RX.TextInput style={Styles.whiteBox} value={this.state.config} onChangeText={this.onChange} multiline={true} />
+      <RX.View style={[Styles.whiteBox, Styles.dialog]}>
+        <RX.Text>
+        To authenticate, you need to provide an identity certificate pair. If you have an account on an identity
+        storage server, you can use your credentials to retrieve the required information from the server;
+        alternatively, you can paste your game client's configuration file, which contains the necessary certificates.
+        </RX.Text>
+        <RadioButtonGroup items={options} onSelectionChange={(i: number) => this.setState({authenticationMethodIndex: i})} />
+        <CheckBox
+          text="Remember the certificate pair on this device/browser"
+          checkedByDefault={false}
+          onCheckedChange={(checked: boolean) => this.setState({rememberCerts: checked})}/>
         <RX.View style={Styles.flex.row}>
-          <RX.Button onPress={this.loginClicked} style={Styles.okButton}><RX.Text>Login</RX.Text></RX.Button>
+          <RX.Button onPress={this.nextClicked} style={Styles.okButton}><RX.Text>Next</RX.Text></RX.Button>
           <RX.Button onPress={this.cancelClicked} style={Styles.cancelButton}><RX.Text>Cancel</RX.Text></RX.Button>
         </RX.View>
       </RX.View>
     );
   }
 
-  private onChange = (newValue: string) => {
-    this.setState({config: newValue});
-  }
-
-  private loginClicked = () => {
-    this.setState({isWorking: true});
+  private nextClicked = () => {
     this.props.manager.setCallback((error: string) => {
       if (error !== null) {
         AlertDialog.show("Authentication failed: " + error);
       }
       this.props.closeCallback();
     });
-    this.props.manager.authenticateFromConfig(this.state.config);
+    switch (this.state.authenticationMethodIndex) {
+      case 0:
+        AlertDialog.show("This feature is not implemented yet.");
+        break;
+      case 1:
+        TextPromptDialog.show("Please paste the contents of your game client's configuration file here", (value: string) =>
+          this.props.manager.authenticateFromConfig(value), true);
+    }
   }
 
   private cancelClicked = () => {

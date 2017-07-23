@@ -4,12 +4,13 @@ import Styles = require("./styles/main");
 interface TextPromptDialogProps {
   promptText: string;
   okCallback: (value: string) => void;
+  multiline?: boolean;
 }
 
 export class TextPromptDialog extends RX.Component<TextPromptDialogProps, {value: string}> {
 
-  public static show(promptText: string, okCallback: (value: string) => void ) {
-    RX.Modal.show(<TextPromptDialog promptText={promptText} okCallback={okCallback}/>, "promptDialog");
+  public static show(promptText: string, okCallback: (value: string) => void, multiline?: boolean) {
+    RX.Modal.show(<TextPromptDialog promptText={promptText} okCallback={okCallback} multiline={multiline}/>, "promptDialog");
   }
 
   constructor(props: TextPromptDialogProps) {
@@ -21,7 +22,7 @@ export class TextPromptDialog extends RX.Component<TextPromptDialogProps, {value
     return (
       <RX.View style={Styles.whiteBox}>
         <RX.Text>{this.props.promptText}</RX.Text>
-        <RX.TextInput style={Styles.whiteBox} value={this.state.value} onChangeText={this.onChange} multiline={false} />
+        <RX.TextInput style={Styles.whiteBox} value={this.state.value} onChangeText={this.onChange} multiline={this.props.multiline} />
         <RX.View style={Styles.flex.row}>
           <RX.Button onPress={this.okClicked} style={Styles.okButton}><RX.Text>OK</RX.Text></RX.Button>
           <RX.Button onPress={this.cancelClicked} style={Styles.cancelButton}><RX.Text>Cancel</RX.Text></RX.Button>

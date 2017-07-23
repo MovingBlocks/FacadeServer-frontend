@@ -54,11 +54,16 @@ const favoriteServerAddress = RX.Styles.createTextStyle({
   maxWidth: 200,
 });
 
+const dialog = RX.Styles.createViewStyle({
+  maxWidth: 450,
+});
+
 export = {
   backgrounds,
   box,
   cancelButton: [box, greyBorder, justifyCenter, backgrounds.red],
   commandTextInput,
+  dialog,
   favoriteServerAddress,
   flex,
   greyBorder,
