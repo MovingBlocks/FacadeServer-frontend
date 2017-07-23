@@ -1,6 +1,7 @@
 import RX = require("reactxp");
 import Styles = require("../styles/main");
 import {AlertDialog} from "../AlertDialog";
+import {CheckBox} from "../components/CheckBox";
 import {RadioButtonGroup} from "../components/RadioButtonGroup";
 import {AuthenticationManager} from "./AuthenticationManager";
 
@@ -24,6 +25,7 @@ export class AuthenticationDialog extends RX.Component<AuthenticationDialogProps
   public render() {
     return (
       <RX.View style={Styles.whiteBox}>
+        {/*<CheckBox text="test test test" checkedByDefault={false} onCheckedChange={() => {return; }}/>*/}
         {/*<RadioButtonGroup items={["test1", "test2", "test3"]} onSelectionChange={() => {return; }}/>*/}
         <RX.Text>To authenticate, paste the contents of your game client's configuration file here:</RX.Text>
         <RX.TextInput style={Styles.whiteBox} value={this.state.config} onChangeText={this.onChange} multiline={true} />

@@ -26,7 +26,7 @@ export class RadioButtonGroup extends RX.Component<RadioButtonGroupProps, {selec
       this.props.onSelectionChange(newValue);
     };
     return (
-      <RX.Button key={index} style={ComponentStyles.radioButtonContainer} onPress={() => changeSelection(index)}>
+      <RX.Button key={index} style={ComponentStyles.componentContainer} onPress={() => changeSelection(index)}>
         <RX.View style={ComponentStyles.radioButtonOuterCircle}>
           <RX.View style={index === this.state.selectedIndex ? ComponentStyles.radioButtonInnerCircle : null} />
         </RX.View>
