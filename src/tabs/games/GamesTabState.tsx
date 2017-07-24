@@ -1,16 +1,9 @@
 import {EngineStateMetadata} from "../../io/EngineStateMetadata";
-import {Module} from "../../modules/Module";
-
-export interface Version {
-  major: number;
-  minor: number;
-  patch: number;
-  snapshot: boolean;
-}
+import {AvailableModules} from "../../modules/AvailableModules";
 
 export interface NameVersion {
   name: string;
-  version: Version;
+  version: string;
 }
 
 export interface GameManifest {
@@ -28,5 +21,5 @@ export interface GameInfo {
 export interface GamesTabState {
   games?: GameInfo[];
   engineState?: EngineStateMetadata;
-  availableModules?: Module[];
+  availableModules?: AvailableModules;
 }

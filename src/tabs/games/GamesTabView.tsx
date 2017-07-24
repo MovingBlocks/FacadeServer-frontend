@@ -3,7 +3,7 @@ import Styles = require("../../styles/main");
 import {EngineStateMetadata, EngineStateMetadataRenderer} from "../../io/EngineStateMetadata";
 import {TabView} from "../TabView";
 import {GamesTabController} from "./GamesTabController";
-import {GameInfo, GamesTabState, NameVersion, Version} from "./GamesTabState";
+import {GameInfo, GamesTabState, NameVersion} from "./GamesTabState";
 import {NewGameDialog} from "./NewGameDialog";
 
 export class GamesTabView extends TabView<GamesTabState> {
@@ -24,12 +24,13 @@ export class GamesTabView extends TabView<GamesTabState> {
   private renderGameInfo(game: GameInfo, gameIndex: number, controller: GamesTabController) {
     const engineState: EngineStateMetadata = this.state.engineState;
     const metaServerbase = "http://meta.terasology.org/modules/show/";
-    const renderVersion = (v: Version) => v.major + "." + v.minor + "." + v.patch + (v.snapshot ? "-SNAPSHOT" : "");
     const renderModule = (module: NameVersion, modIndex: number) => {
-      const modName = module.name;
-      const modVer = renderVersion(module.version);
-      const link = metaServerbase + modName + "/" + modVer;
-      return <RX.Text key={modIndex}>{(modIndex !== 0 ? ", " : "")}<RX.Link url={link}>{modName + " " + modVer}</RX.Link></RX.Text>;
+      const link = metaServerbase + module.name + "/" + module.version;
+      return (
+        <RX.Text key={modIndex}>
+          {(modIndex !== 0 ? ", " : "")}<RX.Link url={link}>{module.name + " " + module.version}</RX.Link>
+        </RX.Text>
+      );
     };
     const stopButton = (
       <RX.Button style={Styles.cancelButton}

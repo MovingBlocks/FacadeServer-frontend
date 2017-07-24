@@ -1,6 +1,6 @@
 import {EngineStateMetadata} from "../../io/EngineStateMetadata";
 import {IncomingMessage} from "../../io/IncomingMessage";
-import {Module} from "../../modules/Module";
+import {AvailableModules} from "../../modules/AvailableModules";
 import {ResourceSubscriberTabModel} from "../ResourceSubscriberTabModel";
 import {TabController} from "../TabController";
 import {GamesTabController} from "./GamesTabController";
@@ -30,7 +30,7 @@ export class GamesTabModel extends ResourceSubscriberTabModel<GamesTabState> {
     } else if (resourceName === "games") {
       this.update({games: data as GameInfo[]});
     } else if (resourceName === "availableModules") {
-      this.update({availableModules: data as Module[]});
+      this.update({availableModules: data as AvailableModules});
     }
   }
 

@@ -43,7 +43,11 @@ export class ModuleSelector extends RX.Component<ModuleSelectorProps, ModuleSele
   }
 
   private renderModule(mod: Module, onClick: () => void) {
-    return <RX.View key={mod.id} onPress={onClick}><RX.Text>{mod.displayName.en}</RX.Text></RX.View>;
+    return (
+      <RX.View key={mod.id + "-" + mod.version} onPress={onClick}>
+        <RX.Text>{mod.displayName.en + " " + mod.version}</RX.Text>
+      </RX.View>
+    );
   }
 
   private remove = (i: number) => () => {

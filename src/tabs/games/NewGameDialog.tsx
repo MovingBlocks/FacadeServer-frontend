@@ -1,10 +1,11 @@
 import RX = require("reactxp");
 import Styles = require("../../styles/main");
-import {Module} from "../../modules/Module";
+import {AvailableModules} from "../../modules/AvailableModules";
 import {ModuleSelector} from "../../modules/ModuleSelector";
+import {WorldGenerator} from "../../modules/WorldGenerator";
 
 interface NewGameDialogProps {
-  availableModules: Module[];
+  availableModules: AvailableModules;
   onOkCallback: (data: NewGameDialogState) => void;
 }
 
@@ -17,7 +18,7 @@ export interface NewGameDialogState {
 
 export class NewGameDialog extends RX.Component<NewGameDialogProps, NewGameDialogState> {
 
-  public static show(availableModules: Module[], cb: (data: NewGameDialogState) => void) {
+  public static show(availableModules: AvailableModules, cb: (data: NewGameDialogState) => void) {
     RX.Modal.show(<NewGameDialog availableModules={availableModules} onOkCallback={cb} />, "newGameDialog");
   }
 
@@ -25,11 +26,13 @@ export class NewGameDialog extends RX.Component<NewGameDialogProps, NewGameDialo
 
   constructor(props: NewGameDialogProps) {
     super(props);
-    this.state = {gameName: "New Game", seed: "blockmania", modules: [], worldGenerator: "Core:FacetedPerlin"};
+    this.state = {gameName: "New Game", seed: "blockmania", modules: [], worldGenerator: props.availableModules.worldGenerators[0].uri};
   }
 
   public render() {
     const defaultSelection: number[] = this.findModuleIndexes(NewGameDialog.defaultModules);
+    const renderWorldGenerator = (worldGen: WorldGenerator) =>
+      ({label: worldGen.displayName + " (" + worldGen.uri + ")", value: worldGen.uri});
     return (
       <RX.View style={Styles.whiteBox}>
         <RX.Text>Title:</RX.Text>
@@ -39,10 +42,14 @@ export class NewGameDialog extends RX.Component<NewGameDialogProps, NewGameDialo
         <RX.Text>Modules:</RX.Text>
         <ModuleSelector
           onSelectionChange={this.onModuleSelectionChanged}
-          availableModules={this.props.availableModules}
+          availableModules={this.props.availableModules.modules}
           defaultEnabledModules={defaultSelection} />
-        <RX.Text>World generator URI:</RX.Text>
-        <RX.TextInput style={Styles.whiteBox} value={this.state.worldGenerator} onChangeText={(s) => this.setState({worldGenerator: s})}/>
+        <RX.Text>World generator:</RX.Text>
+        <RX.Picker
+          style={Styles.whiteBox}
+          items={this.props.availableModules.worldGenerators.map(renderWorldGenerator)}
+          selectedValue={this.state.worldGenerator}
+          onValueChange={(itemValue: string) => this.setState({worldGenerator: itemValue})} />
         <RX.View style={Styles.flex.row}>
           <RX.Button onPress={() => this.okClicked()} style={Styles.okButton}><RX.Text>OK</RX.Text></RX.Button>
           <RX.Button onPress={() => this.cancelClicked()} style={Styles.cancelButton}><RX.Text>Cancel</RX.Text></RX.Button>
@@ -63,7 +70,7 @@ export class NewGameDialog extends RX.Component<NewGameDialogProps, NewGameDialo
   private findModuleIndexes = (ids: string[]): number[] => {
     const result: number[] = [];
     const lowerCaseIds = ids.map((s) => s.toLowerCase());
-    this.props.availableModules.forEach((module, index) => {
+    this.props.availableModules.modules.forEach((module, index) => {
       if (lowerCaseIds.indexOf(module.id.toLowerCase()) > -1) {
         result.push(index);
       }
@@ -73,7 +80,7 @@ export class NewGameDialog extends RX.Component<NewGameDialogProps, NewGameDialo
 
   private onModuleSelectionChanged = (indexes: number[]) => {
     const ids: string[] = [];
-    indexes.forEach((index) => ids.push(this.props.availableModules[index].id));
+    indexes.forEach((index) => ids.push(this.props.availableModules.modules[index].id));
     this.setState({modules: ids});
   }
 }
