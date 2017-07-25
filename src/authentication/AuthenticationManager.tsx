@@ -1,4 +1,5 @@
 /* tslint:disable:no-var-requires */
+/* tslint:disable:max-line-length */
 
 const BigInteger = require("jsbn").BigInteger;
 const rs = require("jsrsasign");
@@ -7,6 +8,7 @@ import {ActionResult} from "../io/ActionResult";
 import {IncomingMessage} from "../io/IncomingMessage";
 import {OutgoingMessage} from "../io/OutgoingMessage";
 import {ClientIdentity, PublicIdentityCertificate} from "./ClientIdentity";
+import {Base64ClientIdentity, IdentityStorageServiceApiClient} from "./IdentityStorageServiceApiClient";
 
 interface HandshakeHello {
   random: string;
@@ -41,7 +43,7 @@ export class AuthenticationManager {
     }
   }
 
-  public authenticateFromConfig(configString: string): void {
+  public authenticateFromConfig = (configString: string) => {
     if (this.authenticated) {
       throw new Error("Already authenticated");
     }
@@ -59,6 +61,29 @@ export class AuthenticationManager {
     }
   }
 
+  public authenticateFromIdentityStorage = (server: string, username: string, password: string) => {
+    const authManager: AuthenticationManager = this;
+    const apiClient: IdentityStorageServiceApiClient = new IdentityStorageServiceApiClient(server);
+    apiClient.login(username, password).then(() =>
+      authManager.requestServerHello((serverHello: HandshakeHello) => // success
+        apiClient.getClientIdentity(serverHello.certificate.id).then((id: Base64ClientIdentity) => {
+          // convert BigIntegers from base64 to jsbn representation
+          const clientIdentity = new ClientIdentity(
+            {id: id.server.id, modulus: authManager.b64ToJsbn(id.server.modulus), exponent: authManager.b64ToJsbn(id.server.exponent), signature: authManager.b64ToJsbn(id.server.signature)},
+            {id: id.clientPublic.id, modulus: authManager.b64ToJsbn(id.clientPublic.modulus), exponent: authManager.b64ToJsbn(id.clientPublic.exponent), signature: authManager.b64ToJsbn(id.clientPublic.signature)},
+            {modulus: authManager.b64toHex(id.clientPrivate.modulus), exponent: authManager.b64toHex(id.clientPrivate.exponent)},
+          );
+          authManager.authenticate(serverHello, clientIdentity);
+        })),
+      (errMsg: string) => authManager.callback(errMsg), // error
+    );
+  }
+
+  private b64ToJsbn(value: string): any {
+    const hex = new Buffer(value, "base64").toString("hex");
+    return new BigInteger(hex, 16);
+  }
+
   private requestServerHello(then: (serverHello: HandshakeHello) => void): void {
     this.processMessage = (message: ActionResult) => {
       if (message.status === "OK") { // TODO: also check that message data can be casted to HandshakeHello
@@ -70,7 +95,7 @@ export class AuthenticationManager {
     this.sendMessage({messageType: "AUTHENTICATION_REQUEST"});
   }
 
-  private b64toHex(input: string): string {
+  private b64toHex(input: string): string { // TODO remove
     return new Buffer(input, "base64").toString("hex");
   }
 
@@ -94,7 +119,7 @@ export class AuthenticationManager {
     const privateCert = clientIdentity.getClientPrivate();
     const clientHelloMessage: HandshakeHello = {random: "", certificate: publicCert, timestamp: ""};
     const dataToSign: Uint8Array = this.concatArrayBuffers([
-      this.handshakeHelloToArrayBuffer(serverHelloMessage, (n) => this.b64ToArrayBuffer(n)),
+      this.handshakeHelloToArrayBuffer(serverHelloMessage, this.b64ToArrayBuffer),
       this.handshakeHelloToArrayBuffer(clientHelloMessage, (n) => n.toByteArray()),
     ]);
     // TODO remove console.log(dataToSign);

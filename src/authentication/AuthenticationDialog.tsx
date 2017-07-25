@@ -56,8 +56,7 @@ export class AuthenticationDialog extends RX.Component<AuthenticationDialogProps
     });
     switch (this.state.authenticationMethodIndex) {
       case 0:
-        IdentityStorageServiceLoginDialog.show((server: string, username: string, password: string) =>
-          AlertDialog.show("This feature is not implemented yet."));
+        IdentityStorageServiceLoginDialog.show(this.props.manager.authenticateFromIdentityStorage);
         break;
       case 1:
         TextPromptDialog.show("Please paste the contents of your game client's configuration file here", (value: string) =>
