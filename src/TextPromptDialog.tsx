@@ -1,5 +1,6 @@
 import RX = require("reactxp");
 import Styles = require("./styles/main");
+import {OkCancelButtonBar} from "./OkCancelButtonBar";
 
 interface TextPromptDialogProps {
   promptText: string;
@@ -23,10 +24,7 @@ export class TextPromptDialog extends RX.Component<TextPromptDialogProps, {value
       <RX.View style={Styles.whiteBox}>
         <RX.Text>{this.props.promptText}</RX.Text>
         <RX.TextInput style={Styles.whiteBox} value={this.state.value} onChangeText={this.onChange} multiline={this.props.multiline} />
-        <RX.View style={Styles.flex.row}>
-          <RX.Button onPress={this.okClicked} style={Styles.okButton}><RX.Text>OK</RX.Text></RX.Button>
-          <RX.Button onPress={this.cancelClicked} style={Styles.cancelButton}><RX.Text>Cancel</RX.Text></RX.Button>
-        </RX.View>
+        <OkCancelButtonBar onOk={this.okClicked} onCancel={this.cancelClicked}/>
       </RX.View>
     );
   }

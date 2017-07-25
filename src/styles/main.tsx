@@ -56,6 +56,7 @@ const favoriteServerAddress = RX.Styles.createTextStyle({
 
 const dialog = RX.Styles.createViewStyle({
   maxWidth: 450,
+  minWidth: 300,
 });
 
 export = {

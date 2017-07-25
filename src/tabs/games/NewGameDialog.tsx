@@ -3,6 +3,7 @@ import Styles = require("../../styles/main");
 import {AvailableModules} from "../../modules/AvailableModules";
 import {ModuleSelector} from "../../modules/ModuleSelector";
 import {WorldGenerator} from "../../modules/WorldGenerator";
+import {OkCancelButtonBar} from "../../OkCancelButtonBar";
 
 interface NewGameDialogProps {
   availableModules: AvailableModules;
@@ -50,10 +51,7 @@ export class NewGameDialog extends RX.Component<NewGameDialogProps, NewGameDialo
           items={this.props.availableModules.worldGenerators.map(renderWorldGenerator)}
           selectedValue={this.state.worldGenerator}
           onValueChange={(itemValue: string) => this.setState({worldGenerator: itemValue})} />
-        <RX.View style={Styles.flex.row}>
-          <RX.Button onPress={() => this.okClicked()} style={Styles.okButton}><RX.Text>OK</RX.Text></RX.Button>
-          <RX.Button onPress={() => this.cancelClicked()} style={Styles.cancelButton}><RX.Text>Cancel</RX.Text></RX.Button>
-        </RX.View>
+        <OkCancelButtonBar onOk={this.okClicked} onCancel={this.cancelClicked} />
       </RX.View>
     );
   }

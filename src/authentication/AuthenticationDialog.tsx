@@ -3,8 +3,10 @@ import Styles = require("../styles/main");
 import {AlertDialog} from "../AlertDialog";
 import {CheckBox} from "../components/CheckBox";
 import {RadioButtonGroup} from "../components/RadioButtonGroup";
+import {OkCancelButtonBar} from "../OkCancelButtonBar";
 import {TextPromptDialog} from "../TextPromptDialog";
 import {AuthenticationManager} from "./AuthenticationManager";
+import {IdentityStorageServiceLoginDialog} from "./IdentityStorageServiceLoginDialog";
 
 interface AuthenticationDialogProps {
   closeCallback: () => void;
@@ -40,10 +42,7 @@ export class AuthenticationDialog extends RX.Component<AuthenticationDialogProps
           text="Remember the certificate pair on this device/browser"
           checkedByDefault={false}
           onCheckedChange={(checked: boolean) => this.setState({rememberCerts: checked})}/>
-        <RX.View style={Styles.flex.row}>
-          <RX.Button onPress={this.nextClicked} style={Styles.okButton}><RX.Text>Next</RX.Text></RX.Button>
-          <RX.Button onPress={this.cancelClicked} style={Styles.cancelButton}><RX.Text>Cancel</RX.Text></RX.Button>
-        </RX.View>
+        <OkCancelButtonBar okLabel="Next" onOk={this.nextClicked} onCancel={this.cancelClicked} />
       </RX.View>
     );
   }
@@ -57,7 +56,8 @@ export class AuthenticationDialog extends RX.Component<AuthenticationDialogProps
     });
     switch (this.state.authenticationMethodIndex) {
       case 0:
-        AlertDialog.show("This feature is not implemented yet.");
+        IdentityStorageServiceLoginDialog.show((server: string, username: string, password: string) =>
+          AlertDialog.show("This feature is not implemented yet."));
         break;
       case 1:
         TextPromptDialog.show("Please paste the contents of your game client's configuration file here", (value: string) =>
