@@ -39,7 +39,7 @@ export class IdentityStorageServiceApiClient extends GenericRestClient {
   }
 
   public logout(): Promise<null> {
-    return this.performApiDelete("api/session/" + this.sessionToken);
+    return this.performApiDelete("api/session");
   }
 
   protected _getHeaders(options: ApiCallOptions): {[key: string]: string} {

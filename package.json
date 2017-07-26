@@ -24,6 +24,8 @@
     "webpack": "2.2.1"
   },
   "dependencies": {
+    "base-64": "^0.1.0",
+    "buffer": "^5.0.6",
     "jsbn": "^1.1.0",
     "jsrsasign": "^8.0.3",
     "react": "^15.4.1",

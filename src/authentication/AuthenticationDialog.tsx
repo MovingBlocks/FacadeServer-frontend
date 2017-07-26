@@ -5,6 +5,7 @@ import {CheckBox} from "../components/CheckBox";
 import {RadioButtonGroup} from "../components/RadioButtonGroup";
 import {OkCancelButtonBar} from "../OkCancelButtonBar";
 import {TextPromptDialog} from "../TextPromptDialog";
+import {WaitOverlay} from "../WaitOverlay";
 import {AuthenticationManager} from "./AuthenticationManager";
 import {IdentityStorageServiceLoginDialog} from "./IdentityStorageServiceLoginDialog";
 
@@ -49,6 +50,7 @@ export class AuthenticationDialog extends RX.Component<AuthenticationDialogProps
 
   private nextClicked = () => {
     this.props.manager.setCallback((error: string) => {
+      WaitOverlay.close();
       if (error !== null) {
         AlertDialog.show("Authentication failed: " + error);
       }
@@ -56,11 +58,16 @@ export class AuthenticationDialog extends RX.Component<AuthenticationDialogProps
     });
     switch (this.state.authenticationMethodIndex) {
       case 0:
-        IdentityStorageServiceLoginDialog.show(this.props.manager.authenticateFromIdentityStorage);
+        IdentityStorageServiceLoginDialog.show((server: string, username: string, password: string) => {
+          WaitOverlay.open("Authenticating...");
+          this.props.manager.authenticateFromIdentityStorage(server, username, password);
+        });
         break;
       case 1:
-        TextPromptDialog.show("Please paste the contents of your game client's configuration file here", (value: string) =>
-          this.props.manager.authenticateFromConfig(value), true);
+        TextPromptDialog.show("Please paste the contents of your game client's configuration file here", (value: string) => {
+          WaitOverlay.open("Authenticating...");
+          this.props.manager.authenticateFromConfig(value);
+        }, true);
     }
   }
 

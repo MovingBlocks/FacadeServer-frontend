@@ -9,6 +9,10 @@ import {IncomingMessage} from "../io/IncomingMessage";
 import {OutgoingMessage} from "../io/OutgoingMessage";
 import {ClientIdentity, PublicIdentityCertificate} from "./ClientIdentity";
 import {Base64ClientIdentity, IdentityStorageServiceApiClient} from "./IdentityStorageServiceApiClient";
+// polyfills for React Native
+global.Buffer = global.Buffer || require("buffer").Buffer;
+window.atob = window.atob || require("base-64").decode;
+window.btoa = window.btoa || require("base-64").encode;
 
 interface HandshakeHello {
   random: string;
@@ -74,6 +78,7 @@ export class AuthenticationManager {
             {modulus: authManager.b64toHex(id.clientPrivate.modulus), exponent: authManager.b64toHex(id.clientPrivate.exponent)},
           );
           authManager.authenticate(serverHello, clientIdentity);
+          apiClient.logout();
         })),
       (errMsg: string) => authManager.callback(errMsg), // error
     );
@@ -122,7 +127,6 @@ export class AuthenticationManager {
       this.handshakeHelloToArrayBuffer(serverHelloMessage, this.b64ToArrayBuffer),
       this.handshakeHelloToArrayBuffer(clientHelloMessage, (n) => n.toByteArray()),
     ]);
-    // TODO remove console.log(dataToSign);
     const sig = new rs.Signature({alg: "SHA1withRSA"});
     const rsa = new rs.RSAKey();
     rsa.setPrivate(privateCert.modulus.toString(16), publicCert.exponent.toString(16), privateCert.exponent.toString(16));
@@ -132,9 +136,7 @@ export class AuthenticationManager {
     const signedHex = sig.sign();
     const signedB64 = new Buffer(signedHex, "hex").toString("base64");
     clientHelloMessage.certificate = clientIdentity.getClientPublicBase64();
-    // TODO remove console.log(signedB64);
     this.processMessage = (messageData: ActionResult) => {
-      // TODO remove console.log(messageData);
       if (messageData.status === "OK") {
         this.authenticated = true;
         this.callback(null);
