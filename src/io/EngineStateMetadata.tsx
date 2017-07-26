@@ -1,3 +1,5 @@
+import {ResourceName} from "./ResourceName";
+
 export type EngineStateEnum =
   "IDLE" |
   "LOADING" |
@@ -9,9 +11,17 @@ export interface EngineStateMetadata {
   gameName?: string;
 }
 
-export class EngineStateMetadataRenderer {
+export class EngineStateMetadataUtils {
+
   public static render(engineState: EngineStateMetadata): string {
     return this.capitalizeFirst(engineState.state) + " " + this.emptyIfUndefinedOrNull(engineState.gameName);
+  }
+
+  public static isResourceAvailable(engineState: EngineStateMetadata, resourceName: ResourceName): boolean {
+    if (resourceName === "onlinePlayers" || resourceName === "console") {
+      return engineState.state === "RUNNING";
+    }
+    return true;
   }
 
   private static capitalizeFirst(input: string): string {

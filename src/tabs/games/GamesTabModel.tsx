@@ -1,5 +1,6 @@
 import {EngineStateMetadata} from "../../io/EngineStateMetadata";
 import {IncomingMessage} from "../../io/IncomingMessage";
+import {ResourceName} from "../../io/ResourceName";
 import {AvailableModules} from "../../modules/AvailableModules";
 import {ResourceSubscriberTabModel} from "../ResourceSubscriberTabModel";
 import {TabController} from "../TabController";
@@ -12,7 +13,7 @@ export class GamesTabModel extends ResourceSubscriberTabModel<GamesTabState> {
     return "Games and Modules";
   }
 
-  public getSubscribedResourceNames(): string[] {
+  public getSubscribedResourceNames(): ResourceName[] {
     return ["games", "engineState", "availableModules"];
   }
 

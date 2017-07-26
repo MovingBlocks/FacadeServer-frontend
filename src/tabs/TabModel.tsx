@@ -10,13 +10,16 @@ export abstract class TabModel<StateType> {
   private controller: TabController<StateType>;
   private updateView: (viewState: StateType) => void;
 
+  constructor() {
+     this.updateView = () => {return; };
+  }
+
   public abstract getName(): string;
   public abstract getDefaultState(): StateType;
   public abstract initController(): TabController<StateType>;
   public abstract onMessage(message: IncomingMessage): void;
 
   public initialize(): void {
-    this.updateView = () => {return; };
     this.controller = this.initController();
     if (this.controller !== null) {
       this.controller.setModel(this);

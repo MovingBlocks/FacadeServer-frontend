@@ -1,6 +1,6 @@
 import RX = require("reactxp");
 import Styles = require("../../styles/main");
-import {EngineStateMetadata, EngineStateMetadataRenderer} from "../../io/EngineStateMetadata";
+import {EngineStateMetadata, EngineStateMetadataUtils} from "../../io/EngineStateMetadata";
 import {TabView} from "../TabView";
 import {GamesTabController} from "./GamesTabController";
 import {GameInfo, GamesTabState, NameVersion} from "./GamesTabState";
@@ -13,7 +13,7 @@ export class GamesTabView extends TabView<GamesTabState> {
     const showNewGameDialog = () => NewGameDialog.show(this.state.availableModules, controller.newGame);
     return (
       <RX.ScrollView>
-        <RX.Text>Server status: {EngineStateMetadataRenderer.render(this.state.engineState)}</RX.Text>
+        <RX.Text>Server status: {EngineStateMetadataUtils.render(this.state.engineState)}</RX.Text>
         <RX.Button style={Styles.okButton} onPress={showNewGameDialog}><RX.Text>New game</RX.Text></RX.Button>
         <RX.Text>Savegames on this server:</RX.Text>
           {this.state.games.map((game: GameInfo, i: number) => this.renderGameInfo(game, i, controller))}

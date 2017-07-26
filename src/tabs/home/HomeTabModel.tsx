@@ -1,4 +1,5 @@
 import {EngineStateMetadata} from "../../io/EngineStateMetadata";
+import {ResourceName} from "../../io/ResourceName";
 import {ResourceSubscriberTabModel} from "../ResourceSubscriberTabModel";
 import {TabController} from "../TabController";
 import {TabModel} from "../TabModel";
@@ -10,7 +11,7 @@ export class HomeTabModel extends ResourceSubscriberTabModel<HomeTabState> {
     return "Home";
   }
 
-  public getSubscribedResourceNames(): string[] {
+  public getSubscribedResourceNames(): ResourceName[] {
     return ["onlinePlayers", "engineState"];
   }
 
