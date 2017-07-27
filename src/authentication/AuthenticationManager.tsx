@@ -69,8 +69,8 @@ export class AuthenticationManager {
     const authManager: AuthenticationManager = this;
     const apiClient: IdentityStorageServiceApiClient = new IdentityStorageServiceApiClient(server);
     apiClient.login(username, password).then(() =>
-      authManager.requestServerHello((serverHello: HandshakeHello) => // success
-        apiClient.getClientIdentity(serverHello.certificate.id).then((id: Base64ClientIdentity) => {
+      authManager.requestServerHello((serverHello: HandshakeHello) => // login success
+        apiClient.getClientIdentity(serverHello.certificate.id).then((id: Base64ClientIdentity) => { // get identity success
           // convert BigIntegers from base64 to jsbn representation
           const clientIdentity = new ClientIdentity(
             {id: id.server.id, modulus: authManager.b64ToJsbn(id.server.modulus), exponent: authManager.b64ToJsbn(id.server.exponent), signature: authManager.b64ToJsbn(id.server.signature)},
@@ -79,8 +79,9 @@ export class AuthenticationManager {
           );
           authManager.authenticate(serverHello, clientIdentity);
           apiClient.logout();
-        })),
-      (errMsg: string) => authManager.callback(errMsg), // error
+        },
+      (errMsg: string) => authManager.callback(errMsg))), // get identity error
+      (errMsg: string) => authManager.callback(errMsg), // login error
     );
   }
 

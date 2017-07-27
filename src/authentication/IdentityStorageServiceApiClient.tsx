@@ -22,20 +22,27 @@ export class IdentityStorageServiceApiClient extends GenericRestClient {
   private sessionToken: string;
 
   public constructor(server: string) {
-    // TODO try to format URL if it's not valid (e.g. prepend http://, append /)
+    if (!/^http:\/\//.test(server)) {
+      server = "http://" + server;
+    }
+    if (!/\/$/.test(server)) {
+      server = server + "/";
+    }
     super(server);
   }
 
   public login(login: string, password: string): Promise<null> {
     return this.performApiPost("api/session", {login, password}).then(
       (result: LoginResult) => {this.sessionToken = result.token; },
-      (result: any) => Rejected(result.body.error),
+      (result: any) => Rejected(result.body ? result.body.error : "Failed to connect to the server"),
     );
   }
 
   public getClientIdentity(serverId: string): Promise<Base64ClientIdentity> {
-    return this.performApiGet<ClientIdentityResponse>("api/client_identity/" + serverId)
-      .then((r: ClientIdentityResponse) => r.clientIdentity); // TODO: handle identity not found
+    return this.performApiGet<ClientIdentityResponse>("api/client_identity/" + serverId).then(
+      (result: ClientIdentityResponse) => result.clientIdentity,
+      (result: any) => Rejected(result.body.error),
+    );
   }
 
   public logout(): Promise<null> {
