@@ -3,4 +3,5 @@ export type ResourceName =
   "console" |
   "engineState" |
   "games" |
+  "moduleInstaller" |
   "onlinePlayers";

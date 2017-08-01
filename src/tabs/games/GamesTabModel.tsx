@@ -10,7 +10,7 @@ import {GameInfo, GamesTabState} from "./GamesTabState";
 export class GamesTabModel extends ResourceSubscriberTabModel<GamesTabState> {
 
   public getName(): string {
-    return "Games and Modules";
+    return "Games";
   }
 
   public getSubscribedResourceNames(): ResourceName[] {

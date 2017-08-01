@@ -18,6 +18,8 @@ import {GamesTabModel} from "./tabs/games/GamesTabModel";
 import {GamesTabView} from "./tabs/games/GamesTabView";
 import {HomeTabModel} from "./tabs/home/HomeTabModel";
 import {HomeTabView} from "./tabs/home/HomeTabView";
+import {ModulesTabModel} from "./tabs/modules/ModulesTabModel";
+import {ModulesTabView} from "./tabs/modules/ModulesTabView";
 
 interface AppState {
   activeTab?: number;
@@ -33,11 +35,13 @@ class App extends RX.Component<{}, AppState> {
     new HomeTabModel(),
     new ConsoleTabModel(),
     new GamesTabModel(),
+    new ModulesTabModel(),
   ];
   private tabViews = [
     <HomeTabView model={this.tabs[0]} />,
     <ConsoleTabView model={this.tabs[1]} />,
-    <GamesTabView model={this.tabs[2]}/>,
+    <GamesTabView model={this.tabs[2]} />,
+    <ModulesTabView model={this.tabs[3]} />,
   ];
 
   constructor(props: {}) {

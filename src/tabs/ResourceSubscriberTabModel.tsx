@@ -11,7 +11,7 @@ export abstract class ResourceSubscriberTabModel<StateType> extends TabModel<Sta
   public abstract getSubscribedResourceNames(): ResourceName[];
 
   public onMessage(message: IncomingMessage): void {
-    if (this.isSubscribedToResource(message.resourceName)) {
+    if (message.resourceName === "engineState" || this.isSubscribedToResource(message.resourceName)) {
       if (message.messageType === "RESOURCE_CHANGED") {
         this._onResourceUpdated(message.resourceName, message.data);
       } else if (message.messageType === "ACTION_RESULT" && message.data) {
