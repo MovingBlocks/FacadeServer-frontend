@@ -59,6 +59,10 @@ const dialog = RX.Styles.createViewStyle({
   minWidth: 300,
 });
 
+const width50 = RX.Styles.createViewStyle({
+  width: 50,
+});
+
 export = {
   backgrounds,
   box,
@@ -74,6 +78,7 @@ export = {
   justifyFlexEnd,
   okButton: [box, greyBorder, justifyCenter, backgrounds.lime],
   scrollableDialog,
+  smallTextInput: [box, greyBorder, backgrounds.white],
   verticalScroll,
   waitOverlay: [flex.fillAll, backgrounds.lightGrayAlpha, justifyCenter],
   whiteBox: [box, greyBorder, backgrounds.white],

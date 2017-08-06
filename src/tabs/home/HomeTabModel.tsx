@@ -12,11 +12,11 @@ export class HomeTabModel extends ResourceSubscriberTabModel<HomeTabState> {
   }
 
   public getSubscribedResourceNames(): ResourceName[] {
-    return ["onlinePlayers", "engineState"];
+    return ["onlinePlayers", "engineState", "serverPort", "serverMotd"];
   }
 
   public getDefaultState(): HomeTabState {
-    return {onlinePlayers: [], engineState: {state: "UNKNOWN"}};
+    return {onlinePlayers: [], engineState: {state: "UNKNOWN"}, serverPort: 0, serverMotd: ""};
   }
 
   public initController(): TabController<null> {
@@ -28,6 +28,10 @@ export class HomeTabModel extends ResourceSubscriberTabModel<HomeTabState> {
       this.update({onlinePlayers: data as string[]});
     } else if (resourceName === "engineState") {
       this.update({engineState: data as EngineStateMetadata});
+    } else if (resourceName === "serverPort") {
+      this.update({serverPort: data as number});
+    } else if (resourceName === "serverMotd") {
+      this.update({serverMotd: data as string});
     }
   }
 

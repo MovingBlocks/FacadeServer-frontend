@@ -4,4 +4,6 @@ export type ResourceName =
   "engineState" |
   "games" |
   "moduleInstaller" |
-  "onlinePlayers";
+  "onlinePlayers" |
+  "serverPort" |
+  "serverMotd";
