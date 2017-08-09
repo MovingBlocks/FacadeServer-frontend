@@ -5,5 +5,6 @@ export type ResourceName =
   "games" |
   "moduleInstaller" |
   "onlinePlayers" |
+  "serverAdmins" |
   "serverPort" |
   "serverMotd";

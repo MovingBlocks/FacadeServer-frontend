@@ -7,6 +7,7 @@ import {TabModel} from "./TabModel";
 
 export abstract class ResourceSubscriberTabModel<StateType> extends TabModel<StateType> {
 
+  // TODO: change 1st argument type from string to ResourceName
   public abstract onResourceUpdated(resourceName: string, data: any): void;
   public abstract getSubscribedResourceNames(): ResourceName[];
 

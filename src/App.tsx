@@ -20,6 +20,8 @@ import {HomeTabModel} from "./tabs/home/HomeTabModel";
 import {HomeTabView} from "./tabs/home/HomeTabView";
 import {ModulesTabModel} from "./tabs/modules/ModulesTabModel";
 import {ModulesTabView} from "./tabs/modules/ModulesTabView";
+import {ServerAdminsTabModel} from "./tabs/serverAdmins/ServerAdminsTabModel";
+import {ServerAdminsTabView} from "./tabs/serverAdmins/ServerAdminsTabView";
 import {SettingsTabModel} from "./tabs/settings/SettingsTabModel";
 import {SettingsTabView} from "./tabs/settings/SettingsTabView";
 
@@ -39,6 +41,7 @@ class App extends RX.Component<{}, AppState> {
     new GamesTabModel(),
     new ModulesTabModel(),
     new SettingsTabModel(),
+    new ServerAdminsTabModel(),
   ];
   private tabViews = [
     <HomeTabView model={this.tabs[0]} />,
@@ -46,6 +49,7 @@ class App extends RX.Component<{}, AppState> {
     <GamesTabView model={this.tabs[2]} />,
     <ModulesTabView model={this.tabs[3]} />,
     <SettingsTabView model={this.tabs[4]} />,
+    <ServerAdminsTabView model={this.tabs[5]} />,
   ];
 
   constructor(props: {}) {
