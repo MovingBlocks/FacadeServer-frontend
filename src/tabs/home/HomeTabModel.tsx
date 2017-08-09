@@ -1,4 +1,5 @@
 import {EngineStateMetadata} from "../../io/EngineStateMetadata";
+import {OnlinePlayerMetadata} from "../../io/OnlinePlayerMetadata";
 import {ResourceName} from "../../io/ResourceName";
 import {ResourceSubscriberTabModel} from "../ResourceSubscriberTabModel";
 import {TabController} from "../TabController";
@@ -25,7 +26,7 @@ export class HomeTabModel extends ResourceSubscriberTabModel<HomeTabState> {
 
   public onResourceUpdated(resourceName: string, data: any): void {
     if (resourceName === "onlinePlayers") {
-      this.update({onlinePlayers: data as string[]});
+      this.update({onlinePlayers: data as OnlinePlayerMetadata[]});
     } else if (resourceName === "engineState") {
       this.update({engineState: data as EngineStateMetadata});
     } else if (resourceName === "serverPort") {

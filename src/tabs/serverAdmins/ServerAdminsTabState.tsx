@@ -1,3 +1,8 @@
+export interface ServerAdminMetadata {
+  id: string;
+  name: string;
+}
+
 export interface ServerAdminsTabState {
-  adminIds: string[];
+  admins: ServerAdminMetadata[];
 }

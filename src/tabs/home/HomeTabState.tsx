@@ -1,7 +1,8 @@
 import {EngineStateMetadata} from "../../io/EngineStateMetadata";
+import {OnlinePlayerMetadata} from "../../io/OnlinePlayerMetadata";
 
 export interface HomeTabState {
-  onlinePlayers?: string[];
+  onlinePlayers?: OnlinePlayerMetadata[];
   engineState?: EngineStateMetadata;
   serverMotd?: string;
   serverPort?: number;
