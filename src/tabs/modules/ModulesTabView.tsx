@@ -14,7 +14,7 @@ export class ModulesTabView extends TabView<ModulesTabState> {
     return (
       <RX.View>
         <RX.Text>Module installer status: {this.state.installerStatus}</RX.Text>
-        <RX.Button style={Styles.okButton} onPress={showInstallDialog}>Install new modules...</RX.Button>
+        <RX.Button style={Styles.okButton} onPress={showInstallDialog}><RX.Text>Install new modules...</RX.Text></RX.Button>
         <RX.Text>Installed modules:</RX.Text>
         <RX.ScrollView>
           {this.state.installedModules.modules.map(this.renderModule)}

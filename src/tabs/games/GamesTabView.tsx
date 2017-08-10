@@ -38,7 +38,7 @@ export class GamesTabView extends TabView<GamesTabState> {
     );
     const startButton = (
       <RX.Button style={Styles.okButton}
-      onPress={() => controller.startGame(game.manifest.title)}><RX.Text>Start</RX.Text></RX.Button>
+        onPress={() => controller.startGame(game.manifest.title)}><RX.Text>Start</RX.Text></RX.Button>
     );
     const startStopButton = game.manifest.title === engineState.gameName ? stopButton : startButton;
     return (
