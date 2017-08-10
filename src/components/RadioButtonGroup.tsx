@@ -3,13 +3,14 @@ import ComponentStyles = require("./ComponentsStyles");
 
 export interface RadioButtonGroupProps {
   items: string[];
-  onSelectionChange: (selectedIndex: number) => void;
+  keys?: string[];
+  onSelectionChange: (selectedIndex: number, selectedKey: string) => void;
 }
 
 export class RadioButtonGroup extends RX.Component<RadioButtonGroupProps, {selectedIndex: number}> {
 
   public componentWillMount() {
-    this.setState({selectedIndex: 0});
+    this.changeSelection(0);
   }
 
   public render() {
@@ -21,17 +22,18 @@ export class RadioButtonGroup extends RX.Component<RadioButtonGroupProps, {selec
   }
 
   private renderItem = (item: string, index: number) => {
-    const changeSelection = (newValue: number) => {
-      this.setState({selectedIndex: newValue});
-      this.props.onSelectionChange(newValue);
-    };
     return (
-      <RX.Button key={index} style={ComponentStyles.componentContainer} onPress={() => changeSelection(index)}>
+      <RX.Button key={index} style={ComponentStyles.componentContainer} onPress={() => this.changeSelection(index)}>
         <RX.View style={ComponentStyles.radioButtonOuterCircle}>
           <RX.View style={index === this.state.selectedIndex ? ComponentStyles.radioButtonInnerCircle : null} />
         </RX.View>
         <RX.Text>{item}</RX.Text>
       </RX.Button>
     );
+  }
+
+  private changeSelection = (newValue: number) => {
+    this.setState({selectedIndex: newValue});
+    this.props.onSelectionChange(newValue, this.props.keys ? this.props.keys[newValue] : null);
   }
 }

@@ -1,8 +1,9 @@
-export interface ServerAdminMetadata {
+export interface IdNamePair {
   id: string;
   name: string;
 }
 
 export interface ServerAdminsTabState {
-  admins: ServerAdminMetadata[];
+  admins: IdNamePair[];
+  nonAdmins: IdNamePair[];
 }

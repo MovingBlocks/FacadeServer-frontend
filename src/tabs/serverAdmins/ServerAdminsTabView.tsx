@@ -1,10 +1,12 @@
 import RX = require("reactxp");
 import Styles = require("../../styles/main");
+import {AlertDialog} from "../../AlertDialog";
 import {OkCancelButtonBar} from "../../OkCancelButtonBar";
 import {TextPromptDialog} from "../../TextPromptDialog";
 import {TabView} from "../TabView";
+import {AddFromOnlinePlayersDialog} from "./AddFromOnlinePlayersDialog";
 import {ServerAdminsTabController} from "./ServerAdminsTabController";
-import {ServerAdminMetadata, ServerAdminsTabState} from "./ServerAdminsTabState";
+import {IdNamePair, ServerAdminsTabState} from "./ServerAdminsTabState";
 
 export class ServerAdminsTabView extends TabView<ServerAdminsTabState> {
 
@@ -16,19 +18,25 @@ export class ServerAdminsTabView extends TabView<ServerAdminsTabState> {
       "you will get locked out from the administrative features. If this happens, delete the serverAdmins.json file in the server data" +
       "directory and restart the server (admin access will be set back to public).";
     const controller: ServerAdminsTabController = this.props.model.getController() as ServerAdminsTabController;
-    const showAddAdminDialog = () => TextPromptDialog.show("Enter the new admin's client ID:", controller.addAdmin);
+    const showAddAdmin = () => TextPromptDialog.show("Enter the new admin's client ID:", controller.addAdmin);
+    const showAddOnlineAdmin = () => AddFromOnlinePlayersDialog.show(this.state.nonAdmins, controller.addAdmin);
+    const showCantAdd = () => AlertDialog.show("There are no online players which aren't already in the server admins list.");
     return (
       <RX.View>
         <RX.View style={Styles.flex.row}>
-          <RX.Button style={Styles.okButton} onPress={showAddAdminDialog}><RX.Text>Add a client ID to the admin list</RX.Text></RX.Button>
-          <RX.Button style={Styles.okButton}><RX.Text>Select an online player to add to the admin list</RX.Text></RX.Button>
+          <RX.Button style={Styles.okButton} onPress={showAddAdmin}>
+            <RX.Text>Add a client ID to the admin list</RX.Text>
+          </RX.Button>
+          <RX.Button style={Styles.okButton} onPress={this.state.nonAdmins.length !== 0 ? showAddOnlineAdmin : showCantAdd}>
+            <RX.Text>Select an online player to add to the admin list</RX.Text>
+          </RX.Button>
         </RX.View>
         {this.state.admins.length === 0 ? <RX.Text>{emptyListMessage}</RX.Text> : this.renderList(this.renderAdmin(controller))}
       </RX.View>
     );
   }
 
-  private renderList(renderAdmin: (admin: ServerAdminMetadata) => JSX.Element) {
+  private renderList(renderAdmin: (admin: IdNamePair) => JSX.Element) {
     return (
       <RX.View>
         <RX.Text>This is the list of the user IDs which are allowed to perform administrative actions:</RX.Text>
@@ -39,7 +47,7 @@ export class ServerAdminsTabView extends TabView<ServerAdminsTabState> {
     );
   }
 
-  private renderAdmin = (controller: ServerAdminsTabController) => (admin: ServerAdminMetadata) => {
+  private renderAdmin = (controller: ServerAdminsTabController) => (admin: IdNamePair) => {
     return (
       <RX.View key={admin.id} style={Styles.flex.row}>
         <RX.View>
