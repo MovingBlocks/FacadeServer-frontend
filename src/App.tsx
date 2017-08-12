@@ -5,9 +5,12 @@ import Styles = require("./styles/main");
 import {AlertDialog} from "./AlertDialog";
 import {AuthenticationDialog} from "./authentication/AuthenticationDialog";
 import {AuthenticationManager} from "./authentication/AuthenticationManager";
+import {HandshakeHello} from "./authentication/HandshakeHello";
+import {LocalIdentityStorage} from "./authentication/LocalIdentityStorage";
 import {ActionResult} from "./io/ActionResult";
 import {IncomingMessage} from "./io/IncomingMessage";
 import {OutgoingMessage} from "./io/OutgoingMessage";
+import {MessageDialog} from "./MessageDialog";
 import {ServerAddressInput} from "./ServerAddressInput";
 import {TabModel} from "./tabs/TabModel";
 import {WaitOverlay} from "./WaitOverlay";
@@ -100,20 +103,58 @@ class App extends RX.Component<{}, AppState> {
     WaitOverlay.open("Connecting...");
     this.setState({serverAddr: address});
     this.wsConn = new WebSocket(address);
-    this.wsConn.onmessage = this.onMessage;
     this.wsConn.onopen = () => {
       this.authenticationManager = new AuthenticationManager(this.sendJsonData);
-      this.tabs.forEach((tab: TabModel<any>) => {
-        tab.setSendDataCallback(this.sendJsonData);
-        tab.initialize();
+      this.requestServerHello((serverHello: HandshakeHello) => {
+        WaitOverlay.close();
+        const serverId: string = serverHello !== null ? serverHello.certificate.id : null;
+        const storedIdentity /*: TODO */ = LocalIdentityStorage.getIdentity(serverId);
+        if (storedIdentity !== null) {
+          const authenticateAndFinalize = () => {
+            AlertDialog.show("Sorry, this feature is not yet implemented.", this.finalizeInitialization);
+          };
+          const finalizeAndRemoveIdentity = () => {
+            this.finalizeInitialization();
+            LocalIdentityStorage.removeIdentity(serverId);
+          };
+          MessageDialog.show(
+            "Do you want to authenticate to this server with the locally stored identity?",
+            {label: "Yes", style: "GREEN", onClick: authenticateAndFinalize},
+            {label: "No", style: "RED", onClick: this.finalizeInitialization},
+            {label: "No, and delete the stored identity", style: "RED", onClick: finalizeAndRemoveIdentity},
+          );
+        } else {
+          this.finalizeInitialization();
+        }
       });
-      WaitOverlay.close();
     };
     this.wsConn.onerror = () => {
       WaitOverlay.close();
       AlertDialog.show("Failed to connect to the server.", () =>
         RX.Modal.show(<ServerAddressInput callback={this.connect}/>, "ServerAddressInput"));
     };
+  }
+
+  private requestServerHello = (callback: (serverHello: HandshakeHello) => void) => {
+    this.wsConn.onmessage = (event: MessageEvent) => {
+      const message: ActionResult = (JSON.parse(event.data) as IncomingMessage).data as ActionResult;
+      if (message.status === "OK") {
+        callback(message.data as HandshakeHello);
+      } else {
+        callback(null);
+      }
+    };
+    // not actually authenticating, just to retrieve the public certificate which contains the server's ID
+    this.sendJsonData({messageType: "AUTHENTICATION_REQUEST"});
+  }
+
+  private finalizeInitialization = () => {
+    // TODO: use waitpopup
+    this.wsConn.onmessage = this.onMessage;
+    this.tabs.forEach((tab: TabModel<any>) => {
+      tab.setSendDataCallback(this.sendJsonData);
+      tab.initialize();
+    });
   }
 
   private showLoginDialog = () => {

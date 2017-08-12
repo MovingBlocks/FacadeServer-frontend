@@ -8,17 +8,12 @@ import {ActionResult} from "../io/ActionResult";
 import {IncomingMessage} from "../io/IncomingMessage";
 import {OutgoingMessage} from "../io/OutgoingMessage";
 import {ClientIdentity, PublicIdentityCertificate} from "./ClientIdentity";
+import {HandshakeHello} from "./HandshakeHello";
 import {Base64ClientIdentity, IdentityStorageServiceApiClient} from "./IdentityStorageServiceApiClient";
 // polyfills for React Native
 global.Buffer = global.Buffer || require("buffer").Buffer;
 window.atob = window.atob || require("base-64").decode;
 window.btoa = window.btoa || require("base-64").encode;
-
-interface HandshakeHello {
-  random: string;
-  certificate: PublicIdentityCertificate;
-  timestamp: string;
-}
 
 export class AuthenticationManager {
 

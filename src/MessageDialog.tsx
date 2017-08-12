@@ -10,7 +10,7 @@ interface MessageDialogProps {
 export class MessageDialog extends RX.Component<MessageDialogProps, null> {
 
   public static show(message: string, ...buttons: ButtonProps[]) {
-    RX.Modal.show(<MessageDialog message={message} buttons={buttons}/>, "messageDialog");
+    RX.Modal.show(<MessageDialog message={message} buttons={buttons} />, "messageDialog");
   }
 
   public render() {
