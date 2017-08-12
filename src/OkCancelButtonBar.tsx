@@ -1,5 +1,6 @@
 import RX = require("reactxp");
 import Styles = require("./styles/main");
+import {ButtonBar} from "./ButtonBar";
 
 interface OkCancelButtonBarProps {
   okLabel?: string;
@@ -10,14 +11,21 @@ interface OkCancelButtonBarProps {
 
 export class OkCancelButtonBar extends RX.Component<OkCancelButtonBarProps, null> {
 
+  private base: ButtonBar;
+
+  public constructor(props: OkCancelButtonBarProps) {
+    super(props);
+    const okLabel: string = props.okLabel ? props.okLabel : "OK";
+    const cancelLabel: string = props.cancelLabel ? props.cancelLabel : "Cancel";
+    this.base = new ButtonBar({
+      buttons: [
+        {label: okLabel, style: "GREEN", onClick: props.onOk},
+        {label: cancelLabel, style: "RED", onClick: props.onCancel},
+      ],
+    });
+  }
+
   public render() {
-    const okLabel = this.props.okLabel ? this.props.okLabel : "OK";
-    const cancelLabel = this.props.cancelLabel ? this.props.cancelLabel : "Cancel";
-    return (
-      <RX.View style={Styles.flex.row}>
-        <RX.Button onPress={this.props.onOk} style={Styles.okButton}><RX.Text>{okLabel}</RX.Text></RX.Button>
-        <RX.Button onPress={this.props.onCancel} style={Styles.cancelButton}><RX.Text>{cancelLabel}</RX.Text></RX.Button>
-      </RX.View>
-    );
+    return this.base.render();
   }
 }
