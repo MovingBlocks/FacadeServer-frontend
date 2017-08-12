@@ -1,30 +1,13 @@
 import RX = require("reactxp");
 import Styles = require("./styles/main");
+import {MessageDialog} from "./MessageDialog";
 
-interface AlertDialogProps {
-  afterClose: () => void;
-  message: string;
-}
-
-export class AlertDialog extends RX.Component<AlertDialogProps, null> {
+export class AlertDialog {
 
   public static show(message: string, afterClose?: () => void) {
-    RX.Modal.show(<AlertDialog message={message} afterClose={afterClose}/>, "alertDialog");
+    MessageDialog.show(message, {label: "OK", style: "GREEN", onClick: afterClose});
   }
 
-  public render() {
-    return (
-      <RX.View style={Styles.whiteBox}>
-        <RX.Text>{this.props.message}</RX.Text>
-        <RX.Button onPress={this.close} style={Styles.okButton}><RX.Text>OK</RX.Text></RX.Button>
-      </RX.View>
-    );
-  }
-
-  private close = () => {
-    RX.Modal.dismiss("alertDialog");
-    if (this.props.afterClose) {
-      this.props.afterClose();
-    }
+  private constructor() {
   }
 }
