@@ -108,7 +108,7 @@ class App extends RX.Component<{}, AppState> {
       this.requestServerHello((serverHello: HandshakeHello) => {
         WaitOverlay.close();
         const serverId: string = serverHello !== null ? serverHello.certificate.id : null;
-        const storedIdentity /*: TODO */ = LocalIdentityStorage.getIdentity(serverId);
+        const storedIdentity: any = null; /*: TODO = LocalIdentityStorage.getIdentity(serverId); */
         if (storedIdentity !== null) {
           const authenticateAndFinalize = () => {
             AlertDialog.show("Sorry, this feature is not yet implemented.", this.finalizeInitialization);
@@ -144,7 +144,6 @@ class App extends RX.Component<{}, AppState> {
         callback(null);
       }
     };
-    // not actually authenticating, just to retrieve the public certificate which contains the server's ID
     this.sendJsonData({messageType: "AUTHENTICATION_REQUEST"});
   }
 

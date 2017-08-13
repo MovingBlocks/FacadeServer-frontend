@@ -1,6 +1,7 @@
 import RX = require("reactxp");
 import Styles = require("./styles/main");
 import {AlertDialog} from "./AlertDialog";
+import {CollectionStorage} from "./CollectionStorage";
 import {TextPromptDialog} from "./TextPromptDialog";
 
 interface FavoriteServer {
@@ -15,6 +16,7 @@ interface ServerAddressInputProps {
 interface ServerAddressInputState {
   value?: string;
   favorites?: FavoriteServer[];
+  favoriteStorage?: CollectionStorage<FavoriteServer>;
 }
 
 export class ServerAddressInput extends RX.Component<ServerAddressInputProps, ServerAddressInputState> {
@@ -24,8 +26,10 @@ export class ServerAddressInput extends RX.Component<ServerAddressInputProps, Se
   }
 
   public componentWillMount() {
-    this.setState({value: "ws://localhost:8080/ws", favorites: []});
-    this.refreshFavorites();
+    this.setState(
+      {value: "ws://localhost:8080/ws", favorites: [], favoriteStorage: new CollectionStorage<FavoriteServer>("favServers")},
+      this.refreshFavorites,
+    );
   }
 
   public render() {
@@ -59,7 +63,7 @@ export class ServerAddressInput extends RX.Component<ServerAddressInputProps, Se
   }
 
   private refreshFavorites = () => {
-    this.getFavorites((favorites: FavoriteServer[]) => this.setState({favorites}));
+    this.state.favoriteStorage.getAll((favorites: FavoriteServer[]) => this.setState({favorites}));
   }
 
   private onChangeValue = (newValue: string) => {
@@ -68,46 +72,16 @@ export class ServerAddressInput extends RX.Component<ServerAddressInputProps, Se
 
   private addFavorite = () => {
     TextPromptDialog.show("Enter a name for this server:", (name: string) => {
-      this.getFavorites((favorites: FavoriteServer[]) => {
-        if (favorites.filter((value: FavoriteServer) => value.name === name).length === 0) {
-          favorites.push({name, address: this.state.value});
-          this.setFavorites(favorites);
+        if (this.state.favorites.filter((value: FavoriteServer) => value.name === name).length === 0) {
+          this.state.favoriteStorage.add({name, address: this.state.value}, this.refreshFavorites);
         } else {
           AlertDialog.show("Error: a favorite server with the same name already exists.");
         }
-      });
     });
   }
 
   private deleteFavorite = (name: string) => {
-    this.getFavorites((data: FavoriteServer[]) => {
-      const index = this.findIndex(data, (value: FavoriteServer) => value.name === name);
-      if (index !== -1) {
-        data.splice(index, 1);
-        this.setFavorites(data);
-        this.refreshFavorites();
-      } else {
-        AlertDialog.show("Error: this entry does not exist or more entries with the same name exist.");
-      }
-    });
-  }
-
-  private setFavorites(data: FavoriteServer[]) {
-    RX.Storage.setItem("favServers", JSON.stringify(data));
-  }
-
-  private getFavorites(then: (result: FavoriteServer[]) => void) {
-    RX.Storage.getItem("favServers").then((data: string) =>
-      then(data !== null ? JSON.parse(data) as FavoriteServer[] : []));
-  }
-
-  private findIndex<T>(array: T[], predicate: (value: T) => boolean) {
-    for (let i = 0; i < array.length; i++) {
-      if (predicate(array[i])) {
-        return i;
-      }
-    }
-    return -1;
+    this.state.favoriteStorage.removeFirst((item: FavoriteServer) => item.name === name, this.refreshFavorites);
   }
 
 }
