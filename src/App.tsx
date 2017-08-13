@@ -5,8 +5,10 @@ import Styles = require("./styles/main");
 import {AlertDialog} from "./AlertDialog";
 import {AuthenticationDialog} from "./authentication/AuthenticationDialog";
 import {AuthenticationManager} from "./authentication/AuthenticationManager";
+import {ClientIdentity} from "./authentication/ClientIdentity";
 import {HandshakeHello} from "./authentication/HandshakeHello";
 import {LocalIdentityStorage} from "./authentication/LocalIdentityStorage";
+import {MultiFormatBigInteger} from "./authentication/MultiFormatBigInteger";
 import {ActionResult} from "./io/ActionResult";
 import {IncomingMessage} from "./io/IncomingMessage";
 import {OutgoingMessage} from "./io/OutgoingMessage";
@@ -106,26 +108,38 @@ class App extends RX.Component<{}, AppState> {
     this.wsConn.onopen = () => {
       this.authenticationManager = new AuthenticationManager(this.sendJsonData);
       this.requestServerHello((serverHello: HandshakeHello) => {
+        this.wsConn.onmessage = this.onMessage;
         WaitOverlay.close();
         const serverId: string = serverHello !== null ? serverHello.certificate.id : null;
-        const storedIdentity: any = null; /*: TODO = LocalIdentityStorage.getIdentity(serverId); */
-        if (storedIdentity !== null) {
-          const authenticateAndFinalize = () => {
-            AlertDialog.show("Sorry, this feature is not yet implemented.", this.finalizeInitialization);
-          };
-          const finalizeAndRemoveIdentity = () => {
+        LocalIdentityStorage.getIdentity(serverId, (result: ClientIdentity<MultiFormatBigInteger>) => {
+          if (result !== null) {
+            const authenticateAndFinalize = () => {
+              WaitOverlay.open("Authenticating...");
+              this.authenticationManager.setCallback((error: string) => {
+                WaitOverlay.close();
+                if (error !== null) {
+                  AlertDialog.show("Authentication failed: " + error);
+                } else {
+                  this.setState({authenticated: this.authenticationManager.isAuthenticated()});
+                }
+                this.finalizeInitialization();
+              });
+              this.authenticationManager.authenticate(serverHello, result);
+            };
+            const finalizeAndRemoveIdentity = () => {
+              this.finalizeInitialization();
+              LocalIdentityStorage.removeIdentity(serverId);
+            };
+            MessageDialog.show(
+              "Do you want to authenticate to this server with the locally stored identity?",
+              {label: "Yes", style: "GREEN", onClick: authenticateAndFinalize},
+              {label: "No", style: "RED", onClick: this.finalizeInitialization},
+              {label: "No, and delete the stored identity", style: "RED", onClick: finalizeAndRemoveIdentity},
+            );
+          } else {
             this.finalizeInitialization();
-            LocalIdentityStorage.removeIdentity(serverId);
-          };
-          MessageDialog.show(
-            "Do you want to authenticate to this server with the locally stored identity?",
-            {label: "Yes", style: "GREEN", onClick: authenticateAndFinalize},
-            {label: "No", style: "RED", onClick: this.finalizeInitialization},
-            {label: "No, and delete the stored identity", style: "RED", onClick: finalizeAndRemoveIdentity},
-          );
-        } else {
-          this.finalizeInitialization();
-        }
+          }
+        });
       });
     };
     this.wsConn.onerror = () => {
@@ -148,8 +162,6 @@ class App extends RX.Component<{}, AppState> {
   }
 
   private finalizeInitialization = () => {
-    // TODO: use waitpopup
-    this.wsConn.onmessage = this.onMessage;
     this.tabs.forEach((tab: TabModel<any>) => {
       tab.setSendDataCallback(this.sendJsonData);
       tab.initialize();

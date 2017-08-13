@@ -10,6 +10,7 @@ export class LocalIdentityStorage {
     LocalIdentityStorage.storage.getFirstMatch(
       (item: ClientIdentity<string>) => item.server.id === serverId,
       (result: ClientIdentity<string>) => then(MultiFormatClientIdentityUtil.buildFromBase64(result)),
+      () => then(null),
     );
   }
 

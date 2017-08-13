@@ -7,7 +7,10 @@ import {OkCancelButtonBar} from "../OkCancelButtonBar";
 import {TextPromptDialog} from "../TextPromptDialog";
 import {WaitOverlay} from "../WaitOverlay";
 import {AuthenticationManager} from "./AuthenticationManager";
+import {ClientIdentity} from "./ClientIdentity";
 import {IdentityStorageServiceLoginDialog} from "./IdentityStorageServiceLoginDialog";
+import {LocalIdentityStorage} from "./LocalIdentityStorage";
+import {MultiFormatBigInteger} from "./MultiFormatBigInteger";
 
 interface AuthenticationDialogProps {
   closeCallback: () => void;
@@ -49,10 +52,12 @@ export class AuthenticationDialog extends RX.Component<AuthenticationDialogProps
   }
 
   private nextClicked = () => {
-    this.props.manager.setCallback((error: string) => {
+    this.props.manager.setCallback((error: string, identity: ClientIdentity<MultiFormatBigInteger>) => {
       WaitOverlay.close();
       if (error !== null) {
         AlertDialog.show("Authentication failed: " + error);
+      } else if (this.state.rememberCerts) {
+        LocalIdentityStorage.setIdentity(identity);
       }
       this.props.closeCallback();
     });

@@ -17,7 +17,7 @@ export class AuthenticationManager {
 
   private authenticated: boolean = false;
 
-  private callback: (error: string) => void;
+  private callback: (error: string, identity?: ClientIdentity<MultiFormatBigInteger>) => void;
   private sendMessage: (data: OutgoingMessage) => void;
   private processMessage: (messageData: ActionResult) => void;
 
@@ -29,7 +29,7 @@ export class AuthenticationManager {
     return this.authenticated;
   }
 
-  public setCallback(callback: (error: string) => void): void {
+  public setCallback(callback: (error: string, identity?: ClientIdentity<MultiFormatBigInteger>) => void): void {
     this.callback = callback;
   }
 
@@ -87,7 +87,7 @@ export class AuthenticationManager {
     this.processMessage = (messageData: ActionResult) => {
       if (messageData.status === "OK") {
         this.authenticated = true;
-        this.callback(null);
+        this.callback(null, clientIdentity);
       } else {
         this.callback(messageData.message ? messageData.message : "The server failed to verify the client's identity.");
       }

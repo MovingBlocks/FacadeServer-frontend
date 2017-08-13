@@ -26,10 +26,14 @@ export class CollectionStorage<T> {
     });
   }
 
-  public getFirstMatch(predicate: (item: T) => boolean, then: (foundItem: T) => void): void {
+  public getFirstMatch(predicate: (item: T) => boolean, onSuccess: (foundItem: T) => void, onFail: () => void): void {
     this.load((collection: T[]) => {
       const filtered: T[] = collection.filter(predicate);
-      then(filtered.length > -1 ? filtered[0] : null);
+      if (filtered.length > 0) {
+        onSuccess(filtered[0]);
+      } else {
+        onFail();
+      }
     });
   }
 
