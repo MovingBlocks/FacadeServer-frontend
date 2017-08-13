@@ -2,19 +2,14 @@ import {ApiCallOptions, GenericRestClient} from "simplerestclients";
 import {Promise, Rejected} from "synctasks";
 import {AlertDialog} from "../AlertDialog";
 import {PrivateIdentityCertificate, PublicIdentityCertificate} from "./ClientIdentity";
+import {ClientIdentity} from "./ClientIdentity";
 
 export interface LoginResult {
   token: string;
 }
 
-export interface Base64ClientIdentity {
-  server: PublicIdentityCertificate;
-  clientPublic: PublicIdentityCertificate;
-  clientPrivate: PrivateIdentityCertificate;
-}
-
 export interface ClientIdentityResponse {
-  clientIdentity: Base64ClientIdentity;
+  clientIdentity: ClientIdentity<string>;
 }
 
 export class IdentityStorageServiceApiClient extends GenericRestClient {
@@ -38,7 +33,7 @@ export class IdentityStorageServiceApiClient extends GenericRestClient {
     );
   }
 
-  public getClientIdentity(serverId: string): Promise<Base64ClientIdentity> {
+  public getClientIdentity(serverId: string): Promise<ClientIdentity<string>> {
     return this.performApiGet<ClientIdentityResponse>("api/client_identity/" + serverId).then(
       (result: ClientIdentityResponse) => result.clientIdentity,
       (result: any) => Rejected(result.body.error),

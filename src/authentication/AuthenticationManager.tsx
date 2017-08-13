@@ -1,7 +1,6 @@
 /* tslint:disable:no-var-requires */
-/* tslint:disable:max-line-length */
 
-const BigInteger = require("jsbn").BigInteger;
+// const BigInteger = require("jsbn").BigInteger;
 const rs = require("jsrsasign");
 import JSONparse = require("../io/utils/json_parse");
 import {ActionResult} from "../io/ActionResult";
@@ -9,11 +8,11 @@ import {IncomingMessage} from "../io/IncomingMessage";
 import {OutgoingMessage} from "../io/OutgoingMessage";
 import {ClientIdentity, PublicIdentityCertificate} from "./ClientIdentity";
 import {HandshakeHello} from "./HandshakeHello";
-import {Base64ClientIdentity, IdentityStorageServiceApiClient} from "./IdentityStorageServiceApiClient";
-// polyfills for React Native
-global.Buffer = global.Buffer || require("buffer").Buffer;
-window.atob = window.atob || require("base-64").decode;
-window.btoa = window.btoa || require("base-64").encode;
+import {IdentityStorageServiceApiClient} from "./IdentityStorageServiceApiClient";
+import {Jsbn, MultiFormatBigInteger} from "./MultiFormatBigInteger";
+import {MultiFormatClientIdentityUtil} from "./MultiFormatClientIdentityUtil";
+
+type IdentityConverter<T> = (v: ClientIdentity<T>) => ClientIdentity<MultiFormatBigInteger>;
 
 export class AuthenticationManager {
 
@@ -46,15 +45,10 @@ export class AuthenticationManager {
     if (this.authenticated) {
       throw new Error("Already authenticated");
     }
-    const config: any = JSONparse(configString, (key: string, value: any) => {
-      // cast to ClientIdentity class to allow usage of its methods
-      if (value.hasOwnProperty("server") && value.hasOwnProperty("clientPublic") && value.hasOwnProperty("clientPrivate")) {
-        return new ClientIdentity(value.server, value.clientPublic, value.clientPrivate);
-      }
-      return value;
-    });
+    const config: any = JSONparse(configString, null);
     if (typeof config.security === "object" && config.security.clientIdentities.constructor === Array) {
-      this.authenticateFromIdentityArray(config.security.clientIdentities as ClientIdentity[]);
+      const jsbnOnlyIdentity: Array<ClientIdentity<Jsbn>> = config.security.clientIdentities as Array<ClientIdentity<Jsbn>>;
+      this.authenticateFromIdentityArray(jsbnOnlyIdentity, MultiFormatClientIdentityUtil.buildFromJsbn);
     } else {
       this.callback("The entered data is not a valid Terasology client JSON configuration.");
     }
@@ -65,24 +59,13 @@ export class AuthenticationManager {
     const apiClient: IdentityStorageServiceApiClient = new IdentityStorageServiceApiClient(server);
     apiClient.login(username, password).then(() =>
       authManager.requestServerHello((serverHello: HandshakeHello) => // login success
-        apiClient.getClientIdentity(serverHello.certificate.id).then((id: Base64ClientIdentity) => { // get identity success
-          // convert BigIntegers from base64 to jsbn representation
-          const clientIdentity = new ClientIdentity(
-            {id: id.server.id, modulus: authManager.b64ToJsbn(id.server.modulus), exponent: authManager.b64ToJsbn(id.server.exponent), signature: authManager.b64ToJsbn(id.server.signature)},
-            {id: id.clientPublic.id, modulus: authManager.b64ToJsbn(id.clientPublic.modulus), exponent: authManager.b64ToJsbn(id.clientPublic.exponent), signature: authManager.b64ToJsbn(id.clientPublic.signature)},
-            {modulus: authManager.b64toHex(id.clientPrivate.modulus), exponent: authManager.b64toHex(id.clientPrivate.exponent)},
-          );
-          authManager.authenticate(serverHello, clientIdentity);
+        apiClient.getClientIdentity(serverHello.certificate.id).then((base64Identity: ClientIdentity<string>) => { // get identity success
+          authManager.authenticate(serverHello, MultiFormatClientIdentityUtil.buildFromBase64(base64Identity));
           apiClient.logout();
         },
       (errMsg: string) => authManager.callback(errMsg))), // get identity error
       (errMsg: string) => authManager.callback(errMsg), // login error
     );
-  }
-
-  private b64ToJsbn(value: string): any {
-    const hex = new Buffer(value, "base64").toString("hex");
-    return new BigInteger(hex, 16);
   }
 
   private requestServerHello(then: (serverHello: HandshakeHello) => void): void {
@@ -96,17 +79,13 @@ export class AuthenticationManager {
     this.sendMessage({messageType: "AUTHENTICATION_REQUEST"});
   }
 
-  private b64toHex(input: string): string { // TODO remove
-    return new Buffer(input, "base64").toString("hex");
-  }
-
-  private authenticateFromIdentityArray(identities: ClientIdentity[]): void {
+  private authenticateFromIdentityArray<T>(identities: Array<ClientIdentity<T>>, convertIdentity: IdentityConverter<T>): void {
     this.requestServerHello((serverHello: HandshakeHello) => {
       let found = false;
-      identities.forEach((identity: ClientIdentity) => {
-        if (identity.getServerId() === serverHello.certificate.id) {
+      identities.forEach((identity: ClientIdentity<T>) => {
+        if (identity.server.id === serverHello.certificate.id) {
           found = true;
-          this.authenticate(serverHello, identity);
+          this.authenticate(serverHello, convertIdentity(identity));
         }
       });
       if (!found) {
@@ -115,23 +94,23 @@ export class AuthenticationManager {
     });
   }
 
-  private authenticate(serverHelloMessage: HandshakeHello, clientIdentity: ClientIdentity): void {
-    const publicCert = clientIdentity.getClientPublic();
-    const privateCert = clientIdentity.getClientPrivate();
-    const clientHelloMessage: HandshakeHello = {random: "", certificate: publicCert, timestamp: ""};
+  private authenticate(serverHelloMessage: HandshakeHello, clientIdentity: ClientIdentity<MultiFormatBigInteger>): void {
+    const publicCert = clientIdentity.clientPublic;
+    const privateCert = clientIdentity.clientPrivate;
+    const base64PublicCert = MultiFormatClientIdentityUtil.extractBase64(clientIdentity).clientPublic;
+    const clientHelloMessage: HandshakeHello = {random: "", certificate: base64PublicCert, timestamp: ""};
     const dataToSign: Uint8Array = this.concatArrayBuffers([
-      this.handshakeHelloToArrayBuffer(serverHelloMessage, this.b64ToArrayBuffer),
-      this.handshakeHelloToArrayBuffer(clientHelloMessage, (n) => n.toByteArray()),
+      this.handshakeHelloToArrayBuffer(serverHelloMessage),
+      this.handshakeHelloToArrayBuffer(clientHelloMessage),
     ]);
     const sig = new rs.Signature({alg: "SHA1withRSA"});
     const rsa = new rs.RSAKey();
-    rsa.setPrivate(privateCert.modulus.toString(16), publicCert.exponent.toString(16), privateCert.exponent.toString(16));
+    rsa.setPrivate(privateCert.modulus.getHex(), publicCert.exponent.getHex(), privateCert.exponent.getHex());
     sig.setAlgAndProvider("SHA1withRSA", "cryptojs/jsrsa");
     sig.init(rsa);
     sig.updateHex(Buffer.from(dataToSign).toString("hex"));
     const signedHex = sig.sign();
     const signedB64 = new Buffer(signedHex, "hex").toString("base64");
-    clientHelloMessage.certificate = clientIdentity.getClientPublicBase64();
     this.processMessage = (messageData: ActionResult) => {
       if (messageData.status === "OK") {
         this.authenticated = true;
@@ -143,13 +122,13 @@ export class AuthenticationManager {
     this.sendMessage({messageType: "AUTHENTICATION_DATA", data: {clientHello: clientHelloMessage, signature: signedB64}});
   }
 
-  private handshakeHelloToArrayBuffer(input: HandshakeHello, numberConvert: (n: any) => any): ArrayBuffer {
+  private handshakeHelloToArrayBuffer(input: HandshakeHello): ArrayBuffer {
     return this.concatArrayBuffers([
       this.b64ToArrayBuffer(input.random),
       this.str2ab(input.certificate.id),
-      numberConvert(input.certificate.modulus),
-      numberConvert(input.certificate.exponent),
-      numberConvert(input.certificate.signature),
+      this.b64ToArrayBuffer(input.certificate.modulus),
+      this.b64ToArrayBuffer(input.certificate.exponent),
+      this.b64ToArrayBuffer(input.certificate.signature),
       this.b64ToArrayBuffer(input.timestamp),
     ]);
   }
