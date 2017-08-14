@@ -3,6 +3,7 @@ import Styles = require("./styles/main");
 import {AlertDialog} from "./AlertDialog";
 import {CollectionStorage} from "./CollectionStorage";
 import {TextPromptDialog} from "./TextPromptDialog";
+import {WaitOverlay} from "./WaitOverlay";
 
 interface FavoriteServer {
   name: string;
@@ -72,9 +73,11 @@ export class ServerAddressInput extends RX.Component<ServerAddressInputProps, Se
 
   private addFavorite = () => {
     TextPromptDialog.show("Enter a name for this server:", (name: string) => {
+        WaitOverlay.open("Saving...");
         if (this.state.favorites.filter((value: FavoriteServer) => value.name === name).length === 0) {
-          this.state.favoriteStorage.add({name, address: this.state.value}, this.refreshFavorites);
+          this.state.favoriteStorage.add({name, address: this.state.value}, WaitOverlay.close);
         } else {
+          WaitOverlay.close();
           AlertDialog.show("Error: a favorite server with the same name already exists.");
         }
     });
