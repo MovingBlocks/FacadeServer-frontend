@@ -9,6 +9,7 @@ import {ClientIdentity} from "./authentication/ClientIdentity";
 import {HandshakeHello} from "./authentication/HandshakeHello";
 import {LocalIdentityStorage} from "./authentication/LocalIdentityStorage";
 import {MultiFormatBigInteger} from "./authentication/MultiFormatBigInteger";
+import {Header} from "./header/Header";
 import {ActionResult} from "./io/ActionResult";
 import {IncomingMessage} from "./io/IncomingMessage";
 import {OutgoingMessage} from "./io/OutgoingMessage";
@@ -34,6 +35,7 @@ interface AppState {
   activeTab?: number;
   serverAddr?: string;
   authenticated?: boolean;
+  isMenuOpen?: boolean;
 }
 
 class App extends RX.Component<{}, AppState> {
@@ -59,7 +61,7 @@ class App extends RX.Component<{}, AppState> {
 
   constructor(props: {}) {
     super(props);
-    this.state = {activeTab: 0};
+    this.state = {activeTab: 0, isMenuOpen: false};
   }
 
   public componentDidMount() {
@@ -67,28 +69,31 @@ class App extends RX.Component<{}, AppState> {
   }
 
   public render() {
-    const authUI = this.state.authenticated ?
-      <RX.Text>Authenticated</RX.Text> :
-      <RX.Button style={Styles.okButton} onPress={this.showLoginDialog}><RX.Text>Login</RX.Text></RX.Button>;
+    const isApp = RX.Platform.getType() !== "web";
     const tabSwitchButtons = this.tabs.map((item, index) => (
-      <RX.Button key={index} style={Styles.whiteBox} onPress={() => this.changeTab(index)}>
-        <RX.Text>{item.getName()}</RX.Text>
-      </RX.Button>
+      <RX.View key={index}>
+        <RX.Button style={Styles.whiteBox} onPress={() => this.changeTab(index)}>
+          <RX.Text>{item.getName()}</RX.Text>
+        </RX.Button>
+      </RX.View>
     ));
+    const tabMenu = (
+      <RX.View style={Styles.whiteBox}>
+        <RX.ScrollView>
+          {tabSwitchButtons}
+        </RX.ScrollView>
+      </RX.View>
+    );
     return (
       <RX.View style={Styles.flex.fill}>
-        <RX.View style={Styles.header}>
-          <RX.Text style={Styles.headerText}>Terasology Server web interface</RX.Text>
-          <RX.View style={Styles.flex.row}>
-            <RX.Text>Server: {this.state.serverAddr}</RX.Text>
-            {authUI}
-          </RX.View>
-        </RX.View>
+        <Header
+          serverAddr={this.state.serverAddr}
+          authenticated={this.state.authenticated}
+          showLogin={this.showLoginDialog}
+          toggleMenu={() => this.setState({isMenuOpen: !this.state.isMenuOpen})} />
         <RX.View style={[Styles.flex.row, Styles.flex.fill]}>
-          <RX.View style={Styles.whiteBox}>
-            {tabSwitchButtons}
-          </RX.View>
-          <RX.View style={[Styles.whiteBox, Styles.flex.column, Styles.flex.fill]}>
+          {!isApp || this.state.isMenuOpen ? tabMenu : null}
+          <RX.View style={[isApp ? Styles.box : Styles.whiteBox, Styles.flex.column, Styles.flex.fill]}>
             {this.tabViews[this.state.activeTab]}
           </RX.View>
         </RX.View>
@@ -103,9 +108,20 @@ class App extends RX.Component<{}, AppState> {
   private connect = (address: string) => {
     RX.Modal.dismiss("ServerAddressInput");
     WaitOverlay.open("Connecting...");
-    this.setState({serverAddr: address});
-    this.wsConn = new WebSocket(address);
+    const onConnectionError = (error: string) => {
+      WaitOverlay.close();
+      AlertDialog.show("Failed to connect to the server." + (error ? " Reason: " + error : ""), () =>
+        RX.Modal.show(<ServerAddressInput callback={this.connect}/>, "ServerAddressInput"));
+    };
+    try {
+      this.wsConn = new WebSocket(address);
+    } catch (err) {
+      onConnectionError(err);
+      return;
+    }
+    this.wsConn.onerror = () => onConnectionError("");
     this.wsConn.onopen = () => {
+      this.setState({serverAddr: address});
       this.authenticationManager = new AuthenticationManager(this.sendJsonData);
       this.requestServerHello((serverHello: HandshakeHello) => {
         this.wsConn.onmessage = this.onMessage;
@@ -141,11 +157,6 @@ class App extends RX.Component<{}, AppState> {
           }
         });
       });
-    };
-    this.wsConn.onerror = () => {
-      WaitOverlay.close();
-      AlertDialog.show("Failed to connect to the server.", () =>
-        RX.Modal.show(<ServerAddressInput callback={this.connect}/>, "ServerAddressInput"));
     };
   }
 

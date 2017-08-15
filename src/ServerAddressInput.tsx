@@ -35,18 +35,20 @@ export class ServerAddressInput extends RX.Component<ServerAddressInputProps, Se
 
   public render() {
     return (
-      <RX.ScrollView style={[Styles.whiteBox, Styles.scrollableDialog]}>
-        <RX.Text>Server WebSocket address:</RX.Text>
-        <RX.TextInput style={Styles.whiteBox} value={this.state.value} onChangeText={this.onChangeValue} />
-        <RX.View style={Styles.flex.row}>
-          <RX.Button onPress={this.addFavorite} style={Styles.okButton}><RX.Text>Add favorite</RX.Text></RX.Button>
-          <RX.Button onPress={() => this.props.callback(this.state.value)} style={Styles.okButton}><RX.Text>Connect</RX.Text></RX.Button>
-        </RX.View>
-        <RX.View style={Styles.flex.column}>
-          <RX.Text>Favorites:</RX.Text>
-          {this.state.favorites.map(this.renderFavorite)}
-        </RX.View>
-      </RX.ScrollView>
+      <RX.View style={[Styles.whiteBox, Styles.scrollableDialog]}>
+        <RX.ScrollView>
+          <RX.Text>Server WebSocket address:</RX.Text>
+          <RX.TextInput style={Styles.whiteBox} value={this.state.value} onChangeText={this.onChangeValue} />
+          <RX.View style={Styles.flex.row}>
+            <RX.Button onPress={this.addFavorite} style={Styles.okButton}><RX.Text>Add favorite</RX.Text></RX.Button>
+            <RX.Button onPress={() => this.props.callback(this.state.value)} style={Styles.okButton}><RX.Text>Connect</RX.Text></RX.Button>
+          </RX.View>
+          <RX.View style={Styles.flex.column}>
+            <RX.Text>Favorites:</RX.Text>
+            {this.state.favorites.map(this.renderFavorite)}
+          </RX.View>
+        </RX.ScrollView>
+      </RX.View>
     );
   }
 

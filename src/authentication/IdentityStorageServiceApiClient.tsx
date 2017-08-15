@@ -17,7 +17,7 @@ export class IdentityStorageServiceApiClient extends GenericRestClient {
   private sessionToken: string;
 
   public constructor(server: string) {
-    if (!/^http:\/\//.test(server)) {
+    if (!/^https?:\/\//.test(server)) {
       server = "http://" + server;
     }
     if (!/\/$/.test(server)) {

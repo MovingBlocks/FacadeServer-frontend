@@ -16,6 +16,14 @@ const justifyFlexEnd = RX.Styles.createViewStyle({
   justifyContent: "flex-end",
 });
 
+const justifyFlexStart = RX.Styles.createViewStyle({
+  justifyContent: "flex-start",
+});
+
+const justifySpaceBetween = RX.Styles.createViewStyle({
+  justifyContent: "space-between",
+});
+
 const commandTextInput = RX.Styles.createTextInputStyle({
   flex: 5,
 });
@@ -34,7 +42,6 @@ const headerText = RX.Styles.createTextStyle({
 const header = RX.Styles.createViewStyle({
   backgroundColor: "#259c9c",
   flexDirection: "row",
-  justifyContent: "space-between",
 });
 
 const verticalScroll = RX.Styles.createScrollViewStyle({
@@ -54,13 +61,20 @@ const favoriteServerAddress = RX.Styles.createTextStyle({
   maxWidth: 200,
 });
 
+const mobileHeaderMenu = RX.Styles.createViewStyle({
+  flex: 1,
+  paddingHorizontal: 8,
+  paddingVertical: 4,
+});
+
+const mobileHeaderContent = RX.Styles.createViewStyle({
+  flex: 3,
+  marginLeft: 32,
+});
+
 const dialog = RX.Styles.createViewStyle({
   maxWidth: 450,
   minWidth: 300,
-});
-
-const width50 = RX.Styles.createViewStyle({
-  width: 50,
 });
 
 export = {
@@ -72,13 +86,17 @@ export = {
   favoriteServerAddress,
   flex,
   greyBorder,
-  header: [box, header],
+  header,
   headerText,
   justifyCenter,
   justifyFlexEnd,
+  justifyFlexStart,
+  justifySpaceBetween,
+  mobileHeaderContent,
+  mobileHeaderMenu,
   okButton: [box, greyBorder, justifyCenter, backgrounds.lime],
   scrollableDialog,
-  smallTextInput: [box, greyBorder, backgrounds.white],
+  smallTextInput: [box, greyBorder, backgrounds.white], // TODO: remove (use whiteBox)
   verticalScroll,
   waitOverlay: [flex.fillAll, backgrounds.lightGrayAlpha, justifyCenter],
   whiteBox: [box, greyBorder, backgrounds.white],

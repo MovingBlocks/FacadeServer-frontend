@@ -8,5 +8,5 @@ global.Buffer = global.Buffer || require("buffer").Buffer;
 window.atob = window.atob || require("base-64").decode;
 window.btoa = window.btoa || require("base-64").encode;
 
-RX.App.initialize(true, true);
+RX.App.initialize(true, true); // TODO: change for production
 RX.UserInterface.setMainView(<App />);
