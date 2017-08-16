@@ -17,9 +17,15 @@
     "outDir": "./dist/",
     "types": [
       "node"
-    ]
+    ],
+    "baseUrl": "",
+    "paths": {
+      "common/*": ["./src/*"],
+      "platformSpecific/*": ["./src-platformspecific/web/*"]
+    }
   },
   "include": [
-    "./src/**/*"
+    "./src/**/*",
+    "./src-platformspecific/**/*"
   ]
 }

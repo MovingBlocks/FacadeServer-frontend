@@ -1,8 +1,8 @@
 import RX = require("reactxp");
-import Styles = require("../styles/main");
-import {HeaderProps} from "./HeaderProps";
+import Styles = require("common/styles/main");
+import {HeaderProps} from "common/header/HeaderProps";
 
-export class WebHeader extends RX.Component<HeaderProps, null> {
+export class Header extends RX.Component<HeaderProps, null> {
 
   public render() {
     const authUI = this.props.authenticated ?

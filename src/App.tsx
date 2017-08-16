@@ -9,7 +9,6 @@ import {ClientIdentity} from "./authentication/ClientIdentity";
 import {HandshakeHello} from "./authentication/HandshakeHello";
 import {LocalIdentityStorage} from "./authentication/LocalIdentityStorage";
 import {MultiFormatBigInteger} from "./authentication/MultiFormatBigInteger";
-import {Header} from "./header/Header";
 import {ActionResult} from "./io/ActionResult";
 import {IncomingMessage} from "./io/IncomingMessage";
 import {OutgoingMessage} from "./io/OutgoingMessage";
@@ -30,6 +29,8 @@ import {ServerAdminsTabModel} from "./tabs/serverAdmins/ServerAdminsTabModel";
 import {ServerAdminsTabView} from "./tabs/serverAdmins/ServerAdminsTabView";
 import {SettingsTabModel} from "./tabs/settings/SettingsTabModel";
 import {SettingsTabView} from "./tabs/settings/SettingsTabView";
+
+import {Header} from "platformSpecific/Header";
 
 interface AppState {
   activeTab?: number;
