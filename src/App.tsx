@@ -1,5 +1,3 @@
-/* tslint:disable:jsx-no-lambda */
-
 import RX = require("reactxp");
 import Styles = require("./styles/main");
 import {AlertDialog} from "./AlertDialog";
@@ -30,13 +28,12 @@ import {ServerAdminsTabView} from "./tabs/serverAdmins/ServerAdminsTabView";
 import {SettingsTabModel} from "./tabs/settings/SettingsTabModel";
 import {SettingsTabView} from "./tabs/settings/SettingsTabView";
 
-import {Header} from "platformSpecific/Header";
+import {AppUI} from "platformSpecific/AppUI";
 
 interface AppState {
   activeTab?: number;
   serverAddr?: string;
   authenticated?: boolean;
-  isMenuOpen?: boolean;
 }
 
 class App extends RX.Component<{}, AppState> {
@@ -62,7 +59,7 @@ class App extends RX.Component<{}, AppState> {
 
   constructor(props: {}) {
     super(props);
-    this.state = {activeTab: 0, isMenuOpen: false};
+    this.state = {activeTab: 0};
   }
 
   public componentDidMount() {
@@ -70,35 +67,16 @@ class App extends RX.Component<{}, AppState> {
   }
 
   public render() {
-    const isApp = RX.Platform.getType() !== "web";
-    const tabSwitchButtons = this.tabs.map((item, index) => (
-      <RX.View key={index}>
-        <RX.Button style={Styles.whiteBox} onPress={() => this.changeTab(index)}>
-          <RX.Text>{item.getName()}</RX.Text>
-        </RX.Button>
-      </RX.View>
-    ));
-    const tabMenu = (
-      <RX.View style={Styles.whiteBox}>
-        <RX.ScrollView>
-          {tabSwitchButtons}
-        </RX.ScrollView>
-      </RX.View>
-    );
     return (
-      <RX.View style={Styles.flex.fill}>
-        <Header
-          serverAddr={this.state.serverAddr}
-          authenticated={this.state.authenticated}
-          showLogin={this.showLoginDialog}
-          toggleMenu={() => this.setState({isMenuOpen: !this.state.isMenuOpen})} />
-        <RX.View style={[Styles.flex.row, Styles.flex.fill]}>
-          {!isApp || this.state.isMenuOpen ? tabMenu : null}
-          <RX.View style={[isApp ? Styles.box : Styles.whiteBox, Styles.flex.column, Styles.flex.fill]}>
-            {this.tabViews[this.state.activeTab]}
-          </RX.View>
-        </RX.View>
-      </RX.View>
+      <AppUI
+        activeTabIndex={this.state.activeTab}
+        tabViews={this.tabViews}
+        tabNames={this.tabs.map((tab) => tab.getName())}
+        serverAddr={this.state.serverAddr}
+        isAuthenticated={this.state.authenticated}
+        login={this.showLoginDialog}
+        setActiveTab={(index) => this.setState({activeTab: index})}
+      />
     );
   }
 
@@ -203,10 +181,6 @@ class App extends RX.Component<{}, AppState> {
       }
       // console.log(JSON.stringify(message)); // for debugging
     });
-  }
-
-  private changeTab(index: number) {
-    this.setState({activeTab: index});
   }
 
 }
