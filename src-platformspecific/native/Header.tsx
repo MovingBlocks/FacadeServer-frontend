@@ -10,7 +10,7 @@ export class Header extends RX.Component<HeaderProps, null> {
     return (
       <RX.View style={[Styles.header, Styles.justifyFlexStart]}>
         <RX.Button style={Styles.mobileHeaderMenu} onPress={this.props.toggleMenu}>
-          <RX.Image style={Styles.flex.fill} source={require("../../menu.png")} />
+          <RX.Image style={Styles.flex.fill} source={require("assets/menu.png")} />
         </RX.Button>
         <RX.View style={[Styles.flex.column, Styles.mobileHeaderContent]}>
           <RX.Text style={Styles.headerText}>Terasology mobile interface</RX.Text>

@@ -1,0 +1,10 @@
+{
+  "presets": ["react-native"],
+  "plugins": [
+    ["module-alias", [
+      { "src": "./dist/src-platformspecific/native", "expose": "platformSpecific" },
+      { "src": "./dist/src", "expose": "common" },
+      { "src": "./assets", "expose": "assets" }
+    ]]
+  ]
+}
