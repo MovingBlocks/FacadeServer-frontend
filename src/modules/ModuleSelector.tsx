@@ -25,9 +25,9 @@ export class ModuleSelector extends RX.Component<ModuleSelectorProps, ModuleSele
 
   public render() {
     return (
-      <RX.View style={Styles.flex.row}>
+      <RX.View>
         <RX.View>
-          <RX.Text>Enabled (click to disable)</RX.Text>
+          <RX.Text>Selected (click to disable)</RX.Text>
           <RX.ScrollView style={[Styles.whiteBox, Styles.verticalScroll]}>
             {this.state.enabledModules.map((i, localIndex) => this.renderModule(this.props.availableModules[i], this.remove(localIndex)))}
           </RX.ScrollView>
@@ -57,7 +57,9 @@ export class ModuleSelector extends RX.Component<ModuleSelectorProps, ModuleSele
   }
 
   private add = (i: number) => () => {
-    this.state.enabledModules.push(i);
+    if (this.state.enabledModules.indexOf(i) === -1) { // add only if not already selected
+      this.state.enabledModules.push(i);
+    }
     this.setState(this.state); // refresh
     this.props.onSelectionChange(this.state.enabledModules);
   }

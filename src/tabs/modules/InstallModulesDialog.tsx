@@ -36,12 +36,12 @@ export class InstallModulesDialog extends RX.Component<InstallModulesDialogProps
   public render() {
     return (
       <RX.View style={Styles.whiteBox}>
-        <RX.Text>Choose modules to install (more modules than the selected ones could be installed due to dependencies):</RX.Text>
+        <RX.Text>Choose modules to install:</RX.Text>
         <ModuleSelector
           availableModules={this.props.moduleList}
           defaultEnabledModules={this.state.selectedModules}
           onSelectionChange={this.onChange} />
-        <OkCancelButtonBar onOk={this.okClicked} onCancel={this.cancelClicked} okLabel="Start installation" />
+        <OkCancelButtonBar onOk={this.okClicked} onCancel={this.cancelClicked} okLabel="Install selected modules and dependencies" />
       </RX.View>
     );
   }
