@@ -1,4 +1,5 @@
 import {TextPromptDialog} from "../../TextPromptDialog";
+import {YesNoDialog} from "../../YesNoDialog";
 import {TabController} from "../TabController";
 import {GamesTabState} from "./GamesTabState";
 import {NewGameDialogState} from "./NewGameDialog";
@@ -18,14 +19,13 @@ export class GamesTabController extends TabController<GamesTabState> {
   }
 
   public deleteGame = (gameName: string) => {
-    // TODO ask confirmation (here, in view or in model?)
-    this.performGameAction({gameName}, "Delete");
+    YesNoDialog.show("The savegame \"" + gameName + "\" will be permanently deleted. Are you sure?", () =>
+      this.performGameAction({gameName}, "Delete"));
   }
 
   public renameGame = (gameName: string) => {
-    TextPromptDialog.show("Enter the new name:", (newGameName) => {
-      this.performGameAction({gameName, newGameName}, "Rename");
-    });
+    TextPromptDialog.show("Enter the new name:", (newGameName) =>
+      this.performGameAction({gameName, newGameName}, "Rename"));
   }
 
   public newGame = (data: NewGameDialogState) => {

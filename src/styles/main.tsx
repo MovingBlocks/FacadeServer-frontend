@@ -77,6 +77,10 @@ const dialog = RX.Styles.createViewStyle({
   minWidth: 300,
 });
 
+const smallTextInput = RX.Styles.createViewStyle({
+  maxWidth: 150,
+});
+
 export = {
   backgrounds,
   box,
@@ -96,7 +100,7 @@ export = {
   mobileHeaderMenu,
   okButton: [box, greyBorder, justifyCenter, backgrounds.lime],
   scrollableDialog,
-  smallTextInput: [box, greyBorder, backgrounds.white], // TODO: remove (use whiteBox)
+  smallTextInput,
   verticalScroll,
   waitOverlay: [flex.fillAll, backgrounds.lightGrayAlpha, justifyCenter],
   whiteBox: [box, greyBorder, backgrounds.white],

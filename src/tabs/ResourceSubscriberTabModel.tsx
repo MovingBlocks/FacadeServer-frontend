@@ -7,8 +7,7 @@ import {TabModel} from "./TabModel";
 
 export abstract class ResourceSubscriberTabModel<StateType> extends TabModel<StateType> {
 
-  // TODO: change 1st argument type from string to ResourceName
-  public abstract onResourceUpdated(resourceName: string, data: any): void;
+  public abstract onResourceUpdated(resourceName: ResourceName, data: any): void;
   public abstract getSubscribedResourceNames(): ResourceName[];
 
   public onMessage(message: IncomingMessage): void {
@@ -42,7 +41,7 @@ export abstract class ResourceSubscriberTabModel<StateType> extends TabModel<Sta
     });
   }
 
-  private _onResourceUpdated(resourceName: string, data: any) {
+  private _onResourceUpdated(resourceName: ResourceName, data: any) {
     if (resourceName === "engineState") {
       this.requestResources(data as EngineStateMetadata);
     }

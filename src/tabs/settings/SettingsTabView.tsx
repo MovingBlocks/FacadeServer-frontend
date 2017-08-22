@@ -11,9 +11,12 @@ export class SettingsTabView extends TabView<SettingsTabState> {
     const controller: SettingsTabController = this.props.model.getController() as SettingsTabController;
     return (
       <RX.View>
-        <RX.View style={Styles.flex.row}>
+        <RX.View style={[Styles.flex.row, Styles.flex.fill]}>
           <RX.Text>Game server port:</RX.Text>
-          <RX.TextInput style={Styles.smallTextInput} value={this.state.serverPort.toString()} onChangeText={controller.updatePort} />
+          <RX.TextInput
+            style={[Styles.whiteBox, Styles.flex.fill, Styles.smallTextInput]}
+            value={this.state.serverPort.toString()}
+            onChangeText={controller.updatePort} />
         </RX.View>
         <RX.Text>
         Server's MOTD/Message Of The Day (is displayed in-game when a player joins the server, and on the home page of this web interface):
