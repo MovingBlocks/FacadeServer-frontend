@@ -1,4 +1,4 @@
-package com.rxphelloworld;
+package org.terasology.android;
 
 import android.app.Application;
 

@@ -1,4 +1,4 @@
-package com.rxphelloworld;
+package org.terasology.android;
 
 import com.facebook.react.ReactActivity;
 
