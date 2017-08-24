@@ -20,7 +20,7 @@ export class IdentityStorageServiceLoginDialog extends
   }
 
   public componentWillMount() {
-    this.setState({server: "http://165.227.140.7/", username: "", password: ""});
+    this.setState({server: "http://utility.terasology.org/", username: "", password: ""});
   }
 
   public render() {
