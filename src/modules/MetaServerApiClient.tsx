@@ -1,6 +1,6 @@
 import {GenericRestClient} from "simplerestclients";
 import {Promise} from "synctasks";
-import {Module} from "./Module";
+import {ModuleMetadata} from "./ModuleMetadata";
 
 export class MetaServerApiClient extends GenericRestClient {
 
@@ -14,8 +14,8 @@ export class MetaServerApiClient extends GenericRestClient {
     super("http://meta.terasology.org/");
   }
 
-  public getAllModules(): Promise<Module[]> {
-    return this.performApiGet<Module[]>("modules/list/latest");
+  public getAllModules(): Promise<ModuleMetadata[]> {
+    return this.performApiGet<ModuleMetadata[]>("modules/list/latest");
   }
 
 }

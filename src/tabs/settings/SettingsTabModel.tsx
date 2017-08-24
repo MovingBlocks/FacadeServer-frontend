@@ -1,6 +1,6 @@
 import {EngineStateMetadata} from "../../io/EngineStateMetadata";
 import {IncomingMessage} from "../../io/IncomingMessage";
-import {ResourceName} from "../../io/ResourceName";
+import {ResourcePath, ResourcePathUtil} from "../../io/ResourcePath";
 import {ResourceSubscriberTabModel} from "../ResourceSubscriberTabModel";
 import {TabController} from "../TabController";
 import {SettingsTabController} from "./SettingsTabController";
@@ -12,8 +12,11 @@ export class SettingsTabModel extends ResourceSubscriberTabModel<SettingsTabStat
     return "Settings";
   }
 
-  public getSubscribedResourceNames(): ResourceName[] {
-    return ["serverMotd", "serverPort"];
+  public getSubscribedResourcePaths(): ResourcePath[] {
+    return [
+      ["config", "serverMotd"],
+      ["config", "serverPort"],
+    ];
   }
 
   public getDefaultState(): SettingsTabState {
@@ -24,10 +27,10 @@ export class SettingsTabModel extends ResourceSubscriberTabModel<SettingsTabStat
     return new SettingsTabController();
   }
 
-  public onResourceUpdated(resourceName: string, data: any): void {
-    if (resourceName === "serverPort") {
+  public onResourceUpdated(resourcePath: ResourcePath, data: any): void {
+    if (ResourcePathUtil.equals(resourcePath, ["config", "serverPort"])) {
       this.update({serverPort: data as number});
-    } else if (resourceName === "serverMotd") {
+    } else if (ResourcePathUtil.equals(resourcePath, ["config", "MOTD"])) {
       this.update({serverMotd: data as string});
     }
   }

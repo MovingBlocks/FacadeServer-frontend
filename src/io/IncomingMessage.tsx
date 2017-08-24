@@ -1,4 +1,4 @@
-import {ResourceName} from "./ResourceName";
+import {ResourcePath} from "./ResourcePath";
 
 export type IncomingMessageType =
   "ACTION_RESULT"
@@ -7,6 +7,6 @@ export type IncomingMessageType =
 
 export interface IncomingMessage {
   messageType: IncomingMessageType;
-  resourceName: ResourceName;
+  resourcePath: ResourcePath;
   data: any;
 }

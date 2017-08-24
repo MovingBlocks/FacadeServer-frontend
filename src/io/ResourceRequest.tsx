@@ -1,9 +1,14 @@
-import {ResourceName} from "./ResourceName";
+import {ResourcePath} from "./ResourcePath";
 
-export type ResourceAction = "READ" | "WRITE";
+export type ResourceMethodName =
+  "GET" |
+  "POST" |
+  "PUT" |
+  "DELETE" |
+  "PATCH";
 
 export interface ResourceRequest {
-  action: ResourceAction;
-  resourceName: ResourceName;
+  method: ResourceMethodName;
+  resourcePath: ResourcePath;
   data?: any;
 }

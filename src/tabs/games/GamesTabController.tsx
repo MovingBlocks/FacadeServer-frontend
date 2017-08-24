@@ -2,59 +2,55 @@ import {TextPromptDialog} from "../../TextPromptDialog";
 import {YesNoDialog} from "../../YesNoDialog";
 import {TabController} from "../TabController";
 import {GamesTabState} from "./GamesTabState";
-import {NewGameDialogState} from "./NewGameDialog";
+import {NewGameMetadata} from "./NewGameMetadata";
 
 export class GamesTabController extends TabController<GamesTabState> {
 
   public startGame = (gameName: string) => {
-    this.setRunningGame(gameName);
+    this.model.requestResource({
+      data: {state: "LOADING", gameName},
+      method: "PUT",
+      resourcePath: ["engineState"],
+    });
   }
 
   public stopGame = () => {
-    this.setRunningGame("");
+    this.model.requestResource({
+      data: {state: "IDLE"},
+      method: "PUT",
+      resourcePath: ["engineState"],
+    });
   }
 
   public backupGame = (gameName: string) => {
-    this.performGameAction({gameName}, "Backup");
+    this.model.requestResource({
+      method: "POST",
+      resourcePath: ["games", gameName, "backup"],
+    });
   }
 
   public deleteGame = (gameName: string) => {
     YesNoDialog.show("The savegame \"" + gameName + "\" will be permanently deleted. Are you sure?", () =>
-      this.performGameAction({gameName}, "Delete"));
+      this.model.requestResource({
+        method: "DELETE",
+        resourcePath: ["games", gameName],
+      }));
   }
 
-  public renameGame = (gameName: string) => {
+  public renameGame = (oldGameName: string) => {
     TextPromptDialog.show("Enter the new name:", (newGameName) =>
-      this.performGameAction({gameName, newGameName}, "Rename"));
+      this.model.requestResource({
+        data: {gameName: newGameName},
+        method: "PATCH",
+        resourcePath: ["games", oldGameName],
+      }));
   }
 
-  public newGame = (data: NewGameDialogState) => {
+  public newGame = (data: NewGameMetadata) => {
     this.model.requestResource({
-      action: "WRITE",
-      data: {
-        data,
-        type: "New",
-      },
-      resourceName: "games",
-    });
-  }
-
-  private setRunningGame(gameName: string) {
-    this.model.requestResource({
-      action: "WRITE",
-      data: gameName,
-      resourceName: "engineState",
-    });
-  }
-
-  private performGameAction(data: any, action: string) {
-    this.model.requestResource({
-      action: "WRITE",
-      data: {
-        data,
-        type: action,
-      },
-      resourceName: "games",
+      data,
+      method: "POST",
+      resourcePath: ["games"],
     });
   }
 

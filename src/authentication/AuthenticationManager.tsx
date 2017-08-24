@@ -71,6 +71,7 @@ export class AuthenticationManager {
     const publicCert = clientIdentity.clientPublic;
     const privateCert = clientIdentity.clientPrivate;
     const base64PublicCert = MultiFormatClientIdentityUtil.extractBase64(clientIdentity).clientPublic;
+    // TODO: set random and timestamp
     const clientHelloMessage: HandshakeHello = {random: "", certificate: base64PublicCert, timestamp: ""};
     const dataToSign: Uint8Array = this.concatArrayBuffers([
       this.handshakeHelloToArrayBuffer(serverHelloMessage),

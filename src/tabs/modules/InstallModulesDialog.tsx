@@ -1,13 +1,13 @@
 import RX = require("reactxp");
 import Styles = require("../../styles/main");
 import {MetaServerApiClient} from "../../modules/MetaServerApiClient";
-import {Module} from "../../modules/Module";
+import {ModuleMetadata} from "../../modules/ModuleMetadata";
 import {ModuleSelector} from "../../modules/ModuleSelector";
 import {OkCancelButtonBar} from "../../OkCancelButtonBar";
 import {WaitOverlay} from "../../WaitOverlay";
 
 interface InstallModulesDialogProps {
-  moduleList: Module[];
+  moduleList: ModuleMetadata[];
   installCallback: (moduleIds: string[]) => void;
 }
 
@@ -19,7 +19,7 @@ export class InstallModulesDialog extends RX.Component<InstallModulesDialogProps
 
   public static show(installCallback: (moduleIds: string[]) => void) {
     WaitOverlay.open("Retrieving list of available modules from meta.terasology.org...");
-    MetaServerApiClient.getInstance().getAllModules().then((result: Module[]) => {
+    MetaServerApiClient.getInstance().getAllModules().then((result: ModuleMetadata[]) => {
       WaitOverlay.close();
       RX.Modal.show(<InstallModulesDialog moduleList={result} installCallback={installCallback} />, "installModulesDialog");
     });
@@ -52,7 +52,7 @@ export class InstallModulesDialog extends RX.Component<InstallModulesDialogProps
 
   private okClicked = () => {
     const selectedModulesIds: string[] = [];
-    this.props.moduleList.forEach((mod: Module, i: number) => {
+    this.props.moduleList.forEach((mod: ModuleMetadata, i: number) => {
       if (this.state.selectedModules.indexOf(i) > -1) {
         selectedModulesIds.push(mod.id);
       }

@@ -16,14 +16,14 @@ export class SettingsTabController extends TabController<SettingsTabState> {
 
   public save = () => {
     this.model.requestResource({
-      action: "WRITE",
       data: this.model.getState().serverMotd,
-      resourceName: "serverMotd",
+      method: "PUT",
+      resourcePath: ["config", "MOTD"],
     });
     this.model.requestResource({
-      action: "WRITE",
       data: this.model.getState().serverPort,
-      resourceName: "serverPort",
+      method: "PUT",
+      resourcePath: ["config", "serverPort"],
     });
   }
 
