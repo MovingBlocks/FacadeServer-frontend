@@ -14,7 +14,7 @@ export class SettingsTabModel extends ResourceSubscriberTabModel<SettingsTabStat
 
   public getSubscribedResourcePaths(): ResourcePath[] {
     return [
-      ["config", "serverMotd"],
+      ["config", "MOTD"],
       ["config", "serverPort"],
     ];
   }

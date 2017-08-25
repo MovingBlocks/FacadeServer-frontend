@@ -6,7 +6,7 @@ export class ConsoleTabController extends TabController<ConsoleTabState> {
   public execute = () => {
     this.model.requestResource({
       data: this.model.getState().commandToSend,
-      method: "GET",
+      method: "POST",
       resourcePath: ["console"],
     });
     this.model.update({commandToSend: ""});
