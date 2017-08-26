@@ -4,6 +4,7 @@ import {ModuleMetadata} from "../../modules/ModuleMetadata";
 import {ModuleSelector} from "../../modules/ModuleSelector";
 import {WorldGeneratorInfo} from "../../modules/WorldGeneratorInfo";
 import {OkCancelButtonBar} from "../../OkCancelButtonBar";
+import {RandomStringGenerator} from "../../RandomStringGenerator";
 import {NewGameMetadata} from "./NewGameMetadata";
 
 interface NewGameDialogProps {
@@ -29,7 +30,12 @@ export class NewGameDialog extends RX.Component<NewGameDialogProps, NewGameMetad
 
   constructor(props: NewGameDialogProps) {
     super(props);
-    this.state = {gameName: "New Game", seed: "blockmania", modules: [], worldGenerator: props.availableWorldGenerators[0].uri};
+    this.state = {
+      gameName: "New Game",
+      modules: [],
+      seed: RandomStringGenerator.generate(32),
+      worldGenerator: props.availableWorldGenerators[0].uri,
+    };
   }
 
   public render() {
@@ -41,7 +47,12 @@ export class NewGameDialog extends RX.Component<NewGameDialogProps, NewGameMetad
         <RX.Text>Title:</RX.Text>
         <RX.TextInput style={Styles.whiteBox} value={this.state.gameName} onChangeText={(s) => this.setState({gameName: s})}/>
         <RX.Text>Seed:</RX.Text>
-        <RX.TextInput style={Styles.whiteBox} value={this.state.seed} onChangeText={(s) => this.setState({seed: s})}/>
+        <RX.View style={Styles.flex.row}>
+          <RX.TextInput style={[Styles.whiteBox, Styles.flex.fill]} value={this.state.seed} onChangeText={(s) => this.setState({seed: s})}/>
+          <RX.Button style={Styles.okButton} onPress={() => this.setState({seed: RandomStringGenerator.generate(32)})}>
+            <RX.Text>Randomize</RX.Text>
+          </RX.Button>
+        </RX.View>
         <RX.Text>Modules:</RX.Text>
         <ModuleSelector
           onSelectionChange={this.onModuleSelectionChanged}

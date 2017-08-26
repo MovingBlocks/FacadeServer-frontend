@@ -5,6 +5,7 @@ import JSONparse = require("../io/utils/json_parse");
 import {ActionResult} from "../io/ActionResult";
 import {IncomingMessage} from "../io/IncomingMessage";
 import {OutgoingMessage} from "../io/OutgoingMessage";
+import {RandomStringGenerator} from "../RandomStringGenerator";
 import {ClientIdentity, PublicIdentityCertificate} from "./ClientIdentity";
 import {HandshakeHello} from "./HandshakeHello";
 import {IdentityStorageServiceApiClient} from "./IdentityStorageServiceApiClient";
@@ -72,7 +73,9 @@ export class AuthenticationManager {
     const privateCert = clientIdentity.clientPrivate;
     const base64PublicCert = MultiFormatClientIdentityUtil.extractBase64(clientIdentity).clientPublic;
     // TODO: set random and timestamp
-    const clientHelloMessage: HandshakeHello = {random: "", certificate: base64PublicCert, timestamp: ""};
+    const b64random: string = Buffer.from(RandomStringGenerator.generate(16)).toString("base64");
+    const b64timestamp: string = Buffer.from(Date.now().toString()).toString("base64");
+    const clientHelloMessage: HandshakeHello = {random: b64random, certificate: base64PublicCert, timestamp: b64timestamp};
     const dataToSign: Uint8Array = this.concatArrayBuffers([
       this.handshakeHelloToArrayBuffer(serverHelloMessage),
       this.handshakeHelloToArrayBuffer(clientHelloMessage),
