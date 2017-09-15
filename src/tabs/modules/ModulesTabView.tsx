@@ -1,6 +1,6 @@
 import RX = require("reactxp");
 import Styles = require("../../styles/main");
-import {Module} from "../../modules/Module";
+import {ModuleMetadata} from "../../modules/ModuleMetadata";
 import {TabView} from "../TabView";
 import {InstallModulesDialog} from "./InstallModulesDialog";
 import {ModulesTabController} from "./ModulesTabController";
@@ -17,13 +17,13 @@ export class ModulesTabView extends TabView<ModulesTabState> {
         <RX.Button style={Styles.okButton} onPress={showInstallDialog}><RX.Text>Install new modules...</RX.Text></RX.Button>
         <RX.Text>Installed modules:</RX.Text>
         <RX.ScrollView>
-          {this.state.installedModules.modules.map(this.renderModule)}
+          {this.state.installedModules.map(this.renderModule)}
         </RX.ScrollView>
       </RX.View>
     );
   }
 
-  private renderModule(mod: Module) {
+  private renderModule(mod: ModuleMetadata) {
     return (
       <RX.View key={mod.id + "-" + mod.version}>
         <RX.Text>{mod.displayName.en + " " + mod.version}</RX.Text>

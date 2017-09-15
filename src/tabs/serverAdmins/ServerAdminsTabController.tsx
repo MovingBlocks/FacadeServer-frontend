@@ -4,21 +4,16 @@ import {ServerAdminsTabState} from "./ServerAdminsTabState";
 export class ServerAdminsTabController extends TabController<ServerAdminsTabState> {
 
   public addAdmin = (newAdminId: string) => {
-    this.writeAdminsResource(newAdminId, "ADD");
+    this.model.requestResource({
+      method: "POST",
+      resourcePath: ["serverAdmins", newAdminId],
+    });
   }
 
   public removeAdmin = (adminId: string) => {
-    this.writeAdminsResource(adminId, "REMOVE");
-  }
-
-  private writeAdminsResource = (clientId: string, action: string) => {
     this.model.requestResource({
-      action: "WRITE",
-      data: {
-        action,
-        clientId,
-      },
-      resourceName: "serverAdmins",
+      method: "DELETE",
+      resourcePath: ["serverAdmins", adminId],
     });
   }
 

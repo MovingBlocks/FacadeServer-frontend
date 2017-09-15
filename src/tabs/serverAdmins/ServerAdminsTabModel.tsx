@@ -1,7 +1,7 @@
 import {EngineStateMetadata} from "../../io/EngineStateMetadata";
 import {IncomingMessage} from "../../io/IncomingMessage";
 import {OnlinePlayerMetadata} from "../../io/OnlinePlayerMetadata";
-import {ResourceName} from "../../io/ResourceName";
+import {ResourcePath, ResourcePathUtil} from "../../io/ResourcePath";
 import {ResourceSubscriberTabModel} from "../ResourceSubscriberTabModel";
 import {TabController} from "../TabController";
 import {ServerAdminsTabController} from "./ServerAdminsTabController";
@@ -16,8 +16,11 @@ export class ServerAdminsTabModel extends ResourceSubscriberTabModel<ServerAdmin
     return "Admins";
   }
 
-  public getSubscribedResourceNames(): ResourceName[] {
-    return ["serverAdmins", "onlinePlayers"];
+  public getSubscribedResourcePaths(): ResourcePath[] {
+    return [
+      ["serverAdmins"],
+      ["onlinePlayers"],
+    ];
   }
 
   public getDefaultState(): ServerAdminsTabState {
@@ -28,10 +31,10 @@ export class ServerAdminsTabModel extends ResourceSubscriberTabModel<ServerAdmin
     return new ServerAdminsTabController();
   }
 
-  public onResourceUpdated(resourceName: string, data: any): void {
-    if (resourceName === "serverAdmins") {
+  public onResourceUpdated(resourcePath: ResourcePath, data: any): void {
+    if (ResourcePathUtil.equals(resourcePath, ["serverAdmins"])) {
       this.adminIds = data as string[];
-    } else if (resourceName === "onlinePlayers") {
+    } else if (ResourcePathUtil.equals(resourcePath, ["onlinePlayers"])) {
       this.onlinePlayers = data as OnlinePlayerMetadata[];
     }
     this.update({

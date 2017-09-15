@@ -1,4 +1,4 @@
-export interface Module {
+export interface ModuleMetadata {
   id: string;
   version: string;
   displayName: LocalizedString;

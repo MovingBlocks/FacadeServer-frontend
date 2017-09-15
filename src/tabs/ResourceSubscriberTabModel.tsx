@@ -2,54 +2,43 @@ import {ActionResult} from "../io/ActionResult";
 import {EngineStateMetadata, EngineStateMetadataUtils} from "../io/EngineStateMetadata";
 import {IncomingMessage} from "../io/IncomingMessage";
 import {OutgoingMessage} from "../io/OutgoingMessage";
-import {ResourceName} from "../io/ResourceName";
+import {ResourcePath, ResourcePathUtil} from "../io/ResourcePath";
 import {TabModel} from "./TabModel";
 
 export abstract class ResourceSubscriberTabModel<StateType> extends TabModel<StateType> {
 
-  public abstract onResourceUpdated(resourceName: ResourceName, data: any): void;
-  public abstract getSubscribedResourceNames(): ResourceName[];
+  public abstract onResourceUpdated(resourcePath: ResourcePath, data: any): void;
+  public abstract getSubscribedResourcePaths(): ResourcePath[];
 
   public onMessage(message: IncomingMessage): void {
-    if (message.resourceName === "engineState" || this.isSubscribedToResource(message.resourceName)) {
-      if (message.messageType === "RESOURCE_CHANGED") {
-        this._onResourceUpdated(message.resourceName, message.data);
-      } else if (message.messageType === "ACTION_RESULT" && message.data) {
-        const actionResult: ActionResult = message.data as ActionResult;
-        if (actionResult.status === "OK" && actionResult.data) {
-          this._onResourceUpdated(message.resourceName, actionResult.data);
-        }
+    const resourcePath: ResourcePath = message.resourcePath;
+    if (message.messageType === "RESOURCE_CHANGED" && this.isSubscribedToResource(resourcePath)) {
+      this.onResourceUpdated(resourcePath, message.data);
+    } else if (message.messageType === "ACTION_RESULT" && message.resourcePath && message.data) {
+      const actionResult: ActionResult = message.data as ActionResult;
+      if (actionResult.status === "OK" && actionResult.data) {
+        this.onResourceUpdated(resourcePath, actionResult.data);
       }
     }
   }
 
   public initialize(): void {
     super.initialize();
-    this.requestResource({action: "READ", resourceName: "engineState"});
+    this.requestResources();
   }
 
-  private requestResources(engineState: EngineStateMetadata) {
-    const requestsToSend: ResourceName[] = this.getSubscribedResourceNames();
-    const engineStateIndex: number = requestsToSend.indexOf("engineState");
-    if (engineStateIndex > -1) {
-      requestsToSend.splice(engineStateIndex, 1);
-    }
-    requestsToSend.forEach((resourceToQuery: ResourceName) => {
-      if (EngineStateMetadataUtils.isResourceAvailable(engineState, resourceToQuery)) {
-        this.requestResource({action: "READ", resourceName: resourceToQuery});
+  private requestResources() {
+    this.getSubscribedResourcePaths().forEach((resourceToQuery: ResourcePath) =>
+        this.requestResource({resourcePath: resourceToQuery, method: "GET"}));
+  }
+
+  private isSubscribedToResource(resourcePath: ResourcePath): boolean {
+    for (const currentResourcePath of this.getSubscribedResourcePaths()) {
+      if (ResourcePathUtil.equals(resourcePath, currentResourcePath)) {
+        return true;
       }
-    });
-  }
-
-  private _onResourceUpdated(resourceName: ResourceName, data: any) {
-    if (resourceName === "engineState") {
-      this.requestResources(data as EngineStateMetadata);
     }
-    this.onResourceUpdated(resourceName, data);
-  }
-
-  private isSubscribedToResource(resourceName: ResourceName): boolean {
-    return this.getSubscribedResourceNames().indexOf(resourceName) > -1;
+    return false;
   }
 
 }

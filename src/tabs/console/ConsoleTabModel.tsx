@@ -1,4 +1,5 @@
 import {IncomingMessage} from "../../io/IncomingMessage";
+import {ResourcePathUtil} from "../../io/ResourcePath";
 import {TabController} from "../TabController";
 import {TabModel} from "../TabModel";
 import {ConsoleTabController} from "./ConsoleTabController";
@@ -19,7 +20,7 @@ export class ConsoleTabModel extends TabModel<ConsoleTabState> {
   }
 
   public onMessage(message: IncomingMessage) {
-    if (message.messageType === "RESOURCE_EVENT" && message.resourceName === "console") {
+    if (message.messageType === "RESOURCE_EVENT" && ResourcePathUtil.equals(message.resourcePath, ["console"])) {
       const oldState: ConsoleTabState = this.getState();
       this.update({messages: oldState.messages.concat((message.data) as Message)});
     }

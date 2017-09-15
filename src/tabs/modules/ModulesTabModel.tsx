@@ -1,7 +1,7 @@
 import {EngineStateMetadata} from "../../io/EngineStateMetadata";
 import {IncomingMessage} from "../../io/IncomingMessage";
-import {ResourceName} from "../../io/ResourceName";
-import {AvailableModules} from "../../modules/AvailableModules";
+import {ResourcePath, ResourcePathUtil} from "../../io/ResourcePath";
+import {ModuleMetadata} from "../../modules/ModuleMetadata";
 import {ResourceSubscriberTabModel} from "../ResourceSubscriberTabModel";
 import {TabController} from "../TabController";
 import {ModulesTabController} from "./ModulesTabController";
@@ -13,22 +13,25 @@ export class ModulesTabModel extends ResourceSubscriberTabModel<ModulesTabState>
     return "Modules";
   }
 
-  public getSubscribedResourceNames(): ResourceName[] {
-    return ["availableModules", "moduleInstaller"];
+  public getSubscribedResourcePaths(): ResourcePath[] {
+    return [
+      ["modules", "available"],
+      ["modules", "installer"],
+    ];
   }
 
   public getDefaultState(): ModulesTabState {
-    return {installerStatus: "", installedModules: {modules: [], worldGenerators: []}};
+    return {installerStatus: "", installedModules: []};
   }
 
   public initController(): TabController<ModulesTabState> {
     return new ModulesTabController();
   }
 
-  public onResourceUpdated(resourceName: string, data: any): void {
-    if (resourceName === "availableModules") {
-      this.update({installedModules: data as AvailableModules});
-    } else if (resourceName === "moduleInstaller") {
+  public onResourceUpdated(resourcePath: ResourcePath, data: any): void {
+    if (ResourcePathUtil.equals(resourcePath, ["modules", "available"])) {
+      this.update({installedModules: data as ModuleMetadata[]});
+    } else if (ResourcePathUtil.equals(resourcePath, ["modules", "installer"])) {
       this.update({installerStatus: data as string});
     }
   }

@@ -1,6 +1,6 @@
 import {EngineStateMetadata} from "../../io/EngineStateMetadata";
 import {OnlinePlayerMetadata} from "../../io/OnlinePlayerMetadata";
-import {ResourceName} from "../../io/ResourceName";
+import {ResourcePath, ResourcePathUtil} from "../../io/ResourcePath";
 import {ResourceSubscriberTabModel} from "../ResourceSubscriberTabModel";
 import {TabController} from "../TabController";
 import {TabModel} from "../TabModel";
@@ -12,8 +12,13 @@ export class HomeTabModel extends ResourceSubscriberTabModel<HomeTabState> {
     return "Home";
   }
 
-  public getSubscribedResourceNames(): ResourceName[] {
-    return ["onlinePlayers", "engineState", "serverPort", "serverMotd"];
+  public getSubscribedResourcePaths(): ResourcePath[] {
+    return [
+      ["onlinePlayers"],
+      ["engineState"],
+      ["config", "serverPort"],
+      ["config", "MOTD"],
+    ];
   }
 
   public getDefaultState(): HomeTabState {
@@ -24,14 +29,14 @@ export class HomeTabModel extends ResourceSubscriberTabModel<HomeTabState> {
     return null;
   }
 
-  public onResourceUpdated(resourceName: string, data: any): void {
-    if (resourceName === "onlinePlayers") {
+  public onResourceUpdated(resourcePath: ResourcePath, data: any): void {
+    if (ResourcePathUtil.equals(resourcePath, ["onlinePlayers"])) {
       this.update({onlinePlayers: data as OnlinePlayerMetadata[]});
-    } else if (resourceName === "engineState") {
+    } else if (ResourcePathUtil.equals(resourcePath, ["engineState"])) {
       this.update({engineState: data as EngineStateMetadata});
-    } else if (resourceName === "serverPort") {
+    } else if (ResourcePathUtil.equals(resourcePath, ["config", "serverPort"])) {
       this.update({serverPort: data as number});
-    } else if (resourceName === "serverMotd") {
+    } else if (ResourcePathUtil.equals(resourcePath, ["config", "MOTD"])) {
       this.update({serverMotd: data as string});
     }
   }

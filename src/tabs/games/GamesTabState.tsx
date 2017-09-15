@@ -1,5 +1,6 @@
 import {EngineStateMetadata} from "../../io/EngineStateMetadata";
-import {AvailableModules} from "../../modules/AvailableModules";
+import {ModuleMetadata} from "../../modules/ModuleMetadata";
+import {WorldGeneratorInfo} from "../../modules/WorldGeneratorInfo";
 
 export interface NameVersion {
   name: string;
@@ -21,5 +22,6 @@ export interface GameInfo {
 export interface GamesTabState {
   games?: GameInfo[];
   engineState?: EngineStateMetadata;
-  availableModules?: AvailableModules;
+  availableModules?: ModuleMetadata[];
+  worldGenerators?: WorldGeneratorInfo[];
 }

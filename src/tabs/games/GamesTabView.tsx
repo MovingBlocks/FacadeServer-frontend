@@ -10,7 +10,7 @@ export class GamesTabView extends TabView<GamesTabState> {
 
   public render() {
     const controller: GamesTabController = this.props.model.getController() as GamesTabController;
-    const showNewGameDialog = () => NewGameDialog.show(this.state.availableModules, controller.newGame);
+    const showNewGameDialog = () => NewGameDialog.show(this.state.availableModules, this.state.worldGenerators, controller.newGame);
     return (
       <RX.ScrollView>
         <RX.Text>Server status: {EngineStateMetadataUtils.render(this.state.engineState)}</RX.Text>

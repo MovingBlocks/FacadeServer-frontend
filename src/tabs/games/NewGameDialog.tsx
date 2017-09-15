@@ -1,54 +1,67 @@
 import RX = require("reactxp");
 import Styles = require("../../styles/main");
-import {AvailableModules} from "../../modules/AvailableModules";
+import {ModuleMetadata} from "../../modules/ModuleMetadata";
 import {ModuleSelector} from "../../modules/ModuleSelector";
-import {WorldGenerator} from "../../modules/WorldGenerator";
+import {WorldGeneratorInfo} from "../../modules/WorldGeneratorInfo";
 import {OkCancelButtonBar} from "../../OkCancelButtonBar";
+import {RandomStringGenerator} from "../../RandomStringGenerator";
+import {NewGameMetadata} from "./NewGameMetadata";
 
 interface NewGameDialogProps {
-  availableModules: AvailableModules;
-  onOkCallback: (data: NewGameDialogState) => void;
+  availableModules: ModuleMetadata[];
+  availableWorldGenerators: WorldGeneratorInfo[];
+  onOkCallback: (data: NewGameMetadata) => void;
 }
 
-export interface NewGameDialogState {
-  gameName?: string;
-  seed?: string;
-  modules?: string[];
-  worldGenerator?: string;
-}
+export class NewGameDialog extends RX.Component<NewGameDialogProps, NewGameMetadata> {
 
-export class NewGameDialog extends RX.Component<NewGameDialogProps, NewGameDialogState> {
-
-  public static show(availableModules: AvailableModules, cb: (data: NewGameDialogState) => void) {
-    RX.Modal.show(<NewGameDialog availableModules={availableModules} onOkCallback={cb} />, "newGameDialog");
+  public static show(availableModules: ModuleMetadata[], availableWorldGenerators: WorldGeneratorInfo[],
+                     cb: (data: NewGameMetadata) => void) {
+    const dialog = (
+      <NewGameDialog
+        availableModules={availableModules}
+        availableWorldGenerators={availableWorldGenerators}
+        onOkCallback={cb} />
+    );
+    RX.Modal.show(dialog, "newGameDialog");
   }
 
   private static defaultModules: string[] = ["coresamplegameplay"];
 
   constructor(props: NewGameDialogProps) {
     super(props);
-    this.state = {gameName: "New Game", seed: "blockmania", modules: [], worldGenerator: props.availableModules.worldGenerators[0].uri};
+    this.state = {
+      gameName: "New Game",
+      modules: [],
+      seed: RandomStringGenerator.generate(32),
+      worldGenerator: props.availableWorldGenerators[0].uri,
+    };
   }
 
   public render() {
     const defaultSelection: number[] = this.findModuleIndexes(NewGameDialog.defaultModules);
-    const renderWorldGenerator = (worldGen: WorldGenerator) =>
+    const renderWorldGenerator = (worldGen: WorldGeneratorInfo) =>
       ({label: worldGen.displayName + " (" + worldGen.uri + ")", value: worldGen.uri});
     return (
       <RX.View style={Styles.whiteBox}>
         <RX.Text>Title:</RX.Text>
         <RX.TextInput style={Styles.whiteBox} value={this.state.gameName} onChangeText={(s) => this.setState({gameName: s})}/>
         <RX.Text>Seed:</RX.Text>
-        <RX.TextInput style={Styles.whiteBox} value={this.state.seed} onChangeText={(s) => this.setState({seed: s})}/>
+        <RX.View style={Styles.flex.row}>
+          <RX.TextInput style={[Styles.whiteBox, Styles.flex.fill]} value={this.state.seed} onChangeText={(s) => this.setState({seed: s})}/>
+          <RX.Button style={Styles.okButton} onPress={() => this.setState({seed: RandomStringGenerator.generate(32)})}>
+            <RX.Text>Randomize</RX.Text>
+          </RX.Button>
+        </RX.View>
         <RX.Text>Modules:</RX.Text>
         <ModuleSelector
           onSelectionChange={this.onModuleSelectionChanged}
-          availableModules={this.props.availableModules.modules}
+          availableModules={this.props.availableModules}
           defaultEnabledModules={defaultSelection} />
         <RX.Text>World generator:</RX.Text>
         <RX.Picker
           style={Styles.whiteBox}
-          items={this.props.availableModules.worldGenerators.map(renderWorldGenerator)}
+          items={this.props.availableWorldGenerators.map(renderWorldGenerator)}
           selectedValue={this.state.worldGenerator}
           onValueChange={(itemValue: string) => this.setState({worldGenerator: itemValue})} />
         <OkCancelButtonBar onOk={this.okClicked} onCancel={this.cancelClicked} />
@@ -68,7 +81,7 @@ export class NewGameDialog extends RX.Component<NewGameDialogProps, NewGameDialo
   private findModuleIndexes = (ids: string[]): number[] => {
     const result: number[] = [];
     const lowerCaseIds = ids.map((s) => s.toLowerCase());
-    this.props.availableModules.modules.forEach((module, index) => {
+    this.props.availableModules.forEach((module, index) => {
       if (lowerCaseIds.indexOf(module.id.toLowerCase()) > -1) {
         result.push(index);
       }
@@ -78,7 +91,7 @@ export class NewGameDialog extends RX.Component<NewGameDialogProps, NewGameDialo
 
   private onModuleSelectionChanged = (indexes: number[]) => {
     const ids: string[] = [];
-    indexes.forEach((index) => ids.push(this.props.availableModules.modules[index].id));
+    indexes.forEach((index) => ids.push(this.props.availableModules[index].id));
     this.setState({modules: ids});
   }
 }

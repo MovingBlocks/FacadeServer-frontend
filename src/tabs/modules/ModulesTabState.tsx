@@ -1,6 +1,6 @@
-import {AvailableModules} from "../../modules/AvailableModules";
+import {ModuleMetadata} from "../../modules/ModuleMetadata";
 
 export interface ModulesTabState {
-  installedModules?: AvailableModules;
+  installedModules?: ModuleMetadata[];
   installerStatus?: string;
 }

@@ -1,10 +1,10 @@
 import RX = require("reactxp");
 import Styles = require("../styles/main");
-import {Module} from "./Module";
+import {ModuleMetadata} from "./ModuleMetadata";
 
 interface ModuleSelectorProps {
   defaultEnabledModules: number[]; // list of indexes of the availableModules array
-  availableModules: Module[];
+  availableModules: ModuleMetadata[];
   onSelectionChange: (selectedModules: number[]) => void;
 }
 
@@ -42,7 +42,7 @@ export class ModuleSelector extends RX.Component<ModuleSelectorProps, ModuleSele
     );
   }
 
-  private renderModule(mod: Module, onClick: () => void) {
+  private renderModule(mod: ModuleMetadata, onClick: () => void) {
     return (
       <RX.View key={mod.id + "-" + mod.version} onPress={onClick}>
         <RX.Text>{mod.displayName.en + " " + mod.version}</RX.Text>

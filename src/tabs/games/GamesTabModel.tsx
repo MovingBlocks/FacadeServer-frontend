@@ -1,7 +1,8 @@
 import {EngineStateMetadata} from "../../io/EngineStateMetadata";
 import {IncomingMessage} from "../../io/IncomingMessage";
-import {ResourceName} from "../../io/ResourceName";
-import {AvailableModules} from "../../modules/AvailableModules";
+import {ResourcePath, ResourcePathUtil} from "../../io/ResourcePath";
+import {ModuleMetadata} from "../../modules/ModuleMetadata";
+import {WorldGeneratorInfo} from "../../modules/WorldGeneratorInfo";
 import {ResourceSubscriberTabModel} from "../ResourceSubscriberTabModel";
 import {TabController} from "../TabController";
 import {GamesTabController} from "./GamesTabController";
@@ -13,8 +14,13 @@ export class GamesTabModel extends ResourceSubscriberTabModel<GamesTabState> {
     return "Games";
   }
 
-  public getSubscribedResourceNames(): ResourceName[] {
-    return ["games", "engineState", "availableModules"];
+  public getSubscribedResourcePaths(): ResourcePath[] {
+    return [
+      ["games"],
+      ["engineState"],
+      ["modules", "available"],
+      ["worldGenerators"],
+    ];
   }
 
   public getDefaultState(): GamesTabState {
@@ -25,13 +31,15 @@ export class GamesTabModel extends ResourceSubscriberTabModel<GamesTabState> {
     return new GamesTabController();
   }
 
-  public onResourceUpdated(resourceName: string, data: any): void {
-    if (resourceName === "engineState") {
+  public onResourceUpdated(resourcePath: ResourcePath, data: any): void {
+    if (ResourcePathUtil.equals(resourcePath, ["engineState"])) {
       this.update({engineState: data as EngineStateMetadata});
-    } else if (resourceName === "games") {
+    } else if (ResourcePathUtil.equals(resourcePath, ["games"])) {
       this.update({games: data as GameInfo[]});
-    } else if (resourceName === "availableModules") {
-      this.update({availableModules: data as AvailableModules});
+    } else if (ResourcePathUtil.equals(resourcePath, ["modules", "available"])) {
+      this.update({availableModules: data as ModuleMetadata[]});
+    } else if (ResourcePathUtil.equals(resourcePath, ["worldGenerators"])) {
+      this.update({worldGenerators: data as WorldGeneratorInfo[]});
     }
   }
 
