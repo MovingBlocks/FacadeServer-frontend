@@ -75,6 +75,7 @@ class App extends RX.Component<{}, AppState> {
         serverAddr={this.state.serverAddr}
         isAuthenticated={this.state.authenticated}
         login={this.showLoginDialog}
+        logout={this.logout}
         setActiveTab={(index) => this.setState({activeTab: index})}
       />
     );
@@ -164,6 +165,11 @@ class App extends RX.Component<{}, AppState> {
       RX.Modal.dismiss("AuthenticationDialog");
     };
     RX.Modal.show(<AuthenticationDialog manager={this.authenticationManager} closeCallback={onClose} />, "AuthenticationDialog");
+  }
+
+  // TODO: use a better method of logging out than simply refreshing the page
+  private logout = () => {
+    window.location.reload(true);
   }
 
   private onMessage = (event: MessageEvent) => {

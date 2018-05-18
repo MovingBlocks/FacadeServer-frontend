@@ -13,7 +13,7 @@ export class AppUI extends RX.Component<AppUIProps, null> {
       </RX.View>
     ));
     const authUI = this.props.isAuthenticated ?
-      <RX.Text>Authenticated</RX.Text> :
+      <RX.Button style={Styles.cancelButton} onPress={this.props.logout}><RX.Text>Logout</RX.Text></RX.Button> :
       <RX.Button style={Styles.okButton} onPress={this.props.login}><RX.Text>Login</RX.Text></RX.Button>;
     return (
       <RX.View style={Styles.flex.fill}>

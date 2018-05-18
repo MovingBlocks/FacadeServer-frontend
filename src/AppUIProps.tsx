@@ -7,5 +7,6 @@ export interface AppUIProps {
   isAuthenticated: boolean;
   // callbacks
   login: () => void;
+  logout: () => void;
   setActiveTab: (tabIndex: number) => void;
 }
