@@ -144,7 +144,7 @@ module.exports = (function () {
                 next();
             }
         }
-        if(/^\d+$/.test(string)) {
+        if(/^-?\d+$/.test(string)) {
           return new BigInteger(string);
         } else {
           return +string;
