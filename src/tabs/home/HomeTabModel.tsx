@@ -1,3 +1,4 @@
+import {SystemMetadata} from "common/io/SystemMetadata";
 import {EngineStateMetadata} from "../../io/EngineStateMetadata";
 import {OnlinePlayerMetadata} from "../../io/OnlinePlayerMetadata";
 import {ResourcePath, ResourcePathUtil} from "../../io/ResourcePath";
@@ -16,13 +17,15 @@ export class HomeTabModel extends ResourceSubscriberTabModel<HomeTabState> {
     return [
       ["onlinePlayers"],
       ["engineState"],
+      ["system"],
       ["config", "serverPort"],
       ["config", "MOTD"],
     ];
   }
 
   public getDefaultState(): HomeTabState {
-    return {onlinePlayers: [], engineState: {state: "UNKNOWN"}, serverPort: 0, serverMotd: ""};
+    return {onlinePlayers: [], engineState: {state: "UNKNOWN"}, system: {cpuUsage: 0, memoryAvailable: 0,
+            memoryTotal: 0, memoryUsagePercentage: 0, memoryUsed: 0, systemUptime: 0}, serverPort: 0, serverMotd: ""};
   }
 
   public initController(): TabController<null> {
@@ -34,6 +37,8 @@ export class HomeTabModel extends ResourceSubscriberTabModel<HomeTabState> {
       this.update({onlinePlayers: data as OnlinePlayerMetadata[]});
     } else if (ResourcePathUtil.equals(resourcePath, ["engineState"])) {
       this.update({engineState: data as EngineStateMetadata});
+    } else if (ResourcePathUtil.equals(resourcePath, ["system"])) {
+      this.update({system: data as SystemMetadata});
     } else if (ResourcePathUtil.equals(resourcePath, ["config", "serverPort"])) {
       this.update({serverPort: data as number});
     } else if (ResourcePathUtil.equals(resourcePath, ["config", "MOTD"])) {
