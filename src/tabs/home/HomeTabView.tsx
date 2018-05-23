@@ -12,6 +12,7 @@ export class HomeTabView extends TabView<HomeTabState> {
     // TODO: handle style leaks
     const renderColorString = (color: RgbaColor) => "rgba(" + color.r + "," + color.g + "," + color.b + "," + color.a + ")";
     const createColorStyle = (color: RgbaColor) => RX.Styles.createTextStyle({color: renderColorString(color)});
+    const system = this.state.system;
     return (
       <RX.View>
         <RX.Button onPress={this.updateValues} style={Styles.okButton}><RX.Text>Refresh</RX.Text></RX.Button>
@@ -21,12 +22,15 @@ export class HomeTabView extends TabView<HomeTabState> {
         <RX.Text>There are currently {this.state.onlinePlayers.length} players online on this server:</RX.Text>
         {this.state.onlinePlayers.map((player) => <RX.Text key={player.id} style={createColorStyle(player.color)}>{player.name}</RX.Text>)}
         <RX.Text/>
-        <RX.Text>CPU usage: {this.state.system.cpuUsage.toPrecision(4)}%</RX.Text>
-        <RX.Text>Memory usage: {this.state.system.memoryUsagePercentage.toPrecision(4)}%</RX.Text>
-        <RX.Text>Memory used/total: {SystemMetadataUtils.memoryStringFormat(this.state.system.memoryUsed)} /
-          {SystemMetadataUtils.memoryStringFormat(this.state.system.memoryTotal)},
-          {" " + SystemMetadataUtils.memoryStringFormat(this.state.system.memoryAvailable)} available</RX.Text>
-        <RX.Text>Server uptime: {SystemMetadataUtils.systemUptimeFormat(this.state.system.serverUptime)}</RX.Text>
+        <RX.Text>CPU usage: {system.cpuUsage.toPrecision(4)}%</RX.Text>
+        <RX.Text>Memory usage: {system.memoryMax === 0 ? 0 : (system.memoryUsed * 100 / system.memoryMax).toPrecision(4)}%</RX.Text>
+        <RX.Text>Memory used/total: {SystemMetadataUtils.memoryStringFormat(system.memoryUsed)} /
+          {SystemMetadataUtils.memoryStringFormat(system.memoryMax)},
+          {" " + SystemMetadataUtils.memoryStringFormat(system.memoryMax - system.memoryUsed)} available</RX.Text>
+        <RX.Text>JVM Memory used: {SystemMetadataUtils.memoryStringFormat(system.jvmMemoryUsed)} /
+          {SystemMetadataUtils.memoryStringFormat(system.jvmMemoryMax)},
+          {" " + SystemMetadataUtils.memoryStringFormat(system.jvmMemoryMax - system.jvmMemoryUsed)} available</RX.Text>
+        <RX.Text>Server uptime: {SystemMetadataUtils.serverUptimeFormat(system.serverUptime)}</RX.Text>
       </RX.View>
     );
   }

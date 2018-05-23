@@ -1,10 +1,10 @@
 export interface SystemMetadata {
   cpuUsage: number;
-  memoryUsagePercentage: number;
   memoryUsed: number;
-  memoryTotal: number;
-  memoryAvailable: number;
+  memoryMax: number;
   serverUptime: number;
+  jvmMemoryUsed: number;
+  jvmMemoryMax: number;
 }
 
 export class SystemMetadataUtils {
@@ -29,7 +29,7 @@ export class SystemMetadataUtils {
     return result;
   }
 
-  public static systemUptimeFormat(numberToFormat: number) {
+  public static serverUptimeFormat(numberToFormat: number) {
     const SECONDS_IN_MINUTE: number = 60;
     const SECONDS_IN_HOUR: number = SECONDS_IN_MINUTE * 60;
     const SECONDS_IN_DAY: number = SECONDS_IN_HOUR * 24;
