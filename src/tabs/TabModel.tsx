@@ -1,8 +1,8 @@
+import {ResourcePath} from "common/io/ResourcePath";
 import {IncomingMessage} from "../io/IncomingMessage";
 import {OutgoingMessage} from "../io/OutgoingMessage";
 import {ResourceRequest} from "../io/ResourceRequest";
 import {TabController} from "./TabController";
-import {ResourcePath} from "common/io/ResourcePath";
 
 export abstract class TabModel<StateType> {
 
