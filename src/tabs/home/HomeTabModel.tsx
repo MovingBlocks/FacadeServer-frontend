@@ -25,7 +25,7 @@ export class HomeTabModel extends ResourceSubscriberTabModel<HomeTabState> {
 
   public getDefaultState(): HomeTabState {
     return {onlinePlayers: [], engineState: {state: "UNKNOWN"}, system: {cpuUsage: 0, memoryAvailable: 0,
-            memoryTotal: 0, memoryUsagePercentage: 0, memoryUsed: 0, systemUptime: 0}, serverPort: 0, serverMotd: ""};
+            memoryTotal: 0, memoryUsagePercentage: 0, memoryUsed: 0, serverUptime: 0}, serverPort: 0, serverMotd: ""};
   }
 
   public initController(): TabController<null> {

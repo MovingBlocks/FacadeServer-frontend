@@ -24,9 +24,9 @@ export class HomeTabView extends TabView<HomeTabState> {
         <RX.Text>CPU usage: {this.state.system.cpuUsage.toPrecision(4)}%</RX.Text>
         <RX.Text>Memory usage: {this.state.system.memoryUsagePercentage.toPrecision(4)}%</RX.Text>
         <RX.Text>Memory used/total: {SystemMetadataUtils.memoryStringFormat(this.state.system.memoryUsed)} /
-            {SystemMetadataUtils.memoryStringFormat(this.state.system.memoryTotal)},
-            {" " + SystemMetadataUtils.memoryStringFormat(this.state.system.memoryAvailable)} available</RX.Text>
-        <RX.Text>System uptime: {SystemMetadataUtils.systemUptimeFormat(this.state.system.systemUptime)}</RX.Text>
+          {SystemMetadataUtils.memoryStringFormat(this.state.system.memoryTotal)},
+          {" " + SystemMetadataUtils.memoryStringFormat(this.state.system.memoryAvailable)} available</RX.Text>
+        <RX.Text>Server uptime: {SystemMetadataUtils.systemUptimeFormat(this.state.system.serverUptime)}</RX.Text>
       </RX.View>
     );
   }
