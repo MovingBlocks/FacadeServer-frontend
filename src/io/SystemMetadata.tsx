@@ -10,16 +10,21 @@ export interface SystemMetadata {
 export class SystemMetadataUtils {
 
     public static memoryStringFormat(numberToFormat: number) {
-        // number of bytes in a terabyte, gigabyte, and megabyte.
+        const BYTES_IN_KILOBYTE: number = 1000;
+        const BYTES_IN_MEGABYTE: number = BYTES_IN_KILOBYTE * 1000;
+        const BYTES_IN_GIGABYTE: number = BYTES_IN_MEGABYTE * 1000;
+        const BYTES_IN_TERABYTE: number = BYTES_IN_GIGABYTE * 1000;
         let result: string;
-        if (numberToFormat >= 1099511627776) {
-            result = (numberToFormat / 1099511627776).toPrecision(4).toString()  + "TB";
-        } else if (numberToFormat >= 1073741824) {
-            result = (numberToFormat / 1073741824).toPrecision(4).toString() + "GB";
-        } else if (numberToFormat >= 1048576) {
-            result = (numberToFormat / 1048576).toPrecision(4).toString() + "MB";
+        if (numberToFormat >= BYTES_IN_TERABYTE) {
+            result = (numberToFormat / BYTES_IN_TERABYTE).toPrecision(4).toString()  + "TB";
+        } else if (numberToFormat >= BYTES_IN_GIGABYTE) {
+            result = (numberToFormat / BYTES_IN_GIGABYTE).toPrecision(4).toString() + "GB";
+        } else if (numberToFormat >= BYTES_IN_MEGABYTE) {
+            result = (numberToFormat / BYTES_IN_MEGABYTE).toPrecision(4).toString() + "MB";
+        } else if (numberToFormat >= BYTES_IN_KILOBYTE) {
+            result = (numberToFormat / BYTES_IN_KILOBYTE).toPrecision(4).toString() + "KB";
         } else {
-            result = numberToFormat.toPrecision(6).toString();
+            result = numberToFormat.toPrecision(4).toString();
         }
         return result;
     }
@@ -32,7 +37,7 @@ export class SystemMetadataUtils {
         numberToFormat -= hours * 3600;
         const minutes = Math.floor(numberToFormat / 60);
         numberToFormat -= minutes * 60;
-        return "days: " + days + " hours: " + hours + " minutes: " + minutes + " seconds: " + numberToFormat;
+        return days + " days, " + hours + " hours, " + minutes + " minutes, " + numberToFormat + " seconds.";
     }
 
 }

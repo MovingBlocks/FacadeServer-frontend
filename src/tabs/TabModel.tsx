@@ -2,6 +2,7 @@ import {IncomingMessage} from "../io/IncomingMessage";
 import {OutgoingMessage} from "../io/OutgoingMessage";
 import {ResourceRequest} from "../io/ResourceRequest";
 import {TabController} from "./TabController";
+import {ResourcePath} from "common/io/ResourcePath";
 
 export abstract class TabModel<StateType> {
 
@@ -53,8 +54,14 @@ export abstract class TabModel<StateType> {
     this.updateView(state);
   }
 
-  public requestResource = (data: ResourceRequest) =>  {
-    this.sendData({messageType: "RESOURCE_REQUEST", data});
+  public requestResource = (data: ResourceRequest) => {
+    if (this.sendData instanceof Function) {
+      this.sendData({messageType: "RESOURCE_REQUEST", data});
+    }
+  }
+
+  public requestUpdateValues = (refresh: ResourcePath) => {
+    this.requestResource({resourcePath: refresh, method: "GET"});
   }
 
 }
