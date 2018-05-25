@@ -10,19 +10,19 @@ export interface SystemMetadata {
 export class SystemMetadataUtils {
 
   public static memoryStringFormat(numberToFormat: number) {
-    const BYTES_IN_KILOBYTE: number = 1000;
-    const BYTES_IN_MEGABYTE: number = BYTES_IN_KILOBYTE * 1000;
-    const BYTES_IN_GIGABYTE: number = BYTES_IN_MEGABYTE * 1000;
-    const BYTES_IN_TERABYTE: number = BYTES_IN_GIGABYTE * 1000;
+    const BYTES_IN_KIBIBYTE: number = 1024;
+    const BYTES_IN_MEBIBYTE: number = BYTES_IN_KIBIBYTE * 1024;
+    const BYTES_IN_GIBIBYTE: number = BYTES_IN_MEBIBYTE * 1024;
+    const BYTES_IN_TEBIBYTE: number = BYTES_IN_GIBIBYTE * 1024;
     let result: string;
-    if (numberToFormat >= BYTES_IN_TERABYTE) {
-      result = (numberToFormat / BYTES_IN_TERABYTE).toPrecision(4).toString()  + "TB";
-    } else if (numberToFormat >= BYTES_IN_GIGABYTE) {
-      result = (numberToFormat / BYTES_IN_GIGABYTE).toPrecision(4).toString() + "GB";
-    } else if (numberToFormat >= BYTES_IN_MEGABYTE) {
-      result = (numberToFormat / BYTES_IN_MEGABYTE).toPrecision(4).toString() + "MB";
-    } else if (numberToFormat >= BYTES_IN_KILOBYTE) {
-      result = (numberToFormat / BYTES_IN_KILOBYTE).toPrecision(4).toString() + "KB";
+    if (numberToFormat >= BYTES_IN_TEBIBYTE) {
+      result = (numberToFormat / BYTES_IN_TEBIBYTE).toPrecision(4).toString()  + "TiB";
+    } else if (numberToFormat >= BYTES_IN_GIBIBYTE) {
+      result = (numberToFormat / BYTES_IN_GIBIBYTE).toPrecision(4).toString() + "GiB";
+    } else if (numberToFormat >= BYTES_IN_MEBIBYTE) {
+      result = (numberToFormat / BYTES_IN_MEBIBYTE).toPrecision(4).toString() + "MiB";
+    } else if (numberToFormat >= BYTES_IN_KIBIBYTE) {
+      result = (numberToFormat / BYTES_IN_KIBIBYTE).toPrecision(4).toString() + "KiB";
     } else {
       result = numberToFormat.toPrecision(4).toString();
     }
