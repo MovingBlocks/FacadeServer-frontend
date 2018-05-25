@@ -15,7 +15,6 @@ export class HomeTabView extends TabView<HomeTabState> {
     const system = this.state.system;
     return (
       <RX.View>
-        <RX.Button onPress={this.updateValues} style={Styles.okButton}><RX.Text>Refresh</RX.Text></RX.Button>
         <RX.Text>Server status: {EngineStateMetadataUtils.render(this.state.engineState)}</RX.Text>
         <RX.Text>MOTD (Message Of The Day): {this.state.serverMotd}</RX.Text>
         <RX.Text>This server listens on port {this.state.serverPort}.</RX.Text>
@@ -33,12 +32,6 @@ export class HomeTabView extends TabView<HomeTabState> {
         <RX.Text>Server uptime: {SystemMetadataUtils.serverUptimeFormat(system.serverUptime)}</RX.Text>
       </RX.View>
     );
-  }
-
-  public updateValues = () => {
-    this.props.model.requestUpdateValues(["system"]);
-    this.props.model.requestUpdateValues(["engineState"]);
-    this.props.model.requestUpdateValues(["onlinePlayers"]);
   }
 
 }

@@ -1,4 +1,3 @@
-import {ResourcePath} from "common/io/ResourcePath";
 import {IncomingMessage} from "../io/IncomingMessage";
 import {OutgoingMessage} from "../io/OutgoingMessage";
 import {ResourceRequest} from "../io/ResourceRequest";
@@ -58,10 +57,6 @@ export abstract class TabModel<StateType> {
     if (this.sendData instanceof Function) {
       this.sendData({messageType: "RESOURCE_REQUEST", data});
     }
-  }
-
-  public requestUpdateValues = (refresh: ResourcePath) => {
-    this.requestResource({resourcePath: refresh, method: "GET"});
   }
 
 }
