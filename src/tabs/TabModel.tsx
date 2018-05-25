@@ -54,9 +54,7 @@ export abstract class TabModel<StateType> {
   }
 
   public requestResource = (data: ResourceRequest) => {
-    if (this.sendData instanceof Function) {
-      this.sendData({messageType: "RESOURCE_REQUEST", data});
-    }
+    this.sendData({messageType: "RESOURCE_REQUEST", data});
   }
 
 }
