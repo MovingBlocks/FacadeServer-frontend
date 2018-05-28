@@ -4,6 +4,7 @@
 import RX = require("reactxp");
 import Styles = require("../../styles/main");
 import {TabView} from "../TabView";
+import {ConsoleAutocomplete} from "./ConsoleAutocomplete";
 import {ConsoleTabController} from "./ConsoleTabController";
 import {ConsoleTabState} from "./ConsoleTabState";
 
@@ -22,23 +23,28 @@ export class ConsoleTabView extends TabView<ConsoleTabState> {
   public render() {
     const controller: ConsoleTabController = this.props.model.getController() as ConsoleTabController;
     return (
-      <RX.View style={[Styles.flex.column, Styles.flex.fill, Styles.justifyFlexEnd]}>
-        <RX.View>
-          {this.state.messages.map((msg, index) => <RX.Text key={index}>[{msg.type}] {this.renderMessage(msg.message)}</RX.Text>)}
+      <RX.ScrollView>
+        <RX.View style={[Styles.flex.column, Styles.flex.fill, Styles.justifyFlexEnd]}>
+          <RX.View>
+            {this.state.messages.map((msg, index) => <RX.Text key={index}>[{msg.type}] {this.renderMessage(msg.message)}</RX.Text>)}
+          </RX.View>
+          <RX.View style={Styles.flex.row}>
+            <RX.TextInput
+              style={[Styles.whiteBox, Styles.commandTextInput]}
+              value={this.state.commandToSend}
+              onChangeText={this.onChangeValue}
+              autoFocus={true}
+              onKeyPress={(event) => {if (event.keyCode === 9) {this.autoComplete(this.state.commandToSend); }}}/>
+            <RX.Button style={Styles.okButton} onPress={controller.execute}><RX.Text>Execute</RX.Text></RX.Button>
+          </RX.View>
         </RX.View>
-        <RX.View style={Styles.flex.row}>
-          <RX.TextInput
-            style={[Styles.whiteBox, Styles.commandTextInput]}
-            value={this.state.commandToSend}
-            onChangeText={this.onChangeValue} />
-          <RX.Button style={Styles.okButton} onPress={controller.execute}><RX.Text>Execute</RX.Text></RX.Button>
-        </RX.View>
-      </RX.View>
+      </RX.ScrollView>
     );
   }
 
   private onChangeValue = (newValue: string) => {
     this.props.model.update({commandToSend: newValue});
+    ConsoleAutocomplete.clear();
   }
 
   private renderMessage(message: string): JSX.Element {
@@ -81,6 +87,23 @@ export class ConsoleTabView extends TabView<ConsoleTabState> {
     const g: number = ((rgb >> 4) & 0xF) << 4;
     const b: number = ((rgb >> 0) & 0xF) << 4;
     return "rgb(" + r.toString() + "," + g.toString() + "," + b.toString() + ")";
+  }
+
+  private autoComplete(command: string) {
+    if (this.state.commands.length === 0) {
+      this.getCommands();
+    }
+    ConsoleAutocomplete.setCommandList(this.state.commands);
+    console.log(this.state.commandToSend);
+    this.props.model.update({commandToSend: ConsoleAutocomplete.complete(command)});
+    console.log(this.state.commandToSend);
+  }
+
+  private getCommands(): any {
+    this.props.model.requestResource({
+      method: "GET",
+      resourcePath: ["console"],
+    });
   }
 
 }

@@ -6,4 +6,5 @@ export interface Message {
 export interface ConsoleTabState {
   messages?: Message[];
   commandToSend?: string;
+  commands?: string[];
 }
