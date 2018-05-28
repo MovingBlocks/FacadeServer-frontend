@@ -24,7 +24,6 @@ export class ConsoleAutocomplete {
     if (this.matchIndex + 1 === this.matches.length) {
       this.matchIndex = -1;
     }
-    console.log(this.matches);
     // If the first command entered had more than one match, cycle throught the matches.
     // previousCommands is always at least size 1.
     if (this.previousCommands.indexOf(this.previousCommands[0]) !== -1 && this.previousCommands.length !== 1) {

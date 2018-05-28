@@ -94,9 +94,7 @@ export class ConsoleTabView extends TabView<ConsoleTabState> {
       this.getCommands();
     }
     ConsoleAutocomplete.setCommandList(this.state.commands);
-    console.log(this.state.commandToSend);
     this.props.model.update({commandToSend: ConsoleAutocomplete.complete(command)});
-    console.log(this.state.commandToSend);
   }
 
   private getCommands(): any {
