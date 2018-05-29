@@ -17,6 +17,8 @@ export class ConsoleAutocomplete {
     // if matches were found, do nothing to the command
     if (this.matches.length === 0) {
       return command;
+    } else if (this.matches.length === 1) {
+      return this.matches[0];
     }
     // If the last possible match has already been iterated through, reset the index to the first location.
     // The match index must be offset because the length function returns 1 with one element, but its index
