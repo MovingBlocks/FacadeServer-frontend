@@ -28,15 +28,15 @@ export class ConsoleTabView extends TabView<ConsoleTabState> {
           <RX.View>
             {this.state.messages.map((msg, index) => <RX.Text key={index}>[{msg.type}] {this.renderMessage(msg.message)}</RX.Text>)}
           </RX.View>
-          <RX.View style={Styles.flex.row}>
-            <RX.TextInput
-              style={[Styles.whiteBox, Styles.commandTextInput]}
-              value={this.state.commandToSend}
-              onChangeText={this.onChangeValue}
-              autoFocus={true}
-              onKeyPress={(event) => {if (event.keyCode === 9) {this.autoComplete(this.state.commandToSend); }}}/>
-            <RX.Button style={Styles.okButton} onPress={controller.execute}><RX.Text>Execute</RX.Text></RX.Button>
-          </RX.View>
+        </RX.View>
+        <RX.View style={Styles.flex.row}>
+          <RX.TextInput
+            style={[Styles.whiteBox, Styles.commandTextInput]}
+            value={this.state.commandToSend}
+            onChangeText={this.onChangeValue}
+            autoFocus={true}
+            onKeyPress={(event) => {if (event.keyCode === 9) {this.autoComplete(this.state.commandToSend); }}}/>
+          <RX.Button style={Styles.okButton} onPress={controller.execute}><RX.Text>Execute</RX.Text></RX.Button>
         </RX.View>
       </RX.ScrollView>
     );
@@ -90,18 +90,8 @@ export class ConsoleTabView extends TabView<ConsoleTabState> {
   }
 
   private autoComplete(command: string) {
-    if (this.state.commands.length === 0) {
-      this.getCommands();
-    }
     ConsoleAutocomplete.setCommandList(this.state.commands);
     this.props.model.update({commandToSend: ConsoleAutocomplete.complete(command)});
-  }
-
-  private getCommands(): any {
-    this.props.model.requestResource({
-      method: "GET",
-      resourcePath: ["console"],
-    });
   }
 
 }
