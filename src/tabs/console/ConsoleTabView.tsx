@@ -35,7 +35,7 @@ export class ConsoleTabView extends TabView<ConsoleTabState> {
             value={this.state.commandToSend}
             onChangeText={this.onChangeValue}
             autoFocus={true}
-            onKeyPress={(event) => {if (event.keyCode === 9) {this.autoComplete(this.state.commandToSend); }}}/>
+            onKeyPress={(event) =>  {this.handleKeypress(event, controller); }}/>
           <RX.Button style={Styles.okButton} onPress={controller.execute}><RX.Text>Execute</RX.Text></RX.Button>
         </RX.View>
       </RX.ScrollView>
@@ -92,6 +92,14 @@ export class ConsoleTabView extends TabView<ConsoleTabState> {
   private autoComplete(command: string) {
     ConsoleAutocomplete.setCommandList(this.state.commands);
     this.props.model.update({commandToSend: ConsoleAutocomplete.complete(command)});
+  }
+
+  private handleKeypress(event: any, controller: ConsoleTabController) {
+    if (event.keyCode === 9) {
+      this.autoComplete(this.state.commandToSend);
+    } else if (event.keyCode === 13) {
+      controller.execute();
+    }
   }
 
 }

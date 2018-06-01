@@ -51,7 +51,7 @@ export class ConsoleAutocomplete {
   // set the list of commands provided by the backend
   public static setCommandList(commands: string[]) {
     if (this.commandList.length === 0) {
-      this.commandList = commands;
+      this.commandList = commands.sort();
     }
   }
 
