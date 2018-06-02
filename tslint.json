@@ -9,6 +9,7 @@
       "max-line-length": [true, 140],
       "jsx-no-lambda": false,
       "jsx-alignment": false,
+      "member-ordering": false,
       "object-literal-sort-keys": false
     },
     "rulesDirectory": []
