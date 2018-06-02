@@ -19,6 +19,11 @@ export class ConsoleTabView extends TabView<ConsoleTabState> {
   private lastColor: number = 0xEFFF;
   private resetColor: number = 0xF000;
   private colorStyles: any = {};
+  private commandInput: any;
+
+  public componentDidUpdate() {
+    this.commandInput.focus();
+  }
 
   public render() {
     const controller: ConsoleTabController = this.props.model.getController() as ConsoleTabController;
@@ -31,11 +36,13 @@ export class ConsoleTabView extends TabView<ConsoleTabState> {
         </RX.View>
         <RX.View style={Styles.flex.row}>
           <RX.TextInput
+            ref={input => this.commandInput = input}
             style={[Styles.whiteBox, Styles.commandTextInput]}
             value={this.state.commandToSend}
             onChangeText={this.onChangeValue}
             autoFocus={true}
             onKeyPress={(event) =>  {this.handleKeypress(event, controller); }}/>
+          <RX.TextInput/>
           <RX.Button style={Styles.okButton} onPress={controller.execute}><RX.Text>Execute</RX.Text></RX.Button>
         </RX.View>
       </RX.ScrollView>
@@ -97,6 +104,7 @@ export class ConsoleTabView extends TabView<ConsoleTabState> {
   private handleKeypress(event: any, controller: ConsoleTabController) {
     if (event.keyCode === 9) {
       this.autoComplete(this.state.commandToSend);
+      //this.commandInput.focus();
     } else if (event.keyCode === 13) {
       controller.execute();
     }
