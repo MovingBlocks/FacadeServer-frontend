@@ -53,7 +53,7 @@ export abstract class TabModel<StateType> {
     this.updateView(state);
   }
 
-  public requestResource = (data: ResourceRequest) =>  {
+  public requestResource = (data: ResourceRequest) => {
     this.sendData({messageType: "RESOURCE_REQUEST", data});
   }
 
