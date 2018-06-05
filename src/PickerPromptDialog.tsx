@@ -20,7 +20,7 @@ export class PickerPromptDialog extends RX.Component<PickerPromptDialogProps, {s
 
   constructor(props: PickerPromptDialogProps) {
     super(props);
-    this.state = {selectedValue: ""};
+    this.state = {selectedValue: this.props.items[0].value};
   }
 
   public render() {
@@ -37,7 +37,7 @@ export class PickerPromptDialog extends RX.Component<PickerPromptDialogProps, {s
     );
   }
 
-  private onValueChange = (newValue: string, index: number) => {
+  private onValueChange = (newValue: string) => {
     this.setState({selectedValue: newValue});
   }
 

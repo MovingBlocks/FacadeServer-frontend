@@ -44,19 +44,21 @@ export class UserManagementTabView extends TabView<UserManagementTabState> {
       "NOTE: this is for console commands only";
     const removePermissionPrompt = "Enter the permission to remove (chat, cheat, userManagement, serverManagement, or debug).\n" +
       "NOTE: this is for console commands only";
+    const kickUserPrompt = "Are you sure you want to kick " + player.name + "?";
+    const renameUserPrompt = "Enter the new name for " + player.name + "\nWARNING: this command is buggy. Use at your own risk!";
     const showAddPermission = (playerName: string) => PickerPromptDialog
       .show(addPermissionPrompt, permissionItems, (permission) => controller.addPermission(playerName, permission));
     const showRemovePermission = (playerName: string) => PickerPromptDialog
       .show(removePermissionPrompt, permissionItems, (permission) => controller.removePermission(playerName, permission));
-    const showKickUser = (playerName: string) => YesNoDialog
-      .show("Are you sure you want to kick " + player.name + "?", () => controller.kickUser(playerName));
     const showRenameUser = (playerName: string) => TextPromptDialog
-      .show("", (newName) => controller.renameUser(playerName, newName));
+      .show(renameUserPrompt, (newName) => controller.renameUser(playerName, newName));
+    const showKickUser = (playerName: string) => YesNoDialog
+      .show(kickUserPrompt, () => controller.kickUser(playerName));
     return([
       {label: "Add Permission", style: "GREEN", onClick: () => showAddPermission(player.name)},
       {label: "Remove Permission", style: "GREEN", onClick: () => showRemovePermission(player.name)},
-      {label: "Kick User", style: "GREEN", onClick: () => showKickUser(player.name)},
       {label: "Rename User", style: "GREEN", onClick: () => showRenameUser(player.name)},
+      {label: "Kick User", style: "RED", onClick: () => showKickUser(player.name)},
     ]);
   }
 }
