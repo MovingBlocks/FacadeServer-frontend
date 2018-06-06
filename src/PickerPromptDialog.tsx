@@ -7,14 +7,13 @@ interface PickerPromptDialogProps {
   promptText: string;
   items: PickerPropsItem[];
   okCallback: (value: string) => void;
-  multiline?: boolean;
 }
 
 export class PickerPromptDialog extends RX.Component<PickerPromptDialogProps, {selectedValue: string}> {
 
-  public static show(promptText: string, items: PickerPropsItem[], okCallback: (value: string) => void, multiline?: boolean) {
+  public static show(promptText: string, items: PickerPropsItem[], okCallback: (value: string) => void) {
     RX.Modal.show(
-      <PickerPromptDialog promptText={promptText} items={items} okCallback={okCallback} multiline={multiline}/>, "pickerPromptDialog",
+      <PickerPromptDialog promptText={promptText} items={items} okCallback={okCallback}/>, "pickerPromptDialog",
     );
   }
 
