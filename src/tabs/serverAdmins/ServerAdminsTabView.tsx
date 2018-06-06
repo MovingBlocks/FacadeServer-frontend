@@ -1,7 +1,7 @@
 import RX = require("reactxp");
 import Styles = require("../../styles/main");
+import {ManagePermissionsDialog} from "./ManagePermissionsDialog";
 import {AlertDialog} from "../../AlertDialog";
-import {OkCancelButtonBar} from "../../OkCancelButtonBar";
 import {TextPromptDialog} from "../../TextPromptDialog";
 import {TabView} from "../TabView";
 import {AddFromOnlinePlayersDialog} from "./AddFromOnlinePlayersDialog";
@@ -48,12 +48,14 @@ export class ServerAdminsTabView extends TabView<ServerAdminsTabState> {
   }
 
   private renderAdmin = (controller: ServerAdminsTabController) => (admin: IdNamePair) => {
+    const showManagePermission = () => ManagePermissionsDialog.show(controller.addAdmin);
     return (
       <RX.View key={admin.id} style={Styles.flex.row}>
         <RX.View>
           <RX.Text>{admin.id}</RX.Text>
           <RX.Text>{admin.name !== null ? "Currently online as " + admin.name : "Currently offline"}</RX.Text>
         </RX.View>
+        <RX.Button style={Styles.okButton} onPress={showManagePermission}><RX.Text>Manage Permissions</RX.Text></RX.Button>
         <RX.Button style={Styles.cancelButton} onPress={() => controller.removeAdmin(admin.id)}><RX.Text>Remove</RX.Text></RX.Button>
       </RX.View>
     );

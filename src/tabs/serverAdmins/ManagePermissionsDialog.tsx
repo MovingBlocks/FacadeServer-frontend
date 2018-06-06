@@ -25,7 +25,13 @@ export class ManagePermissionsDialog extends RX.Component<ManagePermissionsDialo
     return (
       <RX.View style={Styles.whiteBox}>
         <RX.Text>Admin Permission Management</RX.Text>
-        <CheckBox text={"console"} onCheckedChange={null} checkedByDefault={false}/>
+        <CheckBox text={"Execute Console Commands"} onCheckedChange={undefined} checkedByDefault={false}/>
+        <CheckBox text={"Install Modules"} onCheckedChange={undefined} checkedByDefault={false}/>
+        <CheckBox text={"Create/Backup/Rename Games"} onCheckedChange={undefined} checkedByDefault={false}/>
+        <CheckBox text={"Stop Games"} onCheckedChange={undefined} checkedByDefault={false}/>
+        <CheckBox text={"Delete Games"} onCheckedChange={undefined} checkedByDefault={false}/>
+        <CheckBox text={"Change Settings"} onCheckedChange={undefined} checkedByDefault={false}/>
+        <CheckBox text={"User Management"} onCheckedChange={undefined} checkedByDefault={false}/>
         <OkCancelButtonBar onOk={this.onOk} onCancel={this.onCancel} />
       </RX.View>
     );

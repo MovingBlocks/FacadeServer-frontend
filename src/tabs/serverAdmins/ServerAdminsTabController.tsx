@@ -17,4 +17,8 @@ export class ServerAdminsTabController extends TabController<ServerAdminsTabStat
     });
   }
 
+  public modifyPermission = (adminId: string, checked: boolean, permissionNumber: number) => {
+    return adminId + checked + permissionNumber;
+  }
+
 }
