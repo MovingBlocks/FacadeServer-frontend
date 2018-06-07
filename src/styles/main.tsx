@@ -81,6 +81,10 @@ const smallTextInput = RX.Styles.createViewStyle({
   maxWidth: 150,
 });
 
+const smallPickerInput = RX.Styles.createViewStyle({
+  maxWidth: 200,
+});
+
 export = {
   backgrounds,
   box,
@@ -101,6 +105,7 @@ export = {
   okButton: [box, greyBorder, justifyCenter, backgrounds.lime],
   scrollableDialog,
   smallTextInput,
+  smallPickerInput,
   verticalScroll,
   waitOverlay: [flex.fillAll, backgrounds.lightGrayAlpha, justifyCenter],
   whiteBox: [box, greyBorder, backgrounds.white],
