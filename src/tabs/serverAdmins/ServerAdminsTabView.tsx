@@ -1,10 +1,10 @@
 import RX = require("reactxp");
 import Styles = require("../../styles/main");
-import {ManagePermissionsDialog} from "./ManagePermissionsDialog";
 import {AlertDialog} from "../../AlertDialog";
 import {TextPromptDialog} from "../../TextPromptDialog";
 import {TabView} from "../TabView";
 import {AddFromOnlinePlayersDialog} from "./AddFromOnlinePlayersDialog";
+import {ManagePermissionsDialog} from "./ManagePermissionsDialog";
 import {ServerAdminsTabController} from "./ServerAdminsTabController";
 import {IdNamePair, ServerAdminsTabState} from "./ServerAdminsTabState";
 

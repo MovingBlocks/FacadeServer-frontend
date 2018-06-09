@@ -5,12 +5,13 @@ import {ResourcePath, ResourcePathUtil} from "../../io/ResourcePath";
 import {ResourceSubscriberTabModel} from "../ResourceSubscriberTabModel";
 import {TabController} from "../TabController";
 import {ServerAdminsTabController} from "./ServerAdminsTabController";
-import {ServerAdminsTabState} from "./ServerAdminsTabState";
+import {AdminPermissions, ServerAdminsTabState} from "./ServerAdminsTabState";
 
 export class ServerAdminsTabModel extends ResourceSubscriberTabModel<ServerAdminsTabState> {
 
   private adminIds: string[] = [];
   private onlinePlayers: OnlinePlayerMetadata[] = [];
+  private adminPermissions: AdminPermissions[] = [];
 
   public getName(): string {
     return "Admins";
@@ -20,11 +21,12 @@ export class ServerAdminsTabModel extends ResourceSubscriberTabModel<ServerAdmin
     return [
       ["serverAdmins"],
       ["onlinePlayers"],
+      ["serverAdminPermissions"],
     ];
   }
 
   public getDefaultState(): ServerAdminsTabState {
-    return {admins: [], nonAdmins: []};
+    return {admins: [], nonAdmins: [], adminPermissions: []};
   }
 
   public initController(): TabController<ServerAdminsTabState> {
@@ -36,6 +38,8 @@ export class ServerAdminsTabModel extends ResourceSubscriberTabModel<ServerAdmin
       this.adminIds = data as string[];
     } else if (ResourcePathUtil.equals(resourcePath, ["onlinePlayers"])) {
       this.onlinePlayers = data as OnlinePlayerMetadata[];
+    } else if (ResourcePathUtil.equals(resourcePath, ["serverAdminPermissions"])) {
+      this.adminPermissions = data as AdminPermissions[];
     }
     this.update({
       admins: this.adminIds.map((adminId) => ({
@@ -48,6 +52,7 @@ export class ServerAdminsTabModel extends ResourceSubscriberTabModel<ServerAdmin
           id: onlinePlayer.id,
           name: onlinePlayer.name,
         })),
+      adminPermissions: this.adminPermissions,
     });
   }
 
