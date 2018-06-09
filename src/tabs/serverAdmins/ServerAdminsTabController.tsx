@@ -18,7 +18,11 @@ export class ServerAdminsTabController extends TabController<ServerAdminsTabStat
   }
 
   public modifyPermission = (adminId: string, checked: boolean, permissionNumber: number) => {
-    return adminId + checked + permissionNumber;
+    this.model.requestResource({
+      data: undefined,
+      method: "PATCH",
+      resourcePath: ["serverAdmins", adminId, "permissions"],
+    });
   }
 
 }
