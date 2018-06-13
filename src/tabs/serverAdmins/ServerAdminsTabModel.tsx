@@ -1,5 +1,3 @@
-import {EngineStateMetadata} from "../../io/EngineStateMetadata";
-import {IncomingMessage} from "../../io/IncomingMessage";
 import {OnlinePlayerMetadata} from "../../io/OnlinePlayerMetadata";
 import {ResourcePath, ResourcePathUtil} from "../../io/ResourcePath";
 import {ResourceSubscriberTabModel} from "../ResourceSubscriberTabModel";
@@ -41,7 +39,6 @@ export class ServerAdminsTabModel extends ResourceSubscriberTabModel<ServerAdmin
     } else if (ResourcePathUtil.equals(resourcePath, ["serverAdminPermissions"])) {
       this.adminPermissions = data as AdminPermissions[];
     }
-    console.log(this.adminPermissions);
     this.update({
       admins: this.adminIds.map((adminId) => ({
         id: adminId,

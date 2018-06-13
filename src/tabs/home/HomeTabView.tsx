@@ -1,7 +1,6 @@
 import RX = require("reactxp");
-import Styles = require("../../styles/main");
-import {EngineStateMetadata, EngineStateMetadataUtils} from "../../io/EngineStateMetadata";
-import {OnlinePlayerMetadata, RgbaColor} from "../../io/OnlinePlayerMetadata";
+import {EngineStateMetadataUtils} from "../../io/EngineStateMetadata";
+import {RgbaColor} from "../../io/OnlinePlayerMetadata";
 import {SystemMetadataUtils} from "../../io/SystemMetadata";
 import {TabView} from "../TabView";
 import {HomeTabState} from "./HomeTabState";

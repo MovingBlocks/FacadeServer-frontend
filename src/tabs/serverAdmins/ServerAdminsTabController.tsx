@@ -8,20 +8,12 @@ export class ServerAdminsTabController extends TabController<ServerAdminsTabStat
       method: "POST",
       resourcePath: ["serverAdmins", newAdminId],
     });
-    this.updatePermissions();
   }
 
   public removeAdmin = (adminId: string) => {
     this.model.requestResource({
       method: "DELETE",
       resourcePath: ["serverAdmins", adminId],
-    });
-  }
-
-  public updatePermissions = () => {
-    this.model.requestResource({
-      method: "GET",
-      resourcePath: ["serverAdminPermissions"],
     });
   }
 

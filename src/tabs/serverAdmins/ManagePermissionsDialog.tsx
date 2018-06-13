@@ -59,39 +59,37 @@ export class ManagePermissionsDialog extends RX.Component<ManagePermissionsDialo
   }
 
   private updatePermission(index: number, checked: boolean) {
-    if (this.props.adminPermissions.permissions.adminManagement) {
-      switch (index) {
-        case 0:
-          this.props.adminPermissions.permissions.consoleCheat = checked;
-          break;
-        case 1:
-          this.props.adminPermissions.permissions.consoleUserManagement = checked;
-          break;
-        case 2:
-          this.props.adminPermissions.permissions.consoleServerManagement = checked;
-          break;
-        case 3:
-          this.props.adminPermissions.permissions.consoleDebug = checked;
-          break;
-        case 4:
-          this.props.adminPermissions.permissions.installModules = checked;
-          break;
-        case 5:
-          this.props.adminPermissions.permissions.createBackupRenameGames = checked;
-          break;
-        case 6:
-          this.props.adminPermissions.permissions.startStopGames = checked;
-          break;
-        case 7:
-          this.props.adminPermissions.permissions.deleteGames = checked;
-          break;
-        case 8:
-          this.props.adminPermissions.permissions.changeSettings = checked;
-          break;
-        case 9:
-          this.props.adminPermissions.permissions.adminManagement = checked;
-          break;
-      }
+    switch (index) {
+      case 0:
+        this.props.adminPermissions.permissions.consoleCheat = checked;
+        break;
+      case 1:
+        this.props.adminPermissions.permissions.consoleUserManagement = checked;
+        break;
+      case 2:
+        this.props.adminPermissions.permissions.consoleServerManagement = checked;
+        break;
+      case 3:
+        this.props.adminPermissions.permissions.consoleDebug = checked;
+        break;
+      case 4:
+        this.props.adminPermissions.permissions.installModules = checked;
+        break;
+      case 5:
+        this.props.adminPermissions.permissions.createBackupRenameGames = checked;
+        break;
+      case 6:
+        this.props.adminPermissions.permissions.startStopGames = checked;
+        break;
+      case 7:
+        this.props.adminPermissions.permissions.deleteGames = checked;
+        break;
+      case 8:
+        this.props.adminPermissions.permissions.changeSettings = checked;
+        break;
+      case 9:
+        this.props.adminPermissions.permissions.adminManagement = checked;
+        break;
     }
   }
 

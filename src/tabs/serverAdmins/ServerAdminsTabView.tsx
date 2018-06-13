@@ -1,6 +1,5 @@
 import RX = require("reactxp");
 import Styles = require("../../styles/main");
-import {isNull} from "util";
 import {AlertDialog} from "../../AlertDialog";
 import {TextPromptDialog} from "../../TextPromptDialog";
 import {TabView} from "../TabView";
@@ -65,6 +64,7 @@ export class ServerAdminsTabView extends TabView<ServerAdminsTabState> {
 
   private getPermissionsOfAdmin(adminId: string): AdminPermissions {
     for (const permission of this.state.adminPermissions) {
+      console.log(JSON.stringify(permission));
       if (permission.id === adminId) {
         return permission;
       }
