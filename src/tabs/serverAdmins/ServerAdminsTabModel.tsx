@@ -41,6 +41,7 @@ export class ServerAdminsTabModel extends ResourceSubscriberTabModel<ServerAdmin
     } else if (ResourcePathUtil.equals(resourcePath, ["serverAdminPermissions"])) {
       this.adminPermissions = data as AdminPermissions[];
     }
+    console.log(this.adminPermissions);
     this.update({
       admins: this.adminIds.map((adminId) => ({
         id: adminId,

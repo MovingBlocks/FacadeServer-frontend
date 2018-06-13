@@ -1,12 +1,13 @@
 import RX = require("reactxp");
 import Styles = require("../../styles/main");
+import {isNull} from "util";
 import {AlertDialog} from "../../AlertDialog";
 import {TextPromptDialog} from "../../TextPromptDialog";
 import {TabView} from "../TabView";
 import {AddFromOnlinePlayersDialog} from "./AddFromOnlinePlayersDialog";
 import {ManagePermissionsDialog} from "./ManagePermissionsDialog";
 import {ServerAdminsTabController} from "./ServerAdminsTabController";
-import {IdNamePair, ServerAdminsTabState} from "./ServerAdminsTabState";
+import {AdminPermissions, IdNamePair, ServerAdminsTabState} from "./ServerAdminsTabState";
 
 export class ServerAdminsTabView extends TabView<ServerAdminsTabState> {
 
@@ -48,7 +49,8 @@ export class ServerAdminsTabView extends TabView<ServerAdminsTabState> {
   }
 
   private renderAdmin = (controller: ServerAdminsTabController) => (admin: IdNamePair) => {
-    const showManagePermission = () => ManagePermissionsDialog.show(controller.addAdmin);
+    const showManagePermission = () =>
+      ManagePermissionsDialog.show(admin.id, controller.modifyAdminPermission, this.getPermissionsOfAdmin(admin.id));
     return (
       <RX.View key={admin.id} style={Styles.flex.row}>
         <RX.View>
@@ -59,6 +61,15 @@ export class ServerAdminsTabView extends TabView<ServerAdminsTabState> {
         <RX.Button style={Styles.cancelButton} onPress={() => controller.removeAdmin(admin.id)}><RX.Text>Remove</RX.Text></RX.Button>
       </RX.View>
     );
+  }
+
+  private getPermissionsOfAdmin(adminId: string): AdminPermissions {
+    for (const permission of this.state.adminPermissions) {
+      if (permission.id === adminId) {
+        return permission;
+      }
+    }
+    return null;
   }
 
 }

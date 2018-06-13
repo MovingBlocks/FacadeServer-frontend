@@ -3,8 +3,7 @@ export interface IdNamePair {
   name: string;
 }
 
-export interface AdminPermissions {
-  id: string;
+export interface Permissions {
   consoleCheat: boolean;
   consoleUserManagement: boolean;
   consoleServerManagement: boolean;
@@ -12,9 +11,14 @@ export interface AdminPermissions {
   installModules: boolean;
   createBackupRenameGames: boolean;
   deleteGames: boolean;
-  stopGames: boolean;
+  startStopGames: boolean;
   changeSettings: boolean;
   adminManagement: boolean;
+}
+
+export interface AdminPermissions {
+  id: string;
+  permissions: Permissions;
 }
 
 export interface ServerAdminsTabState {

@@ -1,5 +1,5 @@
 import {TabController} from "../TabController";
-import {ServerAdminsTabState} from "./ServerAdminsTabState";
+import {AdminPermissions, ServerAdminsTabState} from "./ServerAdminsTabState";
 
 export class ServerAdminsTabController extends TabController<ServerAdminsTabState> {
 
@@ -8,6 +8,7 @@ export class ServerAdminsTabController extends TabController<ServerAdminsTabStat
       method: "POST",
       resourcePath: ["serverAdmins", newAdminId],
     });
+    this.updatePermissions();
   }
 
   public removeAdmin = (adminId: string) => {
@@ -17,23 +18,16 @@ export class ServerAdminsTabController extends TabController<ServerAdminsTabStat
     });
   }
 
-  public getPermissions = () => {
+  public updatePermissions = () => {
     this.model.requestResource({
       method: "GET",
-      resourcePath: ["serverAdminsPermissions"],
+      resourcePath: ["serverAdminPermissions"],
     });
   }
 
-  public getPermissionOfAdmin = (adminId: string) => {
+  public modifyAdminPermission = (adminId: string, newPermissions: AdminPermissions) => {
     this.model.requestResource({
-      method: "GET",
-      resourcePath: ["serverAdmins", adminId, "permissions"],
-    });
-  }
-
-  public modifyAdminPermission = (adminId: string, checked: boolean, permissionNumber: number) => {
-    this.model.requestResource({
-      data: undefined,
+      data: newPermissions,
       method: "PATCH",
       resourcePath: ["serverAdmins", adminId, "permissions"],
     });
