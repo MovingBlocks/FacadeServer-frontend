@@ -2,8 +2,9 @@ import {OnlinePlayerMetadata} from "../../io/OnlinePlayerMetadata";
 import {ResourcePath, ResourcePathUtil} from "../../io/ResourcePath";
 import {ResourceSubscriberTabModel} from "../ResourceSubscriberTabModel";
 import {TabController} from "../TabController";
+import {AdminPermissions} from "./AdminPermissions";
 import {ServerAdminsTabController} from "./ServerAdminsTabController";
-import {AdminPermissions, ServerAdminsTabState} from "./ServerAdminsTabState";
+import {ServerAdminsTabState} from "./ServerAdminsTabState";
 
 export class ServerAdminsTabModel extends ResourceSubscriberTabModel<ServerAdminsTabState> {
 

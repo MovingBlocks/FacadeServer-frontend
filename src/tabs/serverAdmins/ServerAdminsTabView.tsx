@@ -6,7 +6,8 @@ import {TabView} from "../TabView";
 import {AddFromOnlinePlayersDialog} from "./AddFromOnlinePlayersDialog";
 import {ManagePermissionsDialog} from "./ManagePermissionsDialog";
 import {ServerAdminsTabController} from "./ServerAdminsTabController";
-import {AdminPermissions, IdNamePair, ServerAdminsTabState} from "./ServerAdminsTabState";
+import {IdNamePair, ServerAdminsTabState} from "./ServerAdminsTabState";
+import {AdminPermissions} from "./AdminPermissions";
 
 export class ServerAdminsTabView extends TabView<ServerAdminsTabState> {
 
@@ -64,7 +65,7 @@ export class ServerAdminsTabView extends TabView<ServerAdminsTabState> {
 
   private getPermissionsOfAdmin(adminId: string): AdminPermissions {
     for (const permission of this.state.adminPermissions) {
-      if (permission.id === adminId) {
+      if (permission.key === adminId) {
         return permission;
       }
     }
