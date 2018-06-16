@@ -1,6 +1,6 @@
 import {TabController} from "../TabController";
-import {ServerAdminsTabState} from "./ServerAdminsTabState";
 import {AdminPermissions} from "./AdminPermissions";
+import {ServerAdminsTabState} from "./ServerAdminsTabState";
 
 export class ServerAdminsTabController extends TabController<ServerAdminsTabState> {
 
@@ -19,7 +19,6 @@ export class ServerAdminsTabController extends TabController<ServerAdminsTabStat
   }
 
   public modifyAdminPermission = (adminId: string, newPermissions: AdminPermissions) => {
-    console.log(newPermissions);
     this.model.requestResource({
       data: newPermissions,
       method: "PATCH",

@@ -4,10 +4,10 @@ import {AlertDialog} from "../../AlertDialog";
 import {TextPromptDialog} from "../../TextPromptDialog";
 import {TabView} from "../TabView";
 import {AddFromOnlinePlayersDialog} from "./AddFromOnlinePlayersDialog";
+import {AdminPermissions} from "./AdminPermissions";
 import {ManagePermissionsDialog} from "./ManagePermissionsDialog";
 import {ServerAdminsTabController} from "./ServerAdminsTabController";
 import {IdNamePair, ServerAdminsTabState} from "./ServerAdminsTabState";
-import {AdminPermissions} from "./AdminPermissions";
 
 export class ServerAdminsTabView extends TabView<ServerAdminsTabState> {
 
