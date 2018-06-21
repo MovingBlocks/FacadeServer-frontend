@@ -65,7 +65,7 @@ export class ServerAdminsTabView extends TabView<ServerAdminsTabState> {
 
   private getPermissionsOfAdmin(adminId: string): AdminPermissions {
     for (const permission of this.state.adminPermissions) {
-      if (permission.key === adminId) {
+      if (permission.id === adminId) {
         return permission;
       }
     }

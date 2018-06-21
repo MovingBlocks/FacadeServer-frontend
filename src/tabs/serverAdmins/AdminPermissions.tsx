@@ -14,6 +14,6 @@ export interface Permissions {
 
 // These variable names must not change due to how the Java Pair class serializes data.
 export interface AdminPermissions {
-  key: string;
-  value: Permissions;
+  id: string;
+  permissions: Permissions;
 }

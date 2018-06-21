@@ -23,42 +23,42 @@ export class ManagePermissionsDialog extends RX.Component<ManagePermissionsDialo
       <RX.View style={Styles.whiteBox}>
         <RX.Text>Admin Permission Management</RX.Text>
         <CheckBox text={"Execute Console Cheat Commands"}
-                  onCheckedChange={(checked) => this.props.adminPermissions.value.CONSOLE_CHEAT = checked}
-                  checkedByDefault={this.props.adminPermissions.value.CONSOLE_CHEAT}/>
+                  onCheckedChange={(checked) => this.props.adminPermissions.permissions.CONSOLE_CHEAT = checked}
+                  checkedByDefault={this.props.adminPermissions.permissions.CONSOLE_CHEAT}/>
         <CheckBox text={"Execute Console User Management Commands"}
-                  onCheckedChange={(checked) => this.props.adminPermissions.value.CONSOLE_USER_MANAGEMENT = checked}
-                  checkedByDefault={this.props.adminPermissions.value.CONSOLE_USER_MANAGEMENT}/>
+                  onCheckedChange={(checked) => this.props.adminPermissions.permissions.CONSOLE_USER_MANAGEMENT = checked}
+                  checkedByDefault={this.props.adminPermissions.permissions.CONSOLE_USER_MANAGEMENT}/>
         <CheckBox text={"Execute Console Server Management Commands"}
-                  onCheckedChange={(checked) => this.props.adminPermissions.value.CONSOLE_SERVER_MANAGEMENT = checked}
-                  checkedByDefault={this.props.adminPermissions.value.CONSOLE_SERVER_MANAGEMENT}/>
+                  onCheckedChange={(checked) => this.props.adminPermissions.permissions.CONSOLE_SERVER_MANAGEMENT = checked}
+                  checkedByDefault={this.props.adminPermissions.permissions.CONSOLE_SERVER_MANAGEMENT}/>
         <CheckBox text={"Execute Console Debug Commands"}
-                  onCheckedChange={(checked) => this.props.adminPermissions.value.CONSOLE_DEBUG = checked}
-                  checkedByDefault={this.props.adminPermissions.value.CONSOLE_DEBUG}/>
+                  onCheckedChange={(checked) => this.props.adminPermissions.permissions.CONSOLE_DEBUG = checked}
+                  checkedByDefault={this.props.adminPermissions.permissions.CONSOLE_DEBUG}/>
         <CheckBox text={"Install Modules"}
-                  onCheckedChange={(checked) => this.props.adminPermissions.value.INSTALL_MODULES = checked}
-                  checkedByDefault={this.props.adminPermissions.value.INSTALL_MODULES}/>
+                  onCheckedChange={(checked) => this.props.adminPermissions.permissions.INSTALL_MODULES = checked}
+                  checkedByDefault={this.props.adminPermissions.permissions.INSTALL_MODULES}/>
         <CheckBox text={"Create/Backup/Rename Games"}
-                  onCheckedChange={(checked) => this.props.adminPermissions.value.CREATE_BACKUP_RENAME_GAMES = checked}
-                  checkedByDefault={this.props.adminPermissions.value.CREATE_BACKUP_RENAME_GAMES}/>
+                  onCheckedChange={(checked) => this.props.adminPermissions.permissions.CREATE_BACKUP_RENAME_GAMES = checked}
+                  checkedByDefault={this.props.adminPermissions.permissions.CREATE_BACKUP_RENAME_GAMES}/>
         <CheckBox text={"Stop Games"}
-                  onCheckedChange={(checked) => this.props.adminPermissions.value.START_STOP_GAMES = checked}
-                  checkedByDefault={this.props.adminPermissions.value.START_STOP_GAMES}/>
+                  onCheckedChange={(checked) => this.props.adminPermissions.permissions.START_STOP_GAMES = checked}
+                  checkedByDefault={this.props.adminPermissions.permissions.START_STOP_GAMES}/>
         <CheckBox text={"Delete Games"}
-                  onCheckedChange={(checked) => this.props.adminPermissions.value.DELETE_GAMES = checked}
-                  checkedByDefault={this.props.adminPermissions.value.DELETE_GAMES}/>
+                  onCheckedChange={(checked) => this.props.adminPermissions.permissions.DELETE_GAMES = checked}
+                  checkedByDefault={this.props.adminPermissions.permissions.DELETE_GAMES}/>
         <CheckBox text={"Change Settings"}
-                  onCheckedChange={(checked) => this.props.adminPermissions.value.CHANGE_SETTINGS = checked}
-                  checkedByDefault={this.props.adminPermissions.value.CHANGE_SETTINGS}/>
+                  onCheckedChange={(checked) => this.props.adminPermissions.permissions.CHANGE_SETTINGS = checked}
+                  checkedByDefault={this.props.adminPermissions.permissions.CHANGE_SETTINGS}/>
         <CheckBox text={"Admin Management"}
-                  onCheckedChange={(checked) => this.props.adminPermissions.value.ADMIN_MANAGEMENT = checked}
-                  checkedByDefault={this.props.adminPermissions.value.ADMIN_MANAGEMENT}/>
+                  onCheckedChange={(checked) => this.props.adminPermissions.permissions.ADMIN_MANAGEMENT = checked}
+                  checkedByDefault={this.props.adminPermissions.permissions.ADMIN_MANAGEMENT}/>
         <OkCancelButtonBar onOk={this.onOk} onCancel={this.onCancel} />
       </RX.View>
     );
   }
 
   private onOk = () => {
-    this.props.okCallback(this.props.adminPermissions.key, this.props.adminPermissions);
+    this.props.okCallback(this.props.adminPermissions.id, this.props.adminPermissions);
     RX.Modal.dismiss("managePermissionsDialog");
   }
 
