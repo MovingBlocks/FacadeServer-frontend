@@ -12,7 +12,7 @@ export interface Permissions {
   ADMIN_MANAGEMENT: boolean;
 }
 
-// These variable names must not change due to how the Java Pair class serializes data.
+// These variable names must not change due to how the data is serialized on the backend.
 export interface AdminPermissions {
   id: string;
   permissions: Permissions;
