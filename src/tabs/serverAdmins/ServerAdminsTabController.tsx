@@ -1,4 +1,5 @@
 import {TabController} from "../TabController";
+import {AdminPermissions} from "./AdminPermissions";
 import {ServerAdminsTabState} from "./ServerAdminsTabState";
 
 export class ServerAdminsTabController extends TabController<ServerAdminsTabState> {
@@ -14,6 +15,14 @@ export class ServerAdminsTabController extends TabController<ServerAdminsTabStat
     this.model.requestResource({
       method: "DELETE",
       resourcePath: ["serverAdmins", adminId],
+    });
+  }
+
+  public modifyAdminPermission = (adminId: string, newPermissions: AdminPermissions) => {
+    this.model.requestResource({
+      data: newPermissions,
+      method: "PATCH",
+      resourcePath: ["serverAdmins", adminId, "permissions"],
     });
   }
 

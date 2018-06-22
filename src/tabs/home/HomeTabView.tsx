@@ -1,7 +1,6 @@
 import RX = require("reactxp");
-import Styles = require("../../styles/main");
-import {EngineStateMetadata, EngineStateMetadataUtils} from "../../io/EngineStateMetadata";
-import {OnlinePlayerMetadata, RgbaColor} from "../../io/OnlinePlayerMetadata";
+import {EngineStateMetadataUtils} from "../../io/EngineStateMetadata";
+import {RgbaColor} from "../../io/OnlinePlayerMetadata";
 import {SystemMetadataUtils} from "../../io/SystemMetadata";
 import {TabView} from "../TabView";
 import {HomeTabState} from "./HomeTabState";
@@ -23,10 +22,10 @@ export class HomeTabView extends TabView<HomeTabState> {
         <RX.Text/>
         <RX.Text>CPU usage: {system.cpuUsage.toPrecision(4)}%</RX.Text>
         <RX.Text>Memory usage: {system.memoryMax === 0 ? 0 : (system.memoryUsed * 100 / system.memoryMax).toPrecision(4)}%</RX.Text>
-        <RX.Text>Memory used/total: {SystemMetadataUtils.memoryStringFormat(system.memoryUsed)} /
+        <RX.Text>Memory used/total: {SystemMetadataUtils.memoryStringFormat(system.memoryUsed)}/
           {SystemMetadataUtils.memoryStringFormat(system.memoryMax)},
           {" " + SystemMetadataUtils.memoryStringFormat(system.memoryMax - system.memoryUsed)} available</RX.Text>
-        <RX.Text>JVM Memory used: {SystemMetadataUtils.memoryStringFormat(system.jvmMemoryUsed)} /
+        <RX.Text>JVM Memory used: {SystemMetadataUtils.memoryStringFormat(system.jvmMemoryUsed)}/
           {SystemMetadataUtils.memoryStringFormat(system.jvmMemoryMax)},
           {" " + SystemMetadataUtils.memoryStringFormat(system.jvmMemoryMax - system.jvmMemoryUsed)} available</RX.Text>
         <RX.Text>Server uptime: {SystemMetadataUtils.serverUptimeFormat(system.serverUptime)}</RX.Text>
