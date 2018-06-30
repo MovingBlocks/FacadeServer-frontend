@@ -17,7 +17,7 @@ export class WorldMapTabModel extends ResourceSubscriberTabModel<WorldMapTabStat
   }
 
   public getDefaultState(): WorldMapTabState {
-    return {topLeft: {x: 0, y: 0, z: 0}, blocks: [], blockLut: {[""] : ""}, mapBlockWidth: 0, mapBlockLength: 0};
+    return {center: {x: 0, y: 0, z: 0}, blocks: [], blockLut: {[""] : ""}, mapBlockWidth: 0, mapBlockLength: 0};
   }
 
   public initController(): TabController<WorldMapTabState> {
@@ -26,7 +26,7 @@ export class WorldMapTabModel extends ResourceSubscriberTabModel<WorldMapTabStat
 
   public onResourceUpdated(resourcePath: ResourcePath, data: any): void {
     if (ResourcePathUtil.equals(resourcePath, ["worldMap"])) {
-        this.update({topLeft: data.topLeft, blocks: data.blocks, blockLut: data.blockLut,
+        this.update({center: data.center, blocks: data.blocks, blockLut: data.blockLut,
           mapBlockWidth: data.mapBlockWidth, mapBlockLength: data.mapBlockLength});
     }
   }

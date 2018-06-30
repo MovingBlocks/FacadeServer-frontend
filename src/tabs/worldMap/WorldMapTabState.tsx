@@ -5,7 +5,7 @@ export interface Vector3i {
 }
 
 export interface WorldMapTabState {
-  topLeft: Vector3i;
+  center: Vector3i;
   blocks: string[][];
   blockLut: {[block: string]: string};
   mapBlockWidth: number;
