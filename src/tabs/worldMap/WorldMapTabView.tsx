@@ -62,8 +62,6 @@ export class WorldMapTabView extends TabView<WorldMapTabState> {
     this.imageWidth = dimensions.width;
     this.imageHeight = dimensions.height;
     this.forceUpdate();
-    console.log(this.imageWidth);
-    console.log(this.imageHeight);
   }
 
 }
