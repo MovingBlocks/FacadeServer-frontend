@@ -11,9 +11,7 @@ export class WorldMapTabModel extends ResourceSubscriberTabModel<WorldMapTabStat
   }
 
   public getSubscribedResourcePaths(): ResourcePath[] {
-    return [
-      ["worldMap"],
-    ];
+    return [];
   }
 
   public getDefaultState(): WorldMapTabState {

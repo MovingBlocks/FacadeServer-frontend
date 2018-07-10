@@ -13,41 +13,41 @@ export class WorldMapTabView extends TabView<WorldMapTabState> {
   private imageWidth: number = 0;
   private imageHeight: number = 0;
   private imageRef: Component<any, any> = new Component<any, any>();
+  private center: Vector3i = {} as Vector3i;
+  private surface: boolean = true;
+  private mapBlockWidth: number = 0;
+  private mapBlockLength: number = 0;
 
   public render() {
     const controller: WorldMapTabController = this.props.model.getController() as WorldMapTabController;
-    const center: Vector3i = {} as Vector3i;
-    let surface: boolean = true;
-    let mapBlockWidth: number = 0;
-    let mapBlockLength: number = 0;
     return (
       <RX.ScrollView>
-        <CheckBox text={"Surface"} onCheckedChange={(checked) => surface = checked} checkedByDefault={surface}/>
+        <CheckBox text={"Surface"} onCheckedChange={(checked) => this.surface = checked} checkedByDefault={this.surface}/>
         <RX.View style={Styles.flex.row}>
           <RX.Text>Center:</RX.Text>
           <RX.TextInput
             style={[Styles.whiteBox, Styles.flex.fill, Styles.smallTextInput]}
-            onChangeText={(x) => center.x = Number(x) > 250 ? 250 : Number(x)}/>
+            onChangeText={(x) => this.center.x = Number(x) > 250 ? 250 : Number(x)}/>
           <RX.TextInput
             style={[Styles.whiteBox, Styles.flex.fill, Styles.smallTextInput]}
-            onChangeText={(y) => center.y = Number(y) > 250 ? 250 : Number(y)}/>
+            onChangeText={(y) => this.center.y = Number(y) > 250 ? 250 : Number(y)}/>
           <RX.TextInput
             style={[Styles.whiteBox, Styles.flex.fill, Styles.smallTextInput]}
-            onChangeText={(z) => center.z = Number(z) > 250 ? 250 : Number(z)}/>
+            onChangeText={(z) => this.center.z = Number(z) > 250 ? 250 : Number(z)}/>
         </RX.View>
         <RX.View style={Styles.flex.row}>
           <RX.Text>Width:</RX.Text>
           <RX.TextInput
             style={[Styles.whiteBox, Styles.flex.fill, Styles.smallTextInput]}
-            onChangeText={(width) => mapBlockWidth = Number(width)}/>
+            onChangeText={(width) => this.mapBlockWidth = Number(width)}/>
           <RX.Text>Length:</RX.Text>
           <RX.TextInput
             style={[Styles.whiteBox, Styles.flex.fill, Styles.smallTextInput]}
-            onChangeText={(length) => mapBlockLength = Number(length)}/>
+            onChangeText={(length) => this.mapBlockLength = Number(length)}/>
         </RX.View>
         <RX.Button
           style={Styles.okButton}
-          onPress={() => controller.sendWorldMapData(center, mapBlockWidth, mapBlockLength, surface)}>Submit</RX.Button>
+          onPress={() => controller.sendWorldMapData(this.center, this.mapBlockWidth, this.mapBlockLength, this.surface)}>Submit</RX.Button>
         <RX.View>
           <RX.Image ref={(ref) => this.imageRef = ref}
                     onLoad={(dimensions) => this.onImageLoad(dimensions)}
