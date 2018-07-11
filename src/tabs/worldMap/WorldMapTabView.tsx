@@ -22,28 +22,32 @@ export class WorldMapTabView extends TabView<WorldMapTabState> {
     const controller: WorldMapTabController = this.props.model.getController() as WorldMapTabController;
     return (
       <RX.ScrollView>
-        <CheckBox text={"Surface"} onCheckedChange={(checked) => this.surface = checked} checkedByDefault={this.surface}/>
+        <CheckBox text={"Surface"} onCheckedChange={(checked) => this.onSurfaceChecked(checked)} checkedByDefault={this.surface}/>
+        <RX.Text>Center:</RX.Text>
         <RX.View style={Styles.flex.row}>
-          <RX.Text>Center:</RX.Text>
-          <RX.TextInput
-            style={[Styles.whiteBox, Styles.flex.fill, Styles.smallTextInput]}
-            onChangeText={(x) => this.center.x = Number(x) > 250 ? 250 : Number(x)}/>
-          <RX.TextInput
-            style={[Styles.whiteBox, Styles.flex.fill, Styles.smallTextInput]}
-            onChangeText={(y) => this.center.y = Number(y) > 250 ? 250 : Number(y)}/>
-          <RX.TextInput
-            style={[Styles.whiteBox, Styles.flex.fill, Styles.smallTextInput]}
-            onChangeText={(z) => this.center.z = Number(z) > 250 ? 250 : Number(z)}/>
+          <RX.View style={Styles.flex.row}>
+            <RX.Text>X:</RX.Text>
+            <RX.TextInput
+              style={[Styles.whiteBox, Styles.flex.fill, Styles.smallTextInput]}
+              onChangeText={(x) => this.center.x = Number(x)}/>
+          </RX.View>
+          {this.renderYCoordinateInput(this.surface)}
+          <RX.View style={Styles.flex.row}>
+            <RX.Text>Z: </RX.Text>
+            <RX.TextInput
+              style={[Styles.whiteBox, Styles.flex.fill, Styles.smallTextInput]}
+              onChangeText={(z) => this.center.z = Number(z)}/>
+          </RX.View>
         </RX.View>
         <RX.View style={Styles.flex.row}>
           <RX.Text>Width:</RX.Text>
           <RX.TextInput
             style={[Styles.whiteBox, Styles.flex.fill, Styles.smallTextInput]}
-            onChangeText={(width) => this.mapBlockWidth = Number(width)}/>
+            onChangeText={(width) => this.mapBlockWidth = Number(width) > 250 ? 250 : Number(width)}/>
           <RX.Text>Length:</RX.Text>
           <RX.TextInput
             style={[Styles.whiteBox, Styles.flex.fill, Styles.smallTextInput]}
-            onChangeText={(length) => this.mapBlockLength = Number(length)}/>
+            onChangeText={(length) => this.mapBlockLength = Number(length) > 250 ? 250 : Number(length)}/>
         </RX.View>
         <RX.Button
           style={Styles.okButton}
@@ -62,6 +66,25 @@ export class WorldMapTabView extends TabView<WorldMapTabState> {
     this.imageWidth = dimensions.width;
     this.imageHeight = dimensions.height;
     this.forceUpdate();
+  }
+
+  private onSurfaceChecked(checked: boolean) {
+    this.surface = checked;
+    this.forceUpdate();
+  }
+
+  private renderYCoordinateInput(render: boolean) {
+    if (render) {
+      return "";
+    }
+    return (
+      <RX.View style={Styles.flex.row}>
+        <RX.Text>Y:</RX.Text>
+        <RX.TextInput
+          style={[Styles.whiteBox, Styles.flex.fill, Styles.smallTextInput]}
+          onChangeText={(y) => this.center.y = Number(y)}/>
+      </RX.View>
+    );
   }
 
 }
