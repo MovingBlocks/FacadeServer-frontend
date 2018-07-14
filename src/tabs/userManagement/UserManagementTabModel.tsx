@@ -18,7 +18,7 @@ export class UserManagementTabModel extends ResourceSubscriberTabModel<UserManag
   }
 
   public getDefaultState(): UserManagementTabState {
-    return {onlinePlayers: []};
+    return {onlinePlayers: [], blacklist: [], whitelist: []};
   }
 
   public initController(): TabController<UserManagementTabState> {
@@ -28,6 +28,10 @@ export class UserManagementTabModel extends ResourceSubscriberTabModel<UserManag
   public onResourceUpdated(resourcePath: ResourcePath, data: any): void {
     if (ResourcePathUtil.equals(resourcePath, ["onlinePlayers"])) {
       this.update({onlinePlayers: data as OnlinePlayerMetadata[]});
+    } else if (ResourcePathUtil.equals(resourcePath, ["blacklist"])) {
+      this.update({blacklist: data as string[]});
+    } else if (ResourcePathUtil.equals(resourcePath, ["whitelist"])) {
+      this.update({whitelist: data as string[]});
     }
   }
 

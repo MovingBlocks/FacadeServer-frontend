@@ -19,6 +19,34 @@ export class UserManagementTabController extends TabController<UserManagementTab
     this.execute("renameUser " + user + " " + newName);
   }
 
+  public addToBlacklist = (userId: string) => {
+    this.model.requestResource({
+      method: "POST",
+      resourcePath: ["blacklist", userId],
+    });
+  }
+
+  public removeFromBlacklist = (userId: string) => {
+    this.model.requestResource({
+      method: "DELETE",
+      resourcePath: ["blacklist", userId],
+    });
+  }
+
+  public addToWhitelist = (userId: string) => {
+    this.model.requestResource({
+      method: "POST",
+      resourcePath: ["whitelist", userId],
+    });
+  }
+
+  public removeFromWhitelist = (userId: string) => {
+    this.model.requestResource({
+      method: "DELETE",
+      resourcePath: ["whitelist", userId],
+    });
+  }
+
   private execute = (command: string) => {
     this.model.requestResource({
       data: command,
