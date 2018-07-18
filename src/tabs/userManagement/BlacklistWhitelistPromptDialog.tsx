@@ -1,33 +1,33 @@
 import RX = require("reactxp");
 import Styles = require("../../styles/main");
-import {PickerPropsItem} from "reactxp/dist/common/Types";
+import {OnlinePlayerMetadata} from "common/io/OnlinePlayerMetadata";
+import {UserManagementTabView} from "common/tabs/userManagement/UserManagementTabView";
 
 interface BlacklistWhitelistPromptDialogProps {
   promptText: string;
-  onlinePlayersItems: PickerPropsItem[];
-  blacklistedPlayersItems: PickerPropsItem[];
-  whitelistedPlayersItems: PickerPropsItem[];
+  onlinePlayers: OnlinePlayerMetadata[];
+  blacklistedPlayers: string[];
+  whitelistedPlayers: string[];
   listFunctions: Array<((userId: string) => void)>;
+  caller: UserManagementTabView;
 }
 
-export class BlacklistWhitelistPromptDialog extends RX.Component<BlacklistWhitelistPromptDialogProps, {onlinePlayersValue?: string,
-  blacklistedPlayersValue?: string, whitelistedPlayersValue?: string, lastChangedValue?: string}> {
+export class BlacklistWhitelistPromptDialog extends RX.Component<BlacklistWhitelistPromptDialogProps, {value: string,
+  onlinePlayers?: OnlinePlayerMetadata[], blacklist?: string[], whitelist?: string[]}> {
 
-  public static show(promptText: string, onlinePlayersItems: PickerPropsItem[], blacklistedPlayersItems: PickerPropsItem[],
-                     whitelistedPlayersItems: PickerPropsItem[], listFunctions: Array<((userId: string) => void)>) {
+  public static show(promptText: string, onlinePlayers: OnlinePlayerMetadata[], blacklistedPlayers: string[], whitelistedPlayers: string[],
+                     listFunctions: Array<((userId: string) => void)>, caller: UserManagementTabView) {
     RX.Modal.show(
-      <BlacklistWhitelistPromptDialog promptText={promptText} onlinePlayersItems={onlinePlayersItems}
-        blacklistedPlayersItems={blacklistedPlayersItems} whitelistedPlayersItems={whitelistedPlayersItems} listFunctions={listFunctions}/>,
+      <BlacklistWhitelistPromptDialog promptText={promptText} onlinePlayers={onlinePlayers} blacklistedPlayers={blacklistedPlayers}
+                                      whitelistedPlayers={whitelistedPlayers} listFunctions={listFunctions} caller={caller}/>,
       "blacklistWhitelistPromptDialog",
     );
   }
 
   constructor(props: BlacklistWhitelistPromptDialogProps) {
     super(props);
-    this.state = {onlinePlayersValue: "",
-      blacklistedPlayersValue: "",
-      whitelistedPlayersValue: "",
-      lastChangedValue: ""};
+    this.state = {value: "", onlinePlayers: this.props.onlinePlayers, blacklist: this.props.blacklistedPlayers,
+      whitelist: this.props.whitelistedPlayers};
   }
 
   public render() {
@@ -35,36 +35,28 @@ export class BlacklistWhitelistPromptDialog extends RX.Component<BlacklistWhitel
       <RX.View style={Styles.whiteBox}>
         <RX.Text>{this.props.promptText}</RX.Text>
         <RX.Text>Online Players:</RX.Text>
-        <RX.Picker
-          style={Styles.smallPickerInput}
-          items={this.props.onlinePlayersItems}
-          selectedValue={this.state.onlinePlayersValue}
-          onValueChange={(value) => this.onValueChange(value, 0)}/>
-        <RX.Text>Currently on Blacklist:</RX.Text>
-        <RX.Picker
-          style={Styles.smallPickerInput}
-          items={this.props.blacklistedPlayersItems}
-          selectedValue={this.state.blacklistedPlayersValue}
-          onValueChange={(value) => this.onValueChange(value, 1)}/>
-        <RX.Text>Currently on Whitelist:</RX.Text>
-        <RX.Picker
-          style={Styles.smallPickerInput}
-          items={this.props.whitelistedPlayersItems}
-          selectedValue={this.state.whitelistedPlayersValue}
-          onValueChange={(value) => this.onValueChange(value, 2)}/>
+        {this.state.onlinePlayers.map((player) => player.id + "    ")}
+        <RX.Text>Currently on blacklist:</RX.Text>
+        {this.state.blacklist.map((player) => player + "    ")}
+        <RX.Text>Currently on whitelist:</RX.Text>
+        {this.state.whitelist.map((player) => player + "    ")}
+        <RX.Text>ID to modify:</RX.Text>
+        <RX.TextInput style={Styles.whiteBox}
+                      value={this.state.value}
+                      onChangeText={(newValue) => this.onChangeText(newValue)}/>
         <RX.View style={Styles.flex.row}>
-          <RX.Button style={Styles.okButton} onPress={() => this.props.listFunctions[0].call(this.state.lastChangedValue)}>
+          <RX.Button style={Styles.okButton} onPress={() => this.onListButtonPress(0)}>
             <RX.Text>Add to Blacklist</RX.Text>
           </RX.Button>
-          <RX.Button style={Styles.okButton} onPress={() => this.props.listFunctions[1].call(this.state.lastChangedValue)}>
+          <RX.Button style={Styles.okButton} onPress={() => this.onListButtonPress(1)}>
             <RX.Text>Remove from Blacklist</RX.Text>
           </RX.Button>
         </RX.View>
         <RX.View style={Styles.flex.row}>
-          <RX.Button style={Styles.okButton} onPress={() => this.props.listFunctions[2].call(this.state.lastChangedValue)}>
+          <RX.Button style={Styles.okButton} onPress={() => this.onListButtonPress(2)}>
             <RX.Text>Add to Whitelist</RX.Text>
           </RX.Button>
-          <RX.Button style={Styles.okButton} onPress={() => this.props.listFunctions[3].call(this.state.lastChangedValue)}>
+          <RX.Button style={Styles.okButton} onPress={() => this.onListButtonPress(3)}>
             <RX.Text>Remove from Whitelist</RX.Text>
           </RX.Button>
         </RX.View>
@@ -75,19 +67,14 @@ export class BlacklistWhitelistPromptDialog extends RX.Component<BlacklistWhitel
     );
   }
 
-  private onValueChange = (newValue: string, valueToChange: number) => {
-    switch (valueToChange) {
-      case 0:
-        this.setState({onlinePlayersValue: newValue});
-        break;
-      case 1:
-        this.setState({blacklistedPlayersValue: newValue});
-        break;
-      case 2:
-        this.setState({whitelistedPlayersValue: newValue});
-        break;
-    }
-    this.state.lastChangedValue = newValue;
+  private onListButtonPress(buttonNumber: number) {
+    this.props.listFunctions[buttonNumber].call(this.props.listFunctions[buttonNumber], this.state.value);
+    this.setState({value: "", onlinePlayers: this.props.caller.state.onlinePlayers, blacklist: this.props.caller.state.blacklist,
+      whitelist: this.props.caller.state.whitelist});
+  }
+
+  private onChangeText = (newValue: string) => {
+    this.setState({value: newValue});
   }
 
   private closeClicked = () => {

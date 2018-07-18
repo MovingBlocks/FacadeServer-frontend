@@ -14,6 +14,8 @@ export class UserManagementTabModel extends ResourceSubscriberTabModel<UserManag
   public getSubscribedResourcePaths(): ResourcePath[] {
     return [
       ["onlinePlayers"],
+      ["blacklist"],
+      ["whitelist"],
     ];
   }
 

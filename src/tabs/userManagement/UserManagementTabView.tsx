@@ -15,16 +15,10 @@ export class UserManagementTabView extends TabView<UserManagementTabState> {
 
   public render() {
     const controller: UserManagementTabController = this.props.model.getController() as UserManagementTabController;
-    const onlinePlayersItems: PickerPropsItem[] = [{label: "", value: ""}];
-    const blacklistedPlayersItems: PickerPropsItem[] = [{label: "", value: ""}];
-    const whitelistedPlayersItems: PickerPropsItem[] = [{label: "", value: ""}];
-    this.state.onlinePlayers.forEach((player) => onlinePlayersItems.push({label: player.name, value: player.id}));
-    this.state.blacklist.forEach((playerId) => blacklistedPlayersItems.push({label: playerId, value: playerId}));
-    this.state.whitelist.forEach((playerId) => whitelistedPlayersItems.push({label: playerId, value: playerId}));
     const listFunctions: Array<((userId: string) => void)> = [controller.addToBlacklist, controller.removeFromBlacklist,
       controller.addToWhitelist, controller.removeFromWhitelist];
-    const showBlackListWhitelist = () => BlacklistWhitelistPromptDialog
-      .show("Blacklist/Whitelist Management", onlinePlayersItems, blacklistedPlayersItems, whitelistedPlayersItems, listFunctions);
+    const showBlackListWhitelist = () => BlacklistWhitelistPromptDialog.show("Blacklist/Whitelist Management",
+      this.state.onlinePlayers, this.state.blacklist, this.state.whitelist, listFunctions, this);
     return (
       <RX.View>
         <RX.Button style={Styles.okButton} onPress={showBlackListWhitelist}>
