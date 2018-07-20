@@ -7,4 +7,5 @@ export interface ConsoleTabState {
   messages?: Message[];
   commandToSend?: string;
   commands?: string[];
+  filteredHelpText?: string;
 }

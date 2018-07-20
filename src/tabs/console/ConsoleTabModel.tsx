@@ -15,11 +15,12 @@ export class ConsoleTabModel extends ResourceSubscriberTabModel<ConsoleTabState>
   public getSubscribedResourcePaths(): ResourcePath[] {
     return [
       ["console"],
+      ["consoleHelp"],
     ];
   }
 
   public getDefaultState(): ConsoleTabState {
-    return {messages: [], commandToSend: "Type a command here...", commands: []};
+    return {messages: [], commandToSend: "Type a command here...", commands: [], filteredHelpText: ""};
   }
 
   public initController(): TabController<ConsoleTabState> {
@@ -29,6 +30,8 @@ export class ConsoleTabModel extends ResourceSubscriberTabModel<ConsoleTabState>
   public onResourceUpdated(resourcePath: ResourcePath, data: any): void {
     if (ResourcePathUtil.equals(resourcePath, ["console"])) {
       this.update({commands: data as string[]});
+    } else if (ResourcePathUtil.equals(resourcePath, ["consoleHelp"])) {
+      this.update({filteredHelpText: data as string});
     }
   }
 
