@@ -29,6 +29,8 @@ import {SettingsTabModel} from "./tabs/settings/SettingsTabModel";
 import {SettingsTabView} from "./tabs/settings/SettingsTabView";
 import {UserManagementTabModel} from "./tabs/userManagement/UserManagementTabModel";
 import {UserManagementTabView} from "./tabs/userManagement/UserManagementTabView";
+import {WorldMapTabModel} from "./tabs/worldMap/WorldMapTabModel";
+import {WorldMapTabView} from "./tabs/worldMap/WorldMapTabView";
 
 import {AppUI} from "platformSpecific/AppUI";
 
@@ -50,6 +52,7 @@ class App extends RX.Component<{}, AppState> {
     new SettingsTabModel(),
     new ServerAdminsTabModel(),
     new UserManagementTabModel(),
+    new WorldMapTabModel(),
   ];
   private tabViews = [
     <HomeTabView model={this.tabs[0]} />,
@@ -59,6 +62,7 @@ class App extends RX.Component<{}, AppState> {
     <SettingsTabView model={this.tabs[4]} />,
     <ServerAdminsTabView model={this.tabs[5]} />,
     <UserManagementTabView model={this.tabs[6]} />,
+    <WorldMapTabView model={this.tabs[7]} />,
   ];
 
   constructor(props: {}) {
