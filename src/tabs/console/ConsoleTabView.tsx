@@ -6,7 +6,7 @@ import Styles = require("../../styles/main");
 import {TabView} from "../TabView";
 import {ConsoleAutocomplete} from "./ConsoleAutocomplete";
 import {ConsoleTabController} from "./ConsoleTabController";
-import {ConsoleTabState} from "./ConsoleTabState";
+import {ConsoleTabState, Message} from "./ConsoleTabState";
 
 interface MessagePart {
   text: string;
@@ -36,10 +36,24 @@ export class ConsoleTabView extends TabView<ConsoleTabState> {
             onChangeText={this.onChangeValue}
             autoFocus={true}
             onKeyPress={(event) =>  {this.handleKeypress(event, controller); }}/>
-          <RX.Button style={Styles.okButton} onPress={controller.execute}><RX.Text>Execute</RX.Text></RX.Button>
+          <RX.Button style={Styles.okButton} onPress={() => this.onCommandEntered(this.state.commandToSend, controller)}>
+            <RX.Text>Execute</RX.Text>
+          </RX.Button>
         </RX.View>
       </RX.ScrollView>
     );
+  }
+
+  private onCommandEntered(command: string, controller: ConsoleTabController) {
+    command = command.indexOf(" ") === -1 ? command : command.substr(0, command.indexOf(" "));
+    if (command === "help") {
+      const addedMessage: Message[] = [{type: "CONSOLE", message: this.state.filteredHelpText}];
+      this.props.model.update({messages: this.state.messages.concat(addedMessage), commandToSend: ""});
+    } else if (this.state.commands.indexOf(command) !== -1) {
+      controller.execute();
+    } else {
+      this.props.model.update({commandToSend: "enter valid command"});
+    }
   }
 
   private onChangeValue = (newValue: string) => {
@@ -98,7 +112,7 @@ export class ConsoleTabView extends TabView<ConsoleTabState> {
     if (event.keyCode === 9) {
       this.autoComplete(this.state.commandToSend);
     } else if (event.keyCode === 13) {
-      controller.execute();
+      this.onCommandEntered(this.state.commandToSend, controller);
     }
   }
 
