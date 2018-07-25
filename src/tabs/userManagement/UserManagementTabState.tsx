@@ -1,4 +1,4 @@
-import {OnlinePlayerMetadata} from "common/io/OnlinePlayerMetadata";
+import {OnlinePlayerMetadata} from "../../io/OnlinePlayerMetadata";
 
 export interface UserManagementTabState {
   onlinePlayers?: OnlinePlayerMetadata[];

@@ -3,6 +3,13 @@ import Styles = require("../../styles/main");
 import {OnlinePlayerMetadata} from "common/io/OnlinePlayerMetadata";
 import {UserManagementTabView} from "common/tabs/userManagement/UserManagementTabView";
 
+interface BlacklistWhitelistPromptState {
+  value: string;
+  onlinePlayers?: OnlinePlayerMetadata[];
+  blacklist?: string[];
+  whitelist?: string[];
+}
+
 interface BlacklistWhitelistPromptDialogProps {
   promptText: string;
   onlinePlayers: OnlinePlayerMetadata[];
@@ -12,16 +19,14 @@ interface BlacklistWhitelistPromptDialogProps {
   caller: UserManagementTabView;
 }
 
-export class BlacklistWhitelistPromptDialog extends RX.Component<BlacklistWhitelistPromptDialogProps, {value: string,
-  onlinePlayers?: OnlinePlayerMetadata[], blacklist?: string[], whitelist?: string[]}> {
+export class BlacklistWhitelistPromptDialog extends RX.Component<BlacklistWhitelistPromptDialogProps, BlacklistWhitelistPromptState> {
 
   public static show(promptText: string, onlinePlayers: OnlinePlayerMetadata[], blacklistedPlayers: string[], whitelistedPlayers: string[],
                      listFunctions: Array<((userId: string) => void)>, caller: UserManagementTabView) {
     RX.Modal.show(
       <BlacklistWhitelistPromptDialog promptText={promptText} onlinePlayers={onlinePlayers} blacklistedPlayers={blacklistedPlayers}
                                       whitelistedPlayers={whitelistedPlayers} listFunctions={listFunctions} caller={caller}/>,
-      "blacklistWhitelistPromptDialog",
-    );
+      "blacklistWhitelistPromptDialog");
   }
 
   constructor(props: BlacklistWhitelistPromptDialogProps) {
@@ -67,10 +72,28 @@ export class BlacklistWhitelistPromptDialog extends RX.Component<BlacklistWhitel
     );
   }
 
+  // TODO possibly make this code cleaner
   private onListButtonPress(buttonNumber: number) {
     this.props.listFunctions[buttonNumber].call(this.props.listFunctions[buttonNumber], this.state.value);
-    this.setState({value: "", onlinePlayers: this.props.caller.state.onlinePlayers, blacklist: this.props.caller.state.blacklist,
-      whitelist: this.props.caller.state.whitelist});
+    switch (buttonNumber) {
+      case 0:
+        this.setState({value: "", blacklist: this.state.blacklist.concat([this.state.value])});
+        break;
+      case 1:
+        this.state.blacklist.splice(this.state.blacklist.indexOf(this.state.value), 1);
+        this.setState({value: "", blacklist: this.state.blacklist});
+        break;
+      case 2:
+        this.setState({value: "", whitelist: this.state.whitelist.concat([this.state.value])});
+        break;
+      case 3:
+        this.state.whitelist.splice(this.state.whitelist.indexOf(this.state.value), 2);
+        this.setState({value: "", whitelist: this.state.whitelist});
+        break;
+    }
+    this.closeClicked();
+    BlacklistWhitelistPromptDialog.show("Blacklist/Whitelist Management", this.props.caller.state.onlinePlayers, this.state.blacklist,
+      this.state.whitelist, this.props.listFunctions, this.props.caller);
   }
 
   private onChangeText = (newValue: string) => {
