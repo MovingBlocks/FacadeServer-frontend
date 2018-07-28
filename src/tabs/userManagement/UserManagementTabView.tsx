@@ -7,35 +7,43 @@ import {PickerPromptDialog} from "../../PickerPromptDialog";
 import {TextPromptDialog} from "../../TextPromptDialog";
 import {YesNoDialog} from "../../YesNoDialog";
 import {TabView} from "../TabView";
+import {BlacklistWhitelistPromptDialog} from "./BlacklistWhitelistPromptDialog";
 import {UserManagementTabController} from "./UserManagementTabController";
 import {UserManagementTabState} from "./UserManagementTabState";
 
 export class UserManagementTabView extends TabView<UserManagementTabState> {
 
   public render() {
+    const controller: UserManagementTabController = this.props.model.getController() as UserManagementTabController;
+    const listFunctions: Array<((userId: string) => void)> = [controller.addToBlacklist, controller.removeFromBlacklist,
+      controller.addToWhitelist, controller.removeFromWhitelist];
+    const showBlackListWhitelist = () => BlacklistWhitelistPromptDialog.show("Blacklist/Whitelist Management",
+      this.state.onlinePlayers, this.state.blacklist, this.state.whitelist, listFunctions, this);
     return (
       <RX.View>
+        <RX.Button style={Styles.okButton} onPress={showBlackListWhitelist}>
+          <RX.Text>Blacklist/Whitelist Management</RX.Text>
+        </RX.Button>
         <RX.Text>There are currently {this.state.onlinePlayers.length} players online on this server:</RX.Text>
-        {this.renderPlayerAndPermissionList()}
+        {this.renderPlayerAndPermissionList(controller)}
         <RX.Text/>
       </RX.View>
     );
   }
 
-  private renderPlayerAndPermissionList() {
+  private renderPlayerAndPermissionList(controller: UserManagementTabController) {
     const renderColorString = (color: RgbaColor) => "rgba(" + color.r + "," + color.g + "," + color.b + "," + color.a + ")";
     const createColorStyle = (color: RgbaColor) => RX.Styles.createTextStyle({color: renderColorString(color)});
     return(
       this.state.onlinePlayers.map((player) => (
         <RX.View>
           <RX.Text key={player.id} style={createColorStyle(player.color)}>{player.name}</RX.Text>
-          <ButtonBar buttons={this.createButtons(player)}/>
+          <ButtonBar buttons={this.createButtons(player, controller)}/>
         </RX.View>
     )));
   }
 
-  private createButtons(player: OnlinePlayerMetadata): ButtonProps[] {
-    const controller: UserManagementTabController = this.props.model.getController() as UserManagementTabController;
+  private createButtons(player: OnlinePlayerMetadata, controller: UserManagementTabController): ButtonProps[] {
     const permissionItems: PickerPropsItem[] = [
       {label: "chat", value: "chat"}, {label: "cheat", value: "cheat"}, {label: "userManagement", value: "userManagement"},
       {label: "serverManagement", value: "serverManagement"}, {label: "debug", value: "debug"},
