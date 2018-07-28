@@ -4,7 +4,7 @@ import {OnlinePlayerMetadata} from "common/io/OnlinePlayerMetadata";
 import {UserManagementTabView} from "common/tabs/userManagement/UserManagementTabView";
 
 interface BlacklistWhitelistPromptState {
-  value: string;
+  value?: string;
   onlinePlayers?: OnlinePlayerMetadata[];
   blacklist?: string[];
   whitelist?: string[];
@@ -33,6 +33,10 @@ export class BlacklistWhitelistPromptDialog extends RX.Component<BlacklistWhitel
     super(props);
     this.state = {value: "", onlinePlayers: this.props.onlinePlayers, blacklist: this.props.blacklistedPlayers,
       whitelist: this.props.whitelistedPlayers};
+  }
+
+  public componentDidMount() {
+    this.props.caller.props.model.update({dialogUpdater: this.onListsUpdated});
   }
 
   public render() {
@@ -72,28 +76,12 @@ export class BlacklistWhitelistPromptDialog extends RX.Component<BlacklistWhitel
     );
   }
 
-  // TODO possibly make this code cleaner
+  private onListsUpdated = (wl: string[], bl: string[]) => {
+    this.setState({whitelist: wl, blacklist: bl});
+  }
+
   private onListButtonPress(buttonNumber: number) {
     this.props.listFunctions[buttonNumber].call(this.props.listFunctions[buttonNumber], this.state.value);
-    switch (buttonNumber) {
-      case 0:
-        this.setState({value: "", blacklist: this.state.blacklist.concat([this.state.value])});
-        break;
-      case 1:
-        this.state.blacklist.splice(this.state.blacklist.indexOf(this.state.value), 1);
-        this.setState({value: "", blacklist: this.state.blacklist});
-        break;
-      case 2:
-        this.setState({value: "", whitelist: this.state.whitelist.concat([this.state.value])});
-        break;
-      case 3:
-        this.state.whitelist.splice(this.state.whitelist.indexOf(this.state.value), 2);
-        this.setState({value: "", whitelist: this.state.whitelist});
-        break;
-    }
-    this.closeClicked();
-    BlacklistWhitelistPromptDialog.show("Blacklist/Whitelist Management", this.props.caller.state.onlinePlayers, this.state.blacklist,
-      this.state.whitelist, this.props.listFunctions, this.props.caller);
   }
 
   private onChangeText = (newValue: string) => {
