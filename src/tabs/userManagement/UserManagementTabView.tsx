@@ -20,14 +20,14 @@ export class UserManagementTabView extends TabView<UserManagementTabState> {
     const showBlackListWhitelist = () => BlacklistWhitelistPromptDialog.show("Blacklist/Whitelist Management",
       this.state.onlinePlayers, this.state.blacklist, this.state.whitelist, listFunctions, this);
     return (
-      <RX.View>
+      <RX.ScrollView>
         <RX.Button style={Styles.okButton} onPress={showBlackListWhitelist}>
           <RX.Text>Blacklist/Whitelist Management</RX.Text>
         </RX.Button>
         <RX.Text>There are currently {this.state.onlinePlayers.length} players online on this server:</RX.Text>
         {this.renderPlayerAndPermissionList(controller)}
         <RX.Text/>
-      </RX.View>
+      </RX.ScrollView>
     );
   }
 
@@ -36,8 +36,8 @@ export class UserManagementTabView extends TabView<UserManagementTabState> {
     const createColorStyle = (color: RgbaColor) => RX.Styles.createTextStyle({color: renderColorString(color)});
     return(
       this.state.onlinePlayers.map((player) => (
-        <RX.View>
-          <RX.Text key={player.id} style={createColorStyle(player.color)}>{player.name}</RX.Text>
+        <RX.View key={player.id}>
+          <RX.Text style={createColorStyle(player.color)}>{player.name}</RX.Text>
           <ButtonBar buttons={this.createButtons(player, controller)}/>
         </RX.View>
     )));

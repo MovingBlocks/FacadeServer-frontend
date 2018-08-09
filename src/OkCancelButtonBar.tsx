@@ -1,5 +1,4 @@
 import RX = require("reactxp");
-import Styles = require("./styles/main");
 import {ButtonBar} from "./ButtonBar";
 
 interface OkCancelButtonBarProps {

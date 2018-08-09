@@ -6,7 +6,7 @@ import {ActionResult} from "../io/ActionResult";
 import {IncomingMessage} from "../io/IncomingMessage";
 import {OutgoingMessage} from "../io/OutgoingMessage";
 import {RandomStringGenerator} from "../RandomStringGenerator";
-import {ClientIdentity, PublicIdentityCertificate} from "./ClientIdentity";
+import {ClientIdentity} from "./ClientIdentity";
 import {HandshakeHello} from "./HandshakeHello";
 import {IdentityStorageServiceApiClient} from "./IdentityStorageServiceApiClient";
 import {Jsbn, MultiFormatBigInteger} from "./MultiFormatBigInteger";

@@ -12,14 +12,14 @@ export class ModulesTabView extends TabView<ModulesTabState> {
     const controller: ModulesTabController = this.props.model.getController() as ModulesTabController;
     const showInstallDialog = () => InstallModulesDialog.show(controller.installModules);
     return (
-      <RX.View>
+      <RX.ScrollView>
         <RX.Text>Module installer status: {this.state.installerStatus}</RX.Text>
         <RX.Button style={Styles.okButton} onPress={showInstallDialog}><RX.Text>Install new modules...</RX.Text></RX.Button>
         <RX.Text>Installed modules:</RX.Text>
         <RX.ScrollView>
           {this.state.installedModules.map(this.renderModule)}
         </RX.ScrollView>
-      </RX.View>
+      </RX.ScrollView>
     );
   }
 

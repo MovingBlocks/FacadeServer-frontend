@@ -1,7 +1,5 @@
 import {ApiCallOptions, GenericRestClient} from "simplerestclients";
 import {Promise, Rejected} from "synctasks";
-import {AlertDialog} from "../AlertDialog";
-import {PrivateIdentityCertificate, PublicIdentityCertificate} from "./ClientIdentity";
 import {ClientIdentity} from "./ClientIdentity";
 
 export interface LoginResult {

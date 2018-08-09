@@ -1,4 +1,3 @@
-import {TextPromptDialog} from "../../TextPromptDialog";
 import {TabController} from "../TabController";
 import {ModulesTabState} from "./ModulesTabState";
 
