@@ -28,6 +28,7 @@ export class WorldMapTabView extends TabView<WorldMapTabState> {
           <RX.View style={Styles.flex.row}>
             <RX.Text>X:</RX.Text>
             <RX.TextInput
+              defaultValue={"0"}
               style={[Styles.whiteBox, Styles.flex.fill, Styles.smallTextInput]}
               onChangeText={(x) => this.center.x = Number(x)}/>
           </RX.View>
@@ -35,6 +36,7 @@ export class WorldMapTabView extends TabView<WorldMapTabState> {
           <RX.View style={Styles.flex.row}>
             <RX.Text>Z: </RX.Text>
             <RX.TextInput
+              defaultValue={"0"}
               style={[Styles.whiteBox, Styles.flex.fill, Styles.smallTextInput]}
               onChangeText={(z) => this.center.z = Number(z)}/>
           </RX.View>
@@ -42,10 +44,12 @@ export class WorldMapTabView extends TabView<WorldMapTabState> {
         <RX.View style={Styles.flex.row}>
           <RX.Text>Width:</RX.Text>
           <RX.TextInput
+            defaultValue={"25"}
             style={[Styles.whiteBox, Styles.flex.fill, Styles.smallTextInput]}
             onChangeText={(width) => this.mapBlockWidth = Number(width) > 250 ? 250 : Number(width)}/>
           <RX.Text>Length:</RX.Text>
           <RX.TextInput
+            defaultValue={"25"}
             style={[Styles.whiteBox, Styles.flex.fill, Styles.smallTextInput]}
             onChangeText={(length) => this.mapBlockLength = Number(length) > 250 ? 250 : Number(length)}/>
         </RX.View>
@@ -81,6 +85,7 @@ export class WorldMapTabView extends TabView<WorldMapTabState> {
       <RX.View style={Styles.flex.row}>
         <RX.Text>Y:</RX.Text>
         <RX.TextInput
+          defaultValue={"25"}
           style={[Styles.whiteBox, Styles.flex.fill, Styles.smallTextInput]}
           onChangeText={(y) => this.center.y = Number(y)}/>
       </RX.View>

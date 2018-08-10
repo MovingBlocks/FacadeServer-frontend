@@ -44,11 +44,11 @@ export class BlacklistWhitelistPromptDialog extends RX.Component<BlacklistWhitel
       <RX.View style={Styles.whiteBox}>
         <RX.Text>{this.props.promptText}</RX.Text>
         <RX.Text>Online Players:</RX.Text>
-        {this.state.onlinePlayers.map((player) => player.id + "    ")}
+        {this.state.onlinePlayers.map((player) => <RX.Text key={player.id}>{"name: " + player.name + " id: " + player.id}</RX.Text>)}
         <RX.Text>Currently on blacklist:</RX.Text>
-        {this.state.blacklist.map((player) => player + "    ")}
+        {this.state.blacklist.map((player) => <RX.Text key={"b " + player}>{player}</RX.Text>)}
         <RX.Text>Currently on whitelist:</RX.Text>
-        {this.state.whitelist.map((player) => player + "    ")}
+        {this.state.whitelist.map((player) => <RX.Text key={"b " + player}>{player}</RX.Text>)}
         <RX.Text>ID to modify:</RX.Text>
         <RX.TextInput style={Styles.whiteBox}
                       value={this.state.value}

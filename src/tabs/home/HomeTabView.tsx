@@ -25,7 +25,7 @@ export class HomeTabView extends TabView<HomeTabState> {
         <RX.Text>Memory used/total: {SystemMetadataUtils.memoryStringFormat(system.memoryUsed)}/
           {SystemMetadataUtils.memoryStringFormat(system.memoryMax)},
           {" " + SystemMetadataUtils.memoryStringFormat(system.memoryMax - system.memoryUsed)} available</RX.Text>
-        <RX.Text>JVM Memory used: {SystemMetadataUtils.memoryStringFormat(system.jvmMemoryUsed)}/
+        <RX.Text>JVM Memory used/total: {SystemMetadataUtils.memoryStringFormat(system.jvmMemoryUsed)}/
           {SystemMetadataUtils.memoryStringFormat(system.jvmMemoryMax)},
           {" " + SystemMetadataUtils.memoryStringFormat(system.jvmMemoryMax - system.jvmMemoryUsed)} available</RX.Text>
         <RX.Text>Server uptime: {SystemMetadataUtils.serverUptimeFormat(system.serverUptime)}</RX.Text>
