@@ -14,6 +14,8 @@ import {ServerAddressInput} from "./ServerAddressInput";
 import {TabModel} from "./tabs/TabModel";
 import {WaitOverlay} from "./WaitOverlay";
 
+import {ChatTabModel} from "./tabs/chat/ChatTabModel";
+import {ChatTabView} from "./tabs/chat/ChatTabView";
 import {ConsoleTabModel} from "./tabs/console/ConsoleTabModel";
 import {ConsoleTabView} from "./tabs/console/ConsoleTabView";
 import {GamesTabModel} from "./tabs/games/GamesTabModel";
@@ -46,6 +48,7 @@ class App extends RX.Component<{}, AppState> {
   private tabs: Array<TabModel<any>> = [
     new HomeTabModel(),
     new ConsoleTabModel(),
+    new ChatTabModel(),
     new GamesTabModel(),
     new ModulesTabModel(),
     new SettingsTabModel(),
@@ -56,12 +59,13 @@ class App extends RX.Component<{}, AppState> {
   private tabViews = [
     <HomeTabView model={this.tabs[0]} />,
     <ConsoleTabView model={this.tabs[1]} />,
-    <GamesTabView model={this.tabs[2]} />,
-    <ModulesTabView model={this.tabs[3]} />,
-    <SettingsTabView model={this.tabs[4]} />,
-    <ServerAdminsTabView model={this.tabs[5]} />,
-    <UserManagementTabView model={this.tabs[6]} />,
-    <WorldMapTabView model={this.tabs[7]} />,
+    <ChatTabView model={this.tabs[2]} />,
+    <GamesTabView model={this.tabs[3]} />,
+    <ModulesTabView model={this.tabs[4]} />,
+    <SettingsTabView model={this.tabs[5]} />,
+    <ServerAdminsTabView model={this.tabs[6]} />,
+    <UserManagementTabView model={this.tabs[7]} />,
+    <WorldMapTabView model={this.tabs[8]} />,
   ];
 
   constructor(props: {}) {
