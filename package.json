@@ -19,12 +19,12 @@
     "babel": "^6.23.0",
     "babel-plugin-module-alias": "^1.6.0",
     "babel-preset-react-native": "^3.0.0",
-    "source-map-loader": "^0.1.6",
+    "source-map-loader": "^4.0.1",
     "ts-node": "^3.2.1",
     "tslint": "^5.5.0",
     "tslint-react": "^3.0.0",
     "typescript": "2.1.6",
-    "webpack": "2.2.1"
+    "webpack": "5.74.0"
   },
   "dependencies": {
     "base-64": "^0.1.0",
