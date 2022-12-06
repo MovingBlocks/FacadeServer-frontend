@@ -33,7 +33,7 @@
     "jsrsasign": "^10.2.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "react-native": "^0.42.3",
+    "react-native": "^0.70.6",
     "react-native-windows": "^0.33.4",
     "reactxp": "^0.42.0-rc.22",
     "reactxp-imagesvg": "^0.2.4",
